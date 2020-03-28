@@ -9,15 +9,14 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class OverallStatisticRepository {
-    fun getStatistic(onResult: (OverallStatisticModel) -> Unit) {
+    fun getStatistic(onResult: (OverallStatisticModel) -> Unit , onFailure: (String) -> Unit  ) {
         val mOverallApi by lazy {
             Interfaces.getOverallStatistic()
         }
 
         mOverallApi.getStatistic().enqueue(object : Callback<OverallStatisticModel> {
             override fun onFailure(call: Call<OverallStatisticModel>, t: Throwable) {
-                Log.d("TAG" , "${t.message} Ыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыы")
-
+                onFailure("ERROR MESSAGE: ${t.message}")
             }
 
             override fun onResponse(

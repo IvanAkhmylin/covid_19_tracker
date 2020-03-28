@@ -7,9 +7,13 @@
     <color name="black" >#000000</color>
     <color name="grey_transparent">#ADACACAC</color>
 
-    <color name="red">#D50000</color>
-    <color name="green">#00FF05</color>
-    <color name="blue">#005EFF</color>
+    <color name="red">#D21D23</color>
+    <color name="green">#4CFF00</color>
+    <color name="blue">#869bf0</color>
     <color name="turquoise">#00B7FF</color>
+    <color name="dark">#121212 </color>
+    <color name="light_dark">#1d1d1d</color>
+    <color name="light_grey">#F3F3F3</color>
+
 
 </resources>
