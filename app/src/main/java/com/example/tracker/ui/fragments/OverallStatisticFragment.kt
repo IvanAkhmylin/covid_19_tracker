@@ -2,7 +2,6 @@ package com.example.tracker.ui.fragments
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,8 +13,8 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.tracker.R
-import com.example.tracker.model.OverallStatisticModel
-import com.example.tracker.viewmodel.OverallStatisticViewModel
+import com.example.tracker.model.StatisticModel
+import com.example.tracker.viewmodel.StatisticViewModel
 import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
@@ -25,7 +24,7 @@ import java.math.RoundingMode
 
 class OverallStatisticFragment : Fragment() {
     private var mChart: PieChart? = null
-    private val mViewModel: OverallStatisticViewModel by viewModels()
+    private val mViewModel: StatisticViewModel by viewModels()
     private var mConfirmed: TextView? = null
     private var mCases: TextView? = null
     private var mRecovered: TextView? = null
@@ -47,7 +46,7 @@ class OverallStatisticFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initChart(0F, 0F, 0F)
-        mViewModel.mData.observe(
+        mViewModel.mStatistic.observe(
             viewLifecycleOwner,
             Observer {
                 mRefresher?.isRefreshing = false
@@ -74,12 +73,12 @@ class OverallStatisticFragment : Fragment() {
         mDeathsPercent = v?.findViewById(R.id.deaths_percent)
         mChart = v?.findViewById(R.id.pie_chart)
         mRefresher = v?.findViewById(R.id.refresher)
-        mRefresher?.setOnRefreshListener { mViewModel.getData() }
+        mRefresher?.setOnRefreshListener { mViewModel.getStatistic() }
 
     }
 
     @SuppressLint("SetTextI18n")
-    private fun initStatistic(it: OverallStatisticModel) {
+    private fun initStatistic(it: StatisticModel) {
         val confirmed = it.cases!! + it.recovered!! + it.deaths!!
         mConfirmed?.text = confirmed.toString()
         mCases?.text = (it.cases).toString()

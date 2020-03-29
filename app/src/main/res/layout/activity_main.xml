@@ -10,14 +10,14 @@
         android:layout_height="match_parent"
         android:orientation="vertical" />
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/nav_bar"
-        android:outlineAmbientShadowColor="@color/light_grey"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        app:itemIconTint="@drawable/bottom_bar_colors"
-        app:itemTextColor="@drawable/bottom_bar_colors"
-        android:background="@color/dark"
-        app:menu="@menu/drawer_menu" />
+<!--    <com.google.android.material.bottomnavigation.BottomNavigationView-->
+<!--        android:id="@+id/nav_bar"-->
+<!--        android:outlineAmbientShadowColor="@color/light_grey"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_gravity="bottom"-->
+<!--        app:itemIconTint="@drawable/bottom_bar_colors"-->
+<!--        app:itemTextColor="@drawable/bottom_bar_colors"-->
+<!--        android:background="@color/dark"-->
+<!--        app:menu="@menu/drawer_menu" />-->
 </FrameLayout>

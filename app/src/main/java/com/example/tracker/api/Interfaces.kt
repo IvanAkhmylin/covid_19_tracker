@@ -1,6 +1,9 @@
 package com.example.tracker.api
 
-import com.example.tracker.model.OverallStatisticModel
+import android.app.Application
+import com.example.tracker.R
+import com.example.tracker.model.CountriesStatisticModel
+import com.example.tracker.model.StatisticModel
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
@@ -12,10 +15,15 @@ import retrofit2.http.Headers
 interface Interfaces {
     @Headers("Content-Type: application/json")
     @GET("/all")
-    fun getStatistic(): Call<OverallStatisticModel>
+    fun getStatistic(): Call<StatisticModel>
+
+    @Headers("Content-Type: application/json")
+    @GET("/countries")
+    fun getCountriesStatistic(): Call<List<CountriesStatisticModel>>
+
 
     companion object{
-        fun getOverallStatistic(): Interfaces {
+        fun initRetrofit(application: Application): Interfaces {
             val interceptor: HttpLoggingInterceptor = HttpLoggingInterceptor().apply {
                 this.level = HttpLoggingInterceptor.Level.BODY
             }
@@ -25,7 +33,7 @@ interface Interfaces {
             }.build()
 
             val retrofit = Retrofit.Builder()
-                .baseUrl("https://corona.lmao.ninja")
+                .baseUrl(application.getString(R.string.baseURL))
                 .client(httpClient)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
