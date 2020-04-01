@@ -64,7 +64,7 @@
                      android:layout_height="wrap_content"
                      android:textAlignment="center"
                      android:textColor="@color/blue"
-                     android:textSize="30sp"
+                     android:textSize="@dimen/MaxSizeText"
                      android:textStyle="bold" />
 
                  <TextView
@@ -73,40 +73,8 @@
                      android:text="Confirmed"
                      android:textAlignment="center"
                      android:textColor="@color/light_grey"
-                     android:textSize="18sp" />
+                     android:textSize="@dimen/LowSizeText" />
              </LinearLayout>
-            </androidx.cardview.widget.CardView>
-            <androidx.cardview.widget.CardView
-                android:layout_marginTop="10dp"
-                app:cardCornerRadius="15dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="5dp"
-                android:backgroundTint="@color/light_dark">
-                <LinearLayout
-                    android:orientation="vertical"
-                    android:padding="10dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-                    <TextView
-                        android:text="-"
-                        android:id="@+id/recovered"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textAlignment="center"
-                        android:textColor="@color/green"
-                        android:textSize="30sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Recovered"
-                        android:textAlignment="center"
-                        android:textColor="@color/light_grey"
-                        android:textSize="18sp" />
-                </LinearLayout>
             </androidx.cardview.widget.CardView>
             <androidx.cardview.widget.CardView
                 app:cardCornerRadius="15dp"
@@ -128,7 +96,7 @@
                         android:layout_height="wrap_content"
                         android:textAlignment="center"
                         android:textColor="@color/red"
-                        android:textSize="30sp"
+                        android:textSize="@dimen/MaxSizeText"
                         android:textStyle="bold" />
 
                     <TextView
@@ -137,7 +105,40 @@
                         android:text="Deaths"
                         android:textAlignment="center"
                         android:textColor="@color/light_grey"
-                        android:textSize="18sp" />
+                        android:textSize="@dimen/LowSizeText"  />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_marginTop="10dp"
+                app:cardCornerRadius="15dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="5dp"
+                android:backgroundTint="@color/light_dark">
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:padding="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <TextView
+                        android:text="-"
+                        android:id="@+id/recovered"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textAlignment="center"
+                        android:textColor="@color/green"
+                        android:textSize="@dimen/MaxSizeText"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Recovered"
+                        android:textAlignment="center"
+                        android:textColor="@color/light_grey"
+                        android:textSize="@dimen/LowSizeText"  />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
@@ -169,7 +170,7 @@
                         android:layout_height="wrap_content"
                         android:textAlignment="center"
                         android:textColor="@color/blue"
-                        android:textSize="30sp"
+                        android:textSize="@dimen/MaxSizeText"
                         android:textStyle="bold" />
 
                     <TextView
@@ -178,39 +179,7 @@
                         android:text="Cases"
                         android:textAlignment="center"
                         android:textColor="@color/light_grey"
-                        android:textSize="18sp" />
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-            <androidx.cardview.widget.CardView
-                android:layout_marginTop="10dp"
-                app:cardCornerRadius="15dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="10dp"
-                android:backgroundTint="@color/light_dark">
-                <LinearLayout
-                    android:orientation="vertical"
-                    android:padding="10dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-                    <TextView
-                        android:text="-"
-                        android:id="@+id/recovered_percent"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textAlignment="center"
-                        android:textColor="@color/green"
-                        android:textSize="30sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Recovered %"
-                        android:textAlignment="center"
-                        android:textColor="@color/light_grey"
-                        android:textSize="18sp" />
+                        android:textSize="@dimen/LowSizeText"  />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
             <androidx.cardview.widget.CardView
@@ -233,7 +202,7 @@
                         android:layout_height="wrap_content"
                         android:textAlignment="center"
                         android:textColor="@color/red"
-                        android:textSize="30sp"
+                        android:textSize="@dimen/MaxSizeText"
                         android:textStyle="bold" />
 
                     <TextView
@@ -242,7 +211,40 @@
                         android:text="Deaths %"
                         android:textAlignment="center"
                         android:textColor="@color/light_grey"
-                        android:textSize="18sp" />
+                        android:textSize="@dimen/LowSizeText"  />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_marginTop="10dp"
+                app:cardCornerRadius="15dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="10dp"
+                android:backgroundTint="@color/light_dark">
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:padding="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <TextView
+                        android:text="-"
+                        android:id="@+id/recovered_percent"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textAlignment="center"
+                        android:textColor="@color/green"
+                        android:textSize="@dimen/MaxSizeText"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Recovered %"
+                        android:textAlignment="center"
+                        android:textColor="@color/light_grey"
+                        android:textSize="@dimen/LowSizeText"  />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
