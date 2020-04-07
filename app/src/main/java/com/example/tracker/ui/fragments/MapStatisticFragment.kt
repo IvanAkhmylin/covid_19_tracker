@@ -1,8 +1,6 @@
 package com.example.tracker.ui.fragments
 
-import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -16,6 +14,7 @@ import com.example.tracker.viewmodel.StatisticViewModel
 import com.yandex.mapkit.MapKitFactory
 import com.yandex.mapkit.geometry.Point
 import com.yandex.mapkit.map.MapObjectTapListener
+import com.yandex.mapkit.map.PlacemarkMapObject
 import com.yandex.mapkit.mapview.MapView
 import com.yandex.runtime.image.ImageProvider
 
@@ -24,21 +23,12 @@ class MapStatisticFragment : Fragment() {
     private var mMapView: MapView? = null
     private val mViewModel: StatisticViewModel by viewModels()
     private var data: ArrayList<CountriesStatisticModel>? = null
-    private val listener = (MapObjectTapListener { p0, p1 ->
-        val a = data?.filter {
-            it.countryInfo.lat == p1.latitude
-        }
-        Log.d("TAG" , a?.size.toString())
-        CountriesDetailDialog().show(activity!!.supportFragmentManager, "Detail")
-        true
-    })
-
+    private lateinit var listener: MapObjectTapListener
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         MapKitFactory.setApiKey(getString(R.string.yandexApiKey))
         MapKitFactory.initialize(activity!!)
     }
-
 
 
     override fun onCreateView(
@@ -54,14 +44,25 @@ class MapStatisticFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         mViewModel.mCountriesStatistic.observe(viewLifecycleOwner, Observer {
-            data?.addAll(it)
+            listener = MapObjectTapListener { p0, p1 ->
+                val dataModel = it?.filter {
+                    it.countryInfo.lat == (p0 as PlacemarkMapObject).geometry.latitude &&
+                    it.countryInfo.long == p0.geometry.longitude
+                }?.firstOrNull()
+
+
+                CountriesDetailDialog(dataModel).show(activity!!.supportFragmentManager, "Detail")
+                true
+            }
+
             addPlaceMarkToMap(it)
         })
     }
 
     private fun addPlaceMarkToMap(it: List<CountriesStatisticModel>) {
+        data?.addAll(it)
         it.forEach {
-            mMapView?.map?.mapObjects?.apply {
+            val a = mMapView?.map?.mapObjects?.apply {
                 this.addPlacemark(
                     Point(it.countryInfo.lat!!, it.countryInfo.long!!),
                     ImageProvider.fromBitmap(
@@ -71,8 +72,8 @@ class MapStatisticFragment : Fragment() {
                         ), false, ""
                     )
                 ).addTapListener(listener)
-                this.userData = it
             }
+
         }
     }
 
