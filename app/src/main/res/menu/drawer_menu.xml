@@ -1,11 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
     <group android:checkableBehavior="single">
-        <item android:id="@+id/overall_statistic"
-             android:title="Overall Statistic"
-             android:icon="@drawable/ic_pie_chart_black_24dp" />
-        <item android:id="@+id/countries"
+
+        <item android:id="@+id/map"
              android:title="Countries Statistic"
-             android:icon="@drawable/ic_filter_list_black_24dp" />
+             android:icon="@drawable/ic_map" />
+        <item android:id="@+id/charts"
+            android:title="Overall Statistic"
+            android:icon="@drawable/ic_pie_chart" />
+        <item android:id="@+id/settings"
+             android:title="Settings"
+             android:icon="@drawable/ic_settings"/>
+
+        <item android:title="Another">
+            <menu>
+                <item android:id="@+id/map1"
+                android:title="Countries Statistic"
+                android:icon="@drawable/ic_map" />
+                <item android:id="@+id/settings1"
+                    android:title="Settings"
+                    android:icon="@drawable/ic_settings"/></menu>
+        </item>
+
+
     </group>
 </menu>
