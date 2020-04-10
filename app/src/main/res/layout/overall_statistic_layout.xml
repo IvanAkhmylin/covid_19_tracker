@@ -11,7 +11,7 @@
     android:background="@color/dark"
     android:layout_width="match_parent"
     android:orientation="vertical"
-    tools:context="com.example.tracker.ui.fragments.OverallStatisticFragment"
+    tools:context="com.example.tracker.ui.fragments.OverallFragment"
     tools:viewBindingIgnore="true">
 
 

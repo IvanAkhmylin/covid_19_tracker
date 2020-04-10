@@ -22,7 +22,7 @@ import com.github.mikephil.charting.data.PieEntry
 import java.math.RoundingMode
 
 
-class OverallStatisticFragment : Fragment() {
+class OverallFragment : Fragment() {
     private var mChart: PieChart? = null
     private val mViewModel: StatisticViewModel by viewModels()
     private var mConfirmed: TextView? = null

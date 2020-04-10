@@ -34,8 +34,6 @@ class DrawerButton : ImageButton, DrawerLayout.DrawerListener {
     }
 
     override fun onDrawerSlide(drawerView: View, slideOffset: Float) {
-        Log.d("TAG", "Drawer ${if (isOpened) 1 else 0} <> $slideOffset ")
-
         setHomeAsUp(slideOffset)
     }
 
