@@ -49,7 +49,6 @@ class OverallFragment : Fragment() {
         mViewModel.mStatistic.observe(
             viewLifecycleOwner,
             Observer {
-                mRefresher?.isRefreshing = false
                 initStatistic(it!!)
                 initChart(
                     it.cases!!.toFloat(),
@@ -59,7 +58,6 @@ class OverallFragment : Fragment() {
             })
         mViewModel.mFailureMessage.observe(viewLifecycleOwner, Observer {
             Toast.makeText(activity!!, it, Toast.LENGTH_LONG).show()
-            mRefresher?.isRefreshing = false
         })
 
     }
@@ -72,8 +70,7 @@ class OverallFragment : Fragment() {
         mDeaths = v?.findViewById(R.id.deaths)
         mDeathsPercent = v?.findViewById(R.id.deaths_percent)
         mChart = v?.findViewById(R.id.pie_chart)
-        mRefresher = v?.findViewById(R.id.refresher)
-        mRefresher?.setOnRefreshListener { mViewModel.getStatistic() }
+
 
     }
 

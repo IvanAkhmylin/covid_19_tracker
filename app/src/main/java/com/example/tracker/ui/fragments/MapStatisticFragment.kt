@@ -19,7 +19,6 @@ import com.yandex.runtime.image.ImageProvider
 
 
 class MapStatisticFragment : Fragment() {
-
     private var mMapView: MapView? = null
     private val mViewModel: StatisticViewModel by viewModels()
     private var data: ArrayList<CountriesStatisticModel>? = null
@@ -46,7 +45,6 @@ class MapStatisticFragment : Fragment() {
     private fun init(v: View?) {
         mMapView = v?.findViewById(R.id.map_view)
 
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -59,10 +57,10 @@ class MapStatisticFragment : Fragment() {
 
     private fun getTapListener(it: List<CountriesStatisticModel>?): MapObjectTapListener {
         return MapObjectTapListener { p0, p1 ->
-            val dataModel = it?.filter {
+            val dataModel = it?.firstOrNull {
                 it.countryInfo.lat == (p0 as PlacemarkMapObject).geometry.latitude &&
                         it.countryInfo.long == p0.geometry.longitude
-            }?.firstOrNull()
+            }
             CountriesDetailDialog(dataModel).show(activity!!.supportFragmentManager, "Detail")
             true
         }
@@ -70,7 +68,7 @@ class MapStatisticFragment : Fragment() {
 
     private fun addPlaceMarkToMap(it: List<CountriesStatisticModel>) {
         data?.addAll(it)
-        it.forEach {
+            it.forEach {
             val a = mMapView?.map?.mapObjects?.apply {
                 this.addPlacemark(
                     Point(it.countryInfo.lat!!, it.countryInfo.long!!),
@@ -90,7 +88,18 @@ class MapStatisticFragment : Fragment() {
     override fun onStart() {
         super.onStart()
         mMapView?.onStart()
+        mMapView?.map!!.isNightModeEnabled = true
         MapKitFactory.getInstance().onStart()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        mMapView?.visibility = View.GONE
+    }
+
+    override fun onResume() {
+        super.onResume()
+        mMapView?.visibility = View.VISIBLE
     }
 
     override fun onStop() {

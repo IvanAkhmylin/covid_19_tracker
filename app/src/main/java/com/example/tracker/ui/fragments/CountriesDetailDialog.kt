@@ -1,6 +1,8 @@
 package com.example.tracker.ui.fragments
 
 import android.annotation.SuppressLint
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -23,8 +25,9 @@ class CountriesDetailDialog(dataModel: CountriesStatisticModel?) : DialogFragmen
         return v
     }
 
-    @SuppressLint("SetTextI18n")
+    @SuppressLint("SetTextI18n", "ResourceAsColor")
     private fun init(v: View) {
+        dialog?.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         data?.countryInfo?.flag?.let {
             v.findViewById<SimpleDraweeView>(R.id.country_flag).setImageURI(data?.countryInfo?.flag)
         }

@@ -25,40 +25,40 @@ class SearchFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val v =  inflater.inflate(R.layout.fragment_search, container, false)
-        init(v)
+//        init(v)
         return v
     }
 
     private fun init(v: View?) {
-        mBack = v?.findViewById(R.id.back)
-        mBack?.setOnClickListener {
-            parentFragmentManager.popBackStack()
-            mSearch?.hideKeyboard()
-        }
-        mSearch = v?.findViewById(R.id.search_country)
-        mSearch?.apply {
-            this.requestFocus()
-            mSearch?.showKeyboard()
-        }
-
-
-        mSearch?.addTextChangedListener(object: TextWatcher {
-            override fun afterTextChanged(s: Editable?) {}
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                if (s?.isNotEmpty()!!){
-                    mClearText?.setImageResource(R.drawable.ic_clear)
-                }else{
-                    mClearText?.setImageResource(0)
-                }
-            }
-
-        })
-        mClearText = v?.findViewById(R.id.button_clear)
-        mClearText?.setOnClickListener {
-            mSearch?.setText("")
-        }
+//        mBack = v?.findViewById(R.id.back)
+//        mBack?.setOnClickListener {
+//            parentFragmentManager.popBackStack()
+//            mSearch?.hideKeyboard()
+//        }
+//        mSearch = v?.findViewById(R.id.search_country)
+//        mSearch?.apply {
+//            this.requestFocus()
+//            mSearch?.showKeyboard()
+//        }
+//
+//
+//        mSearch?.addTextChangedListener(object: TextWatcher {
+//            override fun afterTextChanged(s: Editable?) {}
+//            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+//            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+//                if (s?.isNotEmpty()!!){
+//                    mClearText?.setImageResource(R.drawable.ic_clear)
+//                }else{
+//                    mClearText?.setImageResource(0)
+//                }
+//            }
+//
+//        })
+//        mClearText = v?.findViewById(R.id.button_clear)
+//        mClearText?.setOnClickListener {
+//            mSearch?.setText("")
+//        }
+//    }
     }
-
 
 }

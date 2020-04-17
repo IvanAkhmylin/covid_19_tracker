@@ -18,7 +18,7 @@ class DrawerButton : ImageButton, DrawerLayout.DrawerListener {
     private var side = Gravity.LEFT
     private lateinit var mDrawerArrowDrawable: DrawerArrowDrawable
     private var isOpened = false
-    private var floatValue = 0f
+    var floatValue = 0f
 
     constructor(context: Context?) : super(context) {}
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
@@ -34,7 +34,7 @@ class DrawerButton : ImageButton, DrawerLayout.DrawerListener {
     }
 
     override fun onDrawerSlide(drawerView: View, slideOffset: Float) {
-        setHomeAsUp(slideOffset)
+//        setHomeAsUp(slideOffset)
     }
 
     override fun onDrawerClosed(drawerView: View) {
@@ -45,7 +45,7 @@ class DrawerButton : ImageButton, DrawerLayout.DrawerListener {
         this.isOpened = true
     }
 
-    fun changeState() {
+    fun changeDrawerState() {
         if (mDrawerLayout?.isDrawerOpen(side)!!) {
             mDrawerLayout?.closeDrawer(side)
         } else {
@@ -53,28 +53,45 @@ class DrawerButton : ImageButton, DrawerLayout.DrawerListener {
         }
     }
 
+    fun changeSearchState(fragmentsCount: Int) {
+        val anim =
+            if (fragmentsCount == 1) {
+                ValueAnimator.ofFloat(1f, 0f)
+            } else {
+                ValueAnimator.ofFloat(0f, 1f)
+            }
+        anim.addUpdateListener { valueAnimator ->
+            val slideOffset = valueAnimator.animatedValue as Float
+            mDrawerArrowDrawable.progress = slideOffset
+        }
+        anim.interpolator = DecelerateInterpolator()
+        anim.duration = 300
+        anim.start()
+    }
+
+
     fun getDrawerLayout(): DrawerLayout? {
         return mDrawerLayout
     }
 
-    private fun setHomeAsUp(float: Float) {
-        if (float != this.floatValue) {
-            this.floatValue = float
-            val anim =
-                if (isOpened) {
-                    ValueAnimator.ofFloat(this.floatValue, float)
-                } else {
-                    ValueAnimator.ofFloat(this.floatValue, float)
-                }
-            anim.addUpdateListener { valueAnimator ->
-                val slideOffset = valueAnimator.animatedValue as Float
-                mDrawerArrowDrawable.progress = slideOffset
-            }
-            anim.interpolator = DecelerateInterpolator()
-            anim.duration = 100
-            anim.start()
-        }
-    }
+//    fun setHomeAsUp(float: Float) {
+//        if (float != this.floatValue) {
+//            this.floatValue = float
+//            val anim =
+//                if (isOpened) {
+//                    ValueAnimator.ofFloat(this.floatValue, float)
+//                } else {
+//                    ValueAnimator.ofFloat(this.floatValue, float)
+//                }
+//            anim.addUpdateListener { valueAnimator ->
+//                val slideOffset = valueAnimator.animatedValue as Float
+//                mDrawerArrowDrawable.progress = slideOffset
+//            }
+//            anim.interpolator = DecelerateInterpolator()
+//            anim.duration = 100
+//            anim.start()
+//        }
+//    }
 
     fun setDrawerArrowDrawable(drawable: DrawerArrowDrawable) {
         this.mDrawerArrowDrawable = drawable

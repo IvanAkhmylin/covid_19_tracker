@@ -14,11 +14,11 @@ import retrofit2.http.Headers
 
 interface Interfaces {
     @Headers("Content-Type: application/json")
-    @GET("/all")
+    @GET("v2/all")
     fun getStatistic(): Call<StatisticModel>
 
     @Headers("Content-Type: application/json")
-    @GET("/countries")
+    @GET("v2/countries")
     fun getCountriesStatistic(): Call<List<CountriesStatisticModel>>
 
 
