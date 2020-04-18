@@ -1,27 +1,20 @@
 package com.example.tracker.ui
 
 import android.annotation.SuppressLint
-import android.graphics.Color
-import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.Gravity
 import android.view.MotionEvent
-import android.view.View
-import android.view.animation.TranslateAnimation
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.graphics.drawable.DrawerArrowDrawable
 import androidx.core.content.ContextCompat
-import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
 import com.example.tracker.App.Companion.hideKeyboard
 import com.example.tracker.App.Companion.showKeyboard
+import com.example.tracker.Constants
 import com.example.tracker.R
 import com.example.tracker.ui.fragments.MapStatisticFragment
 import com.example.tracker.ui.fragments.OverallFragment
@@ -61,7 +54,7 @@ open class MainActivity : AppCompatActivity() {
             this!!.setNavigationItemSelectedListener { item ->
                 when (item.itemId) {
                     R.id.charts ->
-                        swapFragment(R.id.container, mOverallFragment, "OverallFragment" , true)
+                        swapFragment(R.id.container, mOverallFragment, "OverallFragment" , Constants.ANIM_UP_DOWN)
                     R.id.settings -> Toast.makeText(
                         this@MainActivity,
                         " settings",
@@ -85,7 +78,7 @@ open class MainActivity : AppCompatActivity() {
             this.setOnTouchListener { v, event ->
                 if (!mSearch?.isFocused!!) {
                     if (event.action == MotionEvent.ACTION_UP) {
-                        swapFragment(R.id.container, SearchFragment(), "SearchFragment" , true)
+                        swapFragment(R.id.container, SearchFragment(), "SearchFragment" , Constants.ANIM_UP_DOWN)
                     }
                 }
                 true
@@ -100,7 +93,7 @@ open class MainActivity : AppCompatActivity() {
                 fragmentChanged()
             }
         }
-        swapFragment(R.id.container, mMapFragment, "MapFragment" , false)
+        swapFragment(R.id.container, mMapFragment, "MapFragment" , Constants.ANIM_UP_DOWN)
     }
 
     @SuppressLint("ResourceAsColor")
@@ -166,14 +159,21 @@ open class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun swapFragment(res: Int, fragment: Fragment, tag: String, animate: Boolean) {
+    fun swapFragment(res: Int, fragment: Fragment, tag: String, animationMode: String) {
         val transaction = supportFragmentManager.beginTransaction()
-        if (animate) {
+        if (Constants.ANIM_UP_DOWN == animationMode) {
             transaction.setCustomAnimations(
-                R.anim.slide_up,
-                R.anim.slide_down,
-                R.anim.pop_up,
-                R.anim.pop_down
+                R.anim.enter_up,
+                R.anim.exit_down,
+                R.anim.pop_enter_up,
+                R.anim.pop_exit_down
+            )
+        }else if (Constants.ANIM_SLIDE_LEFT == animationMode){
+            transaction.setCustomAnimations(
+                R.anim.enter_left,
+                R.anim.exit_right,
+                R.anim.pop_enter_left,
+                R.anim.pop_exit_right
             )
         }
         transaction.addToBackStack(tag)

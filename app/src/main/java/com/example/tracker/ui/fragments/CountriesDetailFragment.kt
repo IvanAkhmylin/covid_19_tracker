@@ -9,11 +9,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.Fragment
 import com.example.tracker.R
 import com.example.tracker.model.CountriesStatisticModel
 import com.facebook.drawee.view.SimpleDraweeView
 
-class CountriesDetailDialog(dataModel: CountriesStatisticModel?) : DialogFragment() {
+class CountriesDetailFragment(dataModel: CountriesStatisticModel?) : Fragment() {
     private var data = dataModel
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -27,7 +28,6 @@ class CountriesDetailDialog(dataModel: CountriesStatisticModel?) : DialogFragmen
 
     @SuppressLint("SetTextI18n", "ResourceAsColor")
     private fun init(v: View) {
-        dialog?.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         data?.countryInfo?.flag?.let {
             v.findViewById<SimpleDraweeView>(R.id.country_flag).setImageURI(data?.countryInfo?.flag)
         }

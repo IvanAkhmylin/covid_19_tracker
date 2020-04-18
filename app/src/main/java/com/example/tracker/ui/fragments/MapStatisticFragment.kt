@@ -7,8 +7,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.example.tracker.App
+import com.example.tracker.Constants
 import com.example.tracker.R
 import com.example.tracker.model.CountriesStatisticModel
+import com.example.tracker.ui.MainActivity
 import com.example.tracker.viewmodel.StatisticViewModel
 import com.yandex.mapkit.MapKitFactory
 import com.yandex.mapkit.geometry.Point
@@ -61,7 +63,8 @@ class MapStatisticFragment : Fragment() {
                 it.countryInfo.lat == (p0 as PlacemarkMapObject).geometry.latitude &&
                         it.countryInfo.long == p0.geometry.longitude
             }
-            CountriesDetailDialog(dataModel).show(activity!!.supportFragmentManager, "Detail")
+            (activity!! as MainActivity).swapFragment(R.id.container,
+                CountriesDetailFragment(dataModel), "DetailFragment" , Constants.ANIM_SLIDE_LEFT)
             true
         }
     }

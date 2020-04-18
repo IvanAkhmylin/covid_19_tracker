@@ -18,7 +18,6 @@ class DrawerButton : ImageButton, DrawerLayout.DrawerListener {
     private var side = Gravity.LEFT
     private lateinit var mDrawerArrowDrawable: DrawerArrowDrawable
     private var isOpened = false
-    var floatValue = 0f
 
     constructor(context: Context?) : super(context) {}
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
@@ -73,25 +72,6 @@ class DrawerButton : ImageButton, DrawerLayout.DrawerListener {
     fun getDrawerLayout(): DrawerLayout? {
         return mDrawerLayout
     }
-
-//    fun setHomeAsUp(float: Float) {
-//        if (float != this.floatValue) {
-//            this.floatValue = float
-//            val anim =
-//                if (isOpened) {
-//                    ValueAnimator.ofFloat(this.floatValue, float)
-//                } else {
-//                    ValueAnimator.ofFloat(this.floatValue, float)
-//                }
-//            anim.addUpdateListener { valueAnimator ->
-//                val slideOffset = valueAnimator.animatedValue as Float
-//                mDrawerArrowDrawable.progress = slideOffset
-//            }
-//            anim.interpolator = DecelerateInterpolator()
-//            anim.duration = 100
-//            anim.start()
-//        }
-//    }
 
     fun setDrawerArrowDrawable(drawable: DrawerArrowDrawable) {
         this.mDrawerArrowDrawable = drawable
