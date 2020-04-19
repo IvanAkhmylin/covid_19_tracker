@@ -1,7 +1,9 @@
 package com.example.tracker.ui.fragments
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -12,8 +14,10 @@ import com.example.tracker.R
 import com.example.tracker.model.CountriesStatisticModel
 import com.example.tracker.ui.MainActivity
 import com.example.tracker.viewmodel.StatisticViewModel
+import com.yandex.mapkit.Animation
 import com.yandex.mapkit.MapKitFactory
 import com.yandex.mapkit.geometry.Point
+import com.yandex.mapkit.map.CameraPosition
 import com.yandex.mapkit.map.MapObjectTapListener
 import com.yandex.mapkit.map.PlacemarkMapObject
 import com.yandex.mapkit.mapview.MapView
@@ -24,7 +28,6 @@ class MapStatisticFragment : Fragment() {
     private var mMapView: MapView? = null
     private val mViewModel: StatisticViewModel by viewModels()
     private var data: ArrayList<CountriesStatisticModel>? = null
-
 
     private lateinit var listener: MapObjectTapListener
 
@@ -46,7 +49,6 @@ class MapStatisticFragment : Fragment() {
     @SuppressLint("ClickableViewAccessibility", "ResourceAsColor", "WrongConstant")
     private fun init(v: View?) {
         mMapView = v?.findViewById(R.id.map_view)
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -91,18 +93,39 @@ class MapStatisticFragment : Fragment() {
     override fun onStart() {
         super.onStart()
         mMapView?.onStart()
-        mMapView?.map!!.isNightModeEnabled = true
+        mMapView?.map!!.apply {
+            this.isNightModeEnabled = true
+            this.isRotateGesturesEnabled = false
+        }
         MapKitFactory.getInstance().onStart()
     }
-
+    @SuppressLint("CommitPrefEdits")
     override fun onPause() {
         super.onPause()
-        mMapView?.visibility = View.GONE
+        val  mPref = (activity!! as MainActivity).getSharedPreferences("MAP",Context.MODE_PRIVATE)
+        mPref?.edit().apply{
+            this?.putFloat(Constants.MAP_ZOOM_KEY, mMapView?.map!!.cameraPosition.zoom)
+            this?.putFloat(Constants.MAP_TARGET_LAT, mMapView?.map!!.cameraPosition.target.latitude.toFloat())
+            this?.putFloat(Constants.MAP_TARGET_LON, mMapView?.map!!.cameraPosition.target.longitude.toFloat())
+            this?.putFloat(Constants.MAP_ZOOM_AZIMUTH, mMapView?.map!!.cameraPosition.azimuth)
+            this?.putFloat(Constants.MAP_ZOOM_TILT, mMapView?.map!!.cameraPosition.tilt)
+            this?.apply()
+        }
+        mMapView?.visibility = View.INVISIBLE
     }
-
     override fun onResume() {
         super.onResume()
-        mMapView?.visibility = View.VISIBLE
+        val mPref = (activity!! as MainActivity).getSharedPreferences("MAP", Context.MODE_PRIVATE)
+        mMapView?.apply {
+            this.visibility = View.VISIBLE
+            this.map.move(CameraPosition(Point(
+                mPref.getFloat(Constants.MAP_TARGET_LAT, 0f).toDouble(),
+                mPref.getFloat(Constants.MAP_TARGET_LON, 0f).toDouble()),
+                mPref.getFloat(Constants.MAP_ZOOM_KEY, 0f),
+                mPref.getFloat(Constants.MAP_ZOOM_AZIMUTH, 0f),
+                mPref.getFloat(Constants.MAP_ZOOM_TILT , 0f))
+            )
+        }
     }
 
     override fun onStop() {

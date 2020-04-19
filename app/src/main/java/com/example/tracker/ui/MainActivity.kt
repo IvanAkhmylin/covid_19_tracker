@@ -103,6 +103,7 @@ open class MainActivity : AppCompatActivity() {
         mHamburger?.setOnClickListener {
             onBackPressed()
         }
+        mDrawerLayout?.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
         if (currentFragment == "SearchFragment") {
             mSearch?.apply {
                 this.requestFocus()
@@ -125,11 +126,13 @@ open class MainActivity : AppCompatActivity() {
     }
 
     private fun resetState() {
+        mDrawerLayout?.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
         mHamburger?.apply {
             this.setOnClickListener {
                 this.changeDrawerState()
             }
         }
+
         mToolLayout?.setBackgroundColor(0)
         mSearch?.apply {
             this.text.clear()
