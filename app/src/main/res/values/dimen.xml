@@ -4,4 +4,5 @@
     <dimen name="MiniSizeText">15sp</dimen>
     <dimen name="MaxSizeText">30sp</dimen>
     <dimen name="card_padding">10dp</dimen>
+    <dimen name="anim_duration">300</dimen>
 </resources>

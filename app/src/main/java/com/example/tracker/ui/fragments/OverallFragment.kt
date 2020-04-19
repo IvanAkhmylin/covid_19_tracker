@@ -31,7 +31,6 @@ class OverallFragment : Fragment() {
     private var mRecoveredPercent: TextView? = null
     private var mDeaths: TextView? = null
     private var mDeathsPercent: TextView? = null
-    private var mRefresher: SwipeRefreshLayout? = null
 
 
     override fun onCreateView(
