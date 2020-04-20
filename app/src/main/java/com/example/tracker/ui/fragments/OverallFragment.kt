@@ -11,7 +11,6 @@ import androidx.core.content.ContextCompat.getColor
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.tracker.R
 import com.example.tracker.model.StatisticModel
 import com.example.tracker.viewmodel.StatisticViewModel
@@ -19,19 +18,16 @@ import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
+import kotlinx.android.synthetic.main.overall_statistic_layout.*
 import java.math.RoundingMode
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class OverallFragment : Fragment() {
     private var mChart: PieChart? = null
     private val mViewModel: StatisticViewModel by viewModels()
-    private var mConfirmed: TextView? = null
-    private var mCases: TextView? = null
-    private var mRecovered: TextView? = null
-    private var mRecoveredPercent: TextView? = null
-    private var mDeaths: TextView? = null
-    private var mDeathsPercent: TextView? = null
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -56,34 +52,42 @@ class OverallFragment : Fragment() {
                 )
             })
         mViewModel.mFailureMessage.observe(viewLifecycleOwner, Observer {
-            Toast.makeText(activity!!, it, Toast.LENGTH_LONG).show()
+            Toast.makeText(requireActivity(), it, Toast.LENGTH_LONG).show()
         })
 
     }
 
     private fun init(v: View?) {
-        mConfirmed = v?.findViewById(R.id.confirmed)
-        mCases = v?.findViewById(R.id.cases)
-        mRecovered = v?.findViewById(R.id.recovered)
-        mRecoveredPercent = v?.findViewById(R.id.recovered_percent)
-        mDeaths = v?.findViewById(R.id.deaths)
-        mDeathsPercent = v?.findViewById(R.id.deaths_percent)
+
         mChart = v?.findViewById(R.id.pie_chart)
 
 
     }
 
-    @SuppressLint("SetTextI18n")
+    @SuppressLint("SetTextI18n", "SimpleDateFormat")
     private fun initStatistic(it: StatisticModel) {
-        val confirmed = it.cases!! + it.recovered!! + it.deaths!!
-        mConfirmed?.text = confirmed.toString()
-        mCases?.text = (it.cases).toString()
-        mRecovered?.text = (it.recovered).toString()
-        mRecoveredPercent?.text = "${((it.recovered.toFloat() / confirmed) * 100).toBigDecimal()
-            .setScale(2, RoundingMode.HALF_EVEN)} %"
-        mDeaths?.text = (it.deaths).toString()
-        mDeathsPercent?.text = "${((it.deaths.toFloat() / confirmed) * 100).toBigDecimal()
-            .setScale(2, RoundingMode.HALF_EVEN)} %"
+        val dateFormat = SimpleDateFormat("dd MMMM yyyy")
+        val timeFormat = SimpleDateFormat("hh:mm:ss a")
+        val netDate = Date(it.updated)
+
+        date.text = dateFormat.format(netDate)
+        time.text = timeFormat.format(netDate)
+
+        cases.text = it.cases.toString()
+        today_cases.text = it.todayCases.toString()
+        deaths.text = it.deaths.toString()
+        today_deaths.text = it.todayDeaths.toString()
+        recovered.text = it.recovered.toString()
+        active.text = it.active.toString()
+        tests.text = it.tests.toString()
+        critical.text = it.critical.toString()
+        cases_per_million.text = it.casesPerOneMillion.toString()
+        deaths_per_million.text = it.deathsPerOneMillion.toString()
+        tests_per_million.text = it.testsPerOneMillion.toString()
+        affected_country.text = it.affectedCountries.toString()
+
+
+
     }
 
     private fun initChart(cases: Float, deaths: Float, recovered: Float) {
@@ -97,19 +101,20 @@ class OverallFragment : Fragment() {
         val pieDataSet = PieDataSet(data, "").apply {
             this.setColors(
                 arrayListOf(
-                    getColor(activity!!, R.color.blue),
-                    getColor(activity!!, R.color.red),
-                    getColor(activity!!, R.color.green)
+                    getColor(requireActivity(), R.color.blue),
+                    getColor(requireActivity(), R.color.red),
+                    getColor(requireActivity(), R.color.green)
                 )
             )
         }
 
         val pieData = PieData(pieDataSet).apply {
             this.setValueTextSize(17F)
-            this.setValueTextColor(getColor(activity!!, R.color.white))
+            this.setValueTextColor(getColor(requireActivity(), R.color.white))
         }
 
         mChart?.apply {
+            this.isHighlightPerTapEnabled = false
             this.data = pieData
             this.description.isEnabled = false
             this.legend?.isEnabled = false

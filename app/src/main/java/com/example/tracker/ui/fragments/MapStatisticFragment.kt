@@ -34,7 +34,7 @@ class MapStatisticFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         MapKitFactory.setApiKey(getString(R.string.yandexApiKey))
-        MapKitFactory.initialize(activity!!)
+        MapKitFactory.initialize(requireActivity())
     }
 
     override fun onCreateView(
@@ -65,7 +65,7 @@ class MapStatisticFragment : Fragment() {
                 it.countryInfo.lat == (p0 as PlacemarkMapObject).geometry.latitude &&
                         it.countryInfo.long == p0.geometry.longitude
             }
-            (activity!! as MainActivity).swapFragment(R.id.container,
+            (requireActivity() as MainActivity).swapFragment(R.id.container,
                 CountriesDetailFragment(dataModel), "DetailFragment" , Constants.ANIM_SLIDE_LEFT)
             true
         }
@@ -102,7 +102,7 @@ class MapStatisticFragment : Fragment() {
     @SuppressLint("CommitPrefEdits")
     override fun onPause() {
         super.onPause()
-        val  mPref = (activity!! as MainActivity).getSharedPreferences("MAP",Context.MODE_PRIVATE)
+        val  mPref = (requireActivity() as MainActivity).getSharedPreferences("MAP",Context.MODE_PRIVATE)
         mPref?.edit().apply{
             this?.putFloat(Constants.MAP_ZOOM_KEY, mMapView?.map!!.cameraPosition.zoom)
             this?.putFloat(Constants.MAP_TARGET_LAT, mMapView?.map!!.cameraPosition.target.latitude.toFloat())

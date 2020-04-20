@@ -73,6 +73,7 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
+        android:overScrollMode="never"
         android:background="@color/light_dark"
         android:theme="@style/NavigationDrawerStyle"
         app:headerLayout="@layout/nav_header"
