@@ -1,21 +1,26 @@
 package com.example.tracker.ui.fragments
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
 import android.annotation.SuppressLint
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
+import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.fragment.app.DialogFragment
+import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import com.example.tracker.R
 import com.example.tracker.model.CountriesStatisticModel
 import com.facebook.drawee.view.SimpleDraweeView
-import kotlinx.android.synthetic.main.overall_statistic_layout.*
+import kotlinx.android.synthetic.main.country_info.*
 import java.text.SimpleDateFormat
 import java.util.*
+
 
 class CountriesDetailFragment(dataModel: CountriesStatisticModel?) : Fragment() {
     private var data = dataModel
@@ -24,7 +29,7 @@ class CountriesDetailFragment(dataModel: CountriesStatisticModel?) : Fragment() 
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val v = inflater.inflate(R.layout.country_info , container,  false)
+        val v = inflater.inflate(R.layout.country_info, container, false)
         init(v)
         return v
     }
@@ -37,10 +42,67 @@ class CountriesDetailFragment(dataModel: CountriesStatisticModel?) : Fragment() 
             val netDate = Date(this!!.updated)
 
             v.findViewById<SimpleDraweeView>(R.id.country_flag).setImageURI(data?.countryInfo?.flag)
-            v.findViewById<TextView>(R.id.last_update).text = "Updated: ${dateFormat.format(netDate)}"
-            v.findViewById<TextView>(R.id.country_name).text = "Country: ${data?.country}"
-            v.findViewById<TextView>(R.id.country_iso).text = "Country Code: ${data?.countryInfo?.iso2}, ${data?.countryInfo?.iso3}"
-            v.findViewById<TextView>(R.id.continent).text = "Continent ${data?.continent}"
+            v.findViewById<TextView>(R.id.last_update).text =
+                "Updated: ${dateFormat.format(netDate)}"
+            v.findViewById<TextView>(R.id.country_name).text = "${data?.country}"
+            val mShowMore= v.findViewById<ImageButton>(R.id.show_more)
+            val view = v.findViewById<LinearLayout>(R.id.additional_data)
+            var flag = false
+            mShowMore.setOnClickListener {
+                if (flag){
+                    view.animate().translationY((view.height.toFloat()).unaryMinus()).alpha(0f)
+                        .setListener(object : Animator.AnimatorListener{
+                            override fun onAnimationRepeat(animation: Animator?) {
+
+                            }
+
+                            override fun onAnimationEnd(animation: Animator?) {
+                                view.visibility = View.GONE
+                                flag = false
+                            }
+
+                            override fun onAnimationCancel(animation: Animator?) {
+
+                            }
+
+                            override fun onAnimationStart(animation: Animator?) {
+                                mShowMore.animate().translationY(0f).rotationBy(-180f).start()
+                            }
+
+                        }).start()
+
+
+                }else{
+
+
+                    view.animate().translationY(-96f).alpha(1f).setListener(object : Animator.AnimatorListener{
+                        override fun onAnimationRepeat(animation: Animator?) {
+
+                        }
+
+                        override fun onAnimationEnd(animation: Animator?) {
+                            flag = true
+                        }
+
+                        override fun onAnimationCancel(animation: Animator?) {
+
+                        }
+
+                        override fun onAnimationStart(animation: Animator?) {
+                            view.visibility = View.VISIBLE
+                            Handler().postDelayed(Runnable {
+                                mShowMore.animate().translationY(view.height.toFloat()).rotationBy(180f).start()
+                            }, 5)
+
+                        }
+
+                    }).start()
+                }
+            }
+
+            v.findViewById<TextView>(R.id.country_iso).text =
+                "Country Code: ${data?.countryInfo?.iso2}, ${data?.countryInfo?.iso3}"
+            v.findViewById<TextView>(R.id.continent).text = "Continent: ${data?.continent}"
 
             v.findViewById<TextView>(R.id.cases).text = data?.cases.toString()
             v.findViewById<TextView>(R.id.active).text = data?.active.toString()
@@ -50,13 +112,14 @@ class CountriesDetailFragment(dataModel: CountriesStatisticModel?) : Fragment() 
             v.findViewById<TextView>(R.id.today_deaths).text = data?.todayDeaths.toString()
             v.findViewById<TextView>(R.id.recovered).text = data?.recovered.toString()
             v.findViewById<TextView>(R.id.tests).text = data?.tests.toString()
-            v.findViewById<TextView>(R.id.cases_per_million).text = data?.casesPerOneMillion.toString()
-            v.findViewById<TextView>(R.id.deaths_per_million).text = data?.deathsPerOneMillion.toString()
-            v.findViewById<TextView>(R.id.tests_per_million).text = data?.testsPerOneMillion.toString()
+            v.findViewById<TextView>(R.id.cases_per_million).text =
+                data?.casesPerOneMillion.toString()
+            v.findViewById<TextView>(R.id.deaths_per_million).text =
+                data?.deathsPerOneMillion.toString()
+            v.findViewById<TextView>(R.id.tests_per_million).text =
+                data?.testsPerOneMillion.toString()
 
         }
-
-
 
 
     }
