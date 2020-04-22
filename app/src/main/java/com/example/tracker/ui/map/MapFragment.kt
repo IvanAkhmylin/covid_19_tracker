@@ -1,10 +1,11 @@
-package com.example.tracker.ui.fragments
+package com.example.tracker.ui.map
 
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.*
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -13,8 +14,7 @@ import com.example.tracker.Constants
 import com.example.tracker.R
 import com.example.tracker.model.CountriesStatisticModel
 import com.example.tracker.ui.MainActivity
-import com.example.tracker.viewmodel.StatisticViewModel
-import com.yandex.mapkit.Animation
+import com.example.tracker.ui.details.CountriesDetailFragment
 import com.yandex.mapkit.MapKitFactory
 import com.yandex.mapkit.geometry.Point
 import com.yandex.mapkit.map.CameraPosition
@@ -24,9 +24,9 @@ import com.yandex.mapkit.mapview.MapView
 import com.yandex.runtime.image.ImageProvider
 
 
-class MapStatisticFragment : Fragment() {
+class MapFragment : Fragment() {
     private var mMapView: MapView? = null
-    private val mViewModel: StatisticViewModel by viewModels()
+    private val mViewModel: MapViewModel by viewModels()
     private var data: ArrayList<CountriesStatisticModel>? = null
 
     private lateinit var listener: MapObjectTapListener
@@ -53,9 +53,30 @@ class MapStatisticFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setView(R.layout.waiting_dialog)
+        builder.setCancelable(false)
+        val dialog = builder.create()
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+
         mViewModel.mCountriesStatistic.observe(viewLifecycleOwner, Observer {
             listener = getTapListener(it)
             addPlaceMarkToMap(it)
+        })
+
+        mViewModel.mFailureMessage.observe(viewLifecycleOwner, Observer {
+            Toast.makeText(requireActivity(), it, Toast.LENGTH_SHORT).show()
+        })
+
+        mViewModel.mShowProgress.observe(viewLifecycleOwner, Observer {
+            if (it){
+                mMapView?.visibility = View.GONE
+                dialog.show()
+            }else{
+                mMapView?.visibility = View.VISIBLE
+                dialog.dismiss()
+            }
         })
     }
 
@@ -66,7 +87,9 @@ class MapStatisticFragment : Fragment() {
                         it.countryInfo.long == p0.geometry.longitude
             }
             (requireActivity() as MainActivity).swapFragment(R.id.container,
-                CountriesDetailFragment(dataModel), "DetailFragment" , Constants.ANIM_SLIDE_LEFT)
+                CountriesDetailFragment(
+                    dataModel
+                ), "DetailFragment" , Constants.ANIM_SLIDE_LEFT)
             true
         }
     }
@@ -79,7 +102,7 @@ class MapStatisticFragment : Fragment() {
                     Point(it.countryInfo.lat!!, it.countryInfo.long!!),
                     ImageProvider.fromBitmap(
                         App.getBitmapFromVectorDrawable(
-                            activity!!,
+                            requireActivity(),
                             R.drawable.ic_place
                         ), false, ""
                     )
@@ -115,7 +138,7 @@ class MapStatisticFragment : Fragment() {
     }
     override fun onResume() {
         super.onResume()
-        val mPref = (activity!! as MainActivity).getSharedPreferences("MAP", Context.MODE_PRIVATE)
+        val mPref = (requireActivity() as MainActivity).getSharedPreferences("MAP", Context.MODE_PRIVATE)
         mMapView?.apply {
             this.visibility = View.VISIBLE
             this.map.move(CameraPosition(Point(

@@ -1,25 +1,24 @@
-package com.example.tracker.ui.fragments
+package com.example.tracker.ui.statistic
 
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat.getColor
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.example.tracker.R
 import com.example.tracker.model.StatisticModel
-import com.example.tracker.viewmodel.StatisticViewModel
+import com.example.tracker.ui.map.MapViewModel
 import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import kotlinx.android.synthetic.main.overall_statistic_layout.*
-import java.math.RoundingMode
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -27,7 +26,7 @@ import kotlin.collections.ArrayList
 
 class OverallFragment : Fragment() {
     private var mChart: PieChart? = null
-    private val mViewModel: StatisticViewModel by viewModels()
+    private val mViewModel: OverallViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,6 +40,13 @@ class OverallFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initChart(0F, 0F, 0F)
+
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setView(R.layout.waiting_dialog)
+        builder.setCancelable(false)
+        val dialog = builder.create()
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+
         mViewModel.mStatistic.observe(
             viewLifecycleOwner,
             Observer {
@@ -54,13 +60,19 @@ class OverallFragment : Fragment() {
         mViewModel.mFailureMessage.observe(viewLifecycleOwner, Observer {
             Toast.makeText(requireActivity(), it, Toast.LENGTH_LONG).show()
         })
-
+        mViewModel.mShowProgress.observe(viewLifecycleOwner, Observer {
+            if (it){
+                overall_container?.visibility = View.GONE
+                dialog.show()
+            }else{
+                overall_container?.visibility = View.VISIBLE
+                dialog.dismiss()
+            }
+        })
     }
 
     private fun init(v: View?) {
-
         mChart = v?.findViewById(R.id.pie_chart)
-
 
     }
 

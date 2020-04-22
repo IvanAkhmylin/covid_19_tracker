@@ -1,4 +1,4 @@
-package com.example.tracker.ui.fragments
+package com.example.tracker.ui.search
 
 import android.os.Bundle
 import android.text.Editable

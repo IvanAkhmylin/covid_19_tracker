@@ -1,4 +1,4 @@
-package com.example.tracker.viewmodel
+package com.example.tracker.ui.map
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
@@ -8,30 +8,26 @@ import com.example.tracker.model.StatisticModel
 import com.example.tracker.repository.StatisticRepository
 
 
-class StatisticViewModel(application: Application) : AndroidViewModel(application) {
+class MapViewModel(application: Application) : AndroidViewModel(application) {
     private val model = StatisticRepository()
-    val mStatistic = MutableLiveData<StatisticModel>()
+    val mShowProgress = MutableLiveData<Boolean>()
     val mCountriesStatistic = MutableLiveData<List<CountriesStatisticModel>>()
     val mFailureMessage = MutableLiveData<String>()
 
     init {
-        getStatistic()
         getCountriesStatistic()
     }
 
-    fun getStatistic() {
-        model.getStatistic(getApplication(),{
-            mStatistic.postValue(it)
-        }, {
-            mFailureMessage.postValue(it)
-        })
-    }
+
 
     private fun getCountriesStatistic() {
+        mShowProgress.postValue(true)
         model.getCountryStatistic(getApplication(),{
             mCountriesStatistic.postValue(it)
+            mShowProgress.postValue(false)
         }, {
             mFailureMessage.postValue(it)
+            mShowProgress.postValue(false)
         })
     }
 }

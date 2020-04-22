@@ -16,16 +16,18 @@ import com.example.tracker.App.Companion.hideKeyboard
 import com.example.tracker.App.Companion.showKeyboard
 import com.example.tracker.Constants
 import com.example.tracker.R
-import com.example.tracker.ui.fragments.MapStatisticFragment
-import com.example.tracker.ui.fragments.OverallFragment
-import com.example.tracker.ui.fragments.SearchFragment
+import com.example.tracker.ui.map.MapFragment
+import com.example.tracker.ui.statistic.OverallFragment
+import com.example.tracker.ui.search.SearchFragment
 import com.example.tracker.view.DrawerButton
 import com.google.android.material.navigation.NavigationView
 
 
 open class MainActivity : AppCompatActivity() {
-    private val mMapFragment: MapStatisticFragment = MapStatisticFragment()
-    private val mOverallFragment: OverallFragment = OverallFragment()
+    private val mMapFragment: MapFragment =
+        MapFragment()
+    private val mOverallFragment: OverallFragment =
+        OverallFragment()
     private var mSearch: EditText? = null
     private var mToolLayout: LinearLayout? = null
     private var mHamburger: DrawerButton? = null
@@ -78,7 +80,8 @@ open class MainActivity : AppCompatActivity() {
             this.setOnTouchListener { v, event ->
                 if (!mSearch?.isFocused!!) {
                     if (event.action == MotionEvent.ACTION_UP) {
-                        swapFragment(R.id.container, SearchFragment(), "SearchFragment" , Constants.ANIM_UP_DOWN)
+                        swapFragment(R.id.container,
+                            SearchFragment(), "SearchFragment" , Constants.ANIM_UP_DOWN)
                     }
                 }
                 true
