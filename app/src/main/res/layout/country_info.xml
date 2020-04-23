@@ -51,7 +51,6 @@
                 <ImageButton
                     android:layout_gravity="center_horizontal"
                     android:background="@null"
-                    android:src="@drawable/show_hide_animation"
                     android:id="@+id/show_more"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>

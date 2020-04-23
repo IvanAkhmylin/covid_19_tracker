@@ -24,10 +24,8 @@ import com.google.android.material.navigation.NavigationView
 
 
 open class MainActivity : AppCompatActivity() {
-    private val mMapFragment: MapFragment =
-        MapFragment()
-    private val mOverallFragment: OverallFragment =
-        OverallFragment()
+    private val mMapFragment: MapFragment = MapFragment()
+    private val mOverallFragment: OverallFragment = OverallFragment()
     private var mSearch: EditText? = null
     private var mToolLayout: LinearLayout? = null
     private var mHamburger: DrawerButton? = null

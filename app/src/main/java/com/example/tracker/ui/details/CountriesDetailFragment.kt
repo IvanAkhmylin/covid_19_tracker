@@ -2,6 +2,7 @@ package com.example.tracker.ui.details
 
 import android.animation.Animator
 import android.annotation.SuppressLint
+import android.graphics.drawable.AnimatedVectorDrawable
 import android.os.Bundle
 import android.os.Handler
 import android.view.LayoutInflater
@@ -42,6 +43,7 @@ class CountriesDetailFragment(dataModel: CountriesStatisticModel?) : Fragment() 
                 "Updated: ${dateFormat.format(netDate)}"
             v.findViewById<TextView>(R.id.country_name).text = "${data?.country}"
             val mShowMore= v.findViewById<ImageButton>(R.id.show_more)
+
             val view = v.findViewById<LinearLayout>(R.id.additional_data)
             var flag = false
             mShowMore.setOnClickListener {
@@ -116,8 +118,6 @@ class CountriesDetailFragment(dataModel: CountriesStatisticModel?) : Fragment() 
                 data?.testsPerOneMillion.toString()
 
         }
-
-
     }
 
 }
