@@ -11,11 +11,20 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Headers
+import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface Interfaces {
     @Headers("Content-Type: application/json")
     @GET("v2/all")
     fun getStatistic(): Call<StatisticModel>
+
+    @Headers("Content-Type: application/json")
+    @GET("v2/countries/{query}" )
+    fun searchCountry(
+        @Path("query")country: String,
+        @Query("strict")strictSearch: Boolean): Call<CountriesStatisticModel>
+
 
     @Headers("Content-Type: application/json")
     @GET("v2/countries")

@@ -2,16 +2,21 @@ package com.example.tracker.ui
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
+import android.util.Log
 import android.view.Gravity
 import android.view.MotionEvent
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.graphics.drawable.DrawerArrowDrawable
 import androidx.core.content.ContextCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.example.tracker.App.Companion.hideKeyboard
 import com.example.tracker.App.Companion.showKeyboard
 import com.example.tracker.Constants
@@ -19,13 +24,18 @@ import com.example.tracker.R
 import com.example.tracker.ui.map.MapFragment
 import com.example.tracker.ui.statistic.OverallFragment
 import com.example.tracker.ui.search.SearchFragment
+import com.example.tracker.ui.search.SearchViewModel
 import com.example.tracker.view.DrawerButton
 import com.google.android.material.navigation.NavigationView
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 
 open class MainActivity : AppCompatActivity() {
     private val mMapFragment: MapFragment = MapFragment()
     private val mOverallFragment: OverallFragment = OverallFragment()
+    private lateinit var mViewModel: SearchViewModel
     private var mSearch: EditText? = null
     private var mToolLayout: LinearLayout? = null
     private var mHamburger: DrawerButton? = null
@@ -39,6 +49,8 @@ open class MainActivity : AppCompatActivity() {
 
     @SuppressLint("ClickableViewAccessibility")
     private fun init() {
+        mViewModel = ViewModelProvider(this@MainActivity).get(SearchViewModel::class.java)
+
         mHamburger = findViewById(R.id.hamburger)
         mDrawerLayout = findViewById(R.id.drawer_layout)
         mNavigationView = findViewById(R.id.nav_view)
@@ -54,7 +66,12 @@ open class MainActivity : AppCompatActivity() {
             this!!.setNavigationItemSelectedListener { item ->
                 when (item.itemId) {
                     R.id.charts ->
-                        swapFragment(R.id.container, mOverallFragment, "OverallFragment" , Constants.ANIM_UP_DOWN)
+                        swapFragment(
+                            R.id.container,
+                            mOverallFragment,
+                            "OverallFragment",
+                            Constants.ANIM_UP_DOWN
+                        )
                     R.id.settings -> Toast.makeText(
                         this@MainActivity,
                         " settings",
@@ -78,27 +95,71 @@ open class MainActivity : AppCompatActivity() {
             this.setOnTouchListener { v, event ->
                 if (!mSearch?.isFocused!!) {
                     if (event.action == MotionEvent.ACTION_UP) {
-                        swapFragment(R.id.container,
-                            SearchFragment(), "SearchFragment" , Constants.ANIM_UP_DOWN)
+                        swapFragment(
+                            R.id.container,
+                            SearchFragment(), "SearchFragment", Constants.ANIM_UP_DOWN
+                        )
                     }
+                } else {
+                    this.showKeyboard()
                 }
                 true
             }
+
+            this.addTextChangedListener(object : TextWatcher {
+                var searchFor = ""
+
+                override fun afterTextChanged(s: Editable?) {
+
+                }
+
+                override fun beforeTextChanged(
+                    s: CharSequence?,
+                    start: Int,
+                    count: Int,
+                    after: Int
+                ) {
+
+                }
+
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                    val countryName = s.toString().trim()
+
+                    if (countryName == searchFor)
+                        return
+                    searchFor = countryName
+                    mViewModel.mCountry.postValue(null)
+                    GlobalScope.launch {
+                        delay(1000)
+                        if (countryName != searchFor)
+                            return@launch
+
+                        countryName.isNotEmpty().let {
+                            if (it) {
+                                    mViewModel.searchCountry(countryName)
+                                Log.d("TAG", "launch")
+                            }
+                        }
+                    }
+                }
+
+
+            })
         }
         supportFragmentManager.addOnBackStackChangedListener {
             mHamburger?.changeSearchState(supportFragmentManager.backStackEntryCount)
 
             if (supportFragmentManager.backStackEntryCount == 1) {
-                resetState()
+                closeFragment()
             } else {
-                fragmentChanged()
+                openFragment()
             }
         }
-        swapFragment(R.id.container, mMapFragment, "MapFragment" , Constants.ANIM_UP_DOWN)
+        swapFragment(R.id.container, mMapFragment, "MapFragment", Constants.ANIM_UP_DOWN)
     }
 
     @SuppressLint("ResourceAsColor")
-    private fun fragmentChanged() {
+    private fun openFragment() {
         val currentFragment = supportFragmentManager
             .getBackStackEntryAt(supportFragmentManager.backStackEntryCount - 1).name
         mHamburger?.setOnClickListener {
@@ -108,6 +169,7 @@ open class MainActivity : AppCompatActivity() {
         if (currentFragment == "SearchFragment") {
             mSearch?.apply {
                 this.requestFocus()
+                this.isEnabled = true
                 mSearch?.showKeyboard()
                 mToolLayout?.setBackgroundColor(
                     ContextCompat.getColor(
@@ -126,7 +188,7 @@ open class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun resetState() {
+    private fun closeFragment() {
         mDrawerLayout?.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
         mHamburger?.apply {
             this.setOnClickListener {
@@ -172,7 +234,7 @@ open class MainActivity : AppCompatActivity() {
                 R.anim.pop_enter_up,
                 R.anim.pop_exit_down
             )
-        }else if (Constants.ANIM_SLIDE_LEFT == animationMode){
+        } else if (Constants.ANIM_SLIDE_LEFT == animationMode) {
             transaction.setCustomAnimations(
                 R.anim.enter_left,
                 R.anim.exit_right,
