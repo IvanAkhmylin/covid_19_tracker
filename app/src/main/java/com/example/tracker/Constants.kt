@@ -8,4 +8,9 @@ object Constants {
     const val MAP_ZOOM_KEY = "zoom for map"
     const val ANIM_UP_DOWN = "up down animation"
     const val ANIM_SLIDE_LEFT = "slide left animation"
+    const val fragmentMap = "MapFragment"
+    const val fragmentSearch = "SearchFragment"
+    const val fragmentDetailSearch = "DetailFragmentSearch"
+    const val fragmentDetailMap = "DetailFragmentMap"
+    const val fragmentStatistic = "StatisticFragment"
 }

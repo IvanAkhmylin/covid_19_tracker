@@ -89,7 +89,7 @@ class MapFragment : Fragment() {
             (requireActivity() as MainActivity).swapFragment(R.id.container,
                 CountriesDetailFragment(
                     dataModel
-                ), "DetailFragment" , Constants.ANIM_SLIDE_LEFT)
+                ), Constants.fragmentDetailMap , Constants.ANIM_SLIDE_LEFT)
             true
         }
     }

@@ -38,11 +38,12 @@ class SearchFragment : Fragment() {
     }
 
     private fun init(v: View) {
-        mViewModel =
-            ViewModelProvider(requireActivity() as MainActivity).get(SearchViewModel::class.java)
+        mViewModel = ViewModelProvider(requireActivity() as MainActivity).get(SearchViewModel::class.java)
 
         mViewModel.mFailureMessage.observe(viewLifecycleOwner, Observer {
-            Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
+            it?.let {
+                Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
+            }
         })
 
         mViewModel.mShowProgress.observe(viewLifecycleOwner, Observer {
@@ -53,6 +54,7 @@ class SearchFragment : Fragment() {
                 progress.visibility = View.GONE
             }
         })
+
         mViewModel.mCountry.observe(viewLifecycleOwner, Observer { data ->
             if (data != null) {
                 search_container.visibility = View.VISIBLE
@@ -62,7 +64,7 @@ class SearchFragment : Fragment() {
                 v.findViewById<ImageButton>(R.id.show_details).setOnClickListener {
                     (requireActivity() as MainActivity).swapFragment(
                         R.id.container,
-                        CountriesDetailFragment(data), "DetailFragment", Constants.ANIM_SLIDE_LEFT
+                        CountriesDetailFragment(data), Constants.fragmentDetailSearch, Constants.ANIM_SLIDE_LEFT
                     )
                 }
 
@@ -77,12 +79,7 @@ class SearchFragment : Fragment() {
     }
 
 
-    override fun onStop() {
-        super.onStop()
-        mViewModel.mCountry.postValue(null)
-        mViewModel.mFailureMessage.postValue(null)
 
-    }
 }
 
 

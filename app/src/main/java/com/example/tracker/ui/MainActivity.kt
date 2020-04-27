@@ -10,7 +10,6 @@ import android.view.MotionEvent
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.Toast
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.graphics.drawable.DrawerArrowDrawable
 import androidx.core.content.ContextCompat
@@ -69,7 +68,7 @@ open class MainActivity : AppCompatActivity() {
                         swapFragment(
                             R.id.container,
                             mOverallFragment,
-                            "OverallFragment",
+                            Constants.fragmentStatistic,
                             Constants.ANIM_UP_DOWN
                         )
                     R.id.settings -> Toast.makeText(
@@ -97,7 +96,7 @@ open class MainActivity : AppCompatActivity() {
                     if (event.action == MotionEvent.ACTION_UP) {
                         swapFragment(
                             R.id.container,
-                            SearchFragment(), "SearchFragment", Constants.ANIM_UP_DOWN
+                            SearchFragment(), Constants.fragmentSearch, Constants.ANIM_UP_DOWN
                         )
                     }
                 } else {
@@ -136,7 +135,7 @@ open class MainActivity : AppCompatActivity() {
 
                         countryName.isNotEmpty().let {
                             if (it) {
-                                    mViewModel.searchCountry(countryName)
+                                mViewModel.searchCountry(countryName)
                                 Log.d("TAG", "launch")
                             }
                         }
@@ -147,7 +146,6 @@ open class MainActivity : AppCompatActivity() {
             })
         }
         supportFragmentManager.addOnBackStackChangedListener {
-            mHamburger?.changeSearchState(supportFragmentManager.backStackEntryCount)
 
             if (supportFragmentManager.backStackEntryCount == 1) {
                 closeFragment()
@@ -155,7 +153,7 @@ open class MainActivity : AppCompatActivity() {
                 openFragment()
             }
         }
-        swapFragment(R.id.container, mMapFragment, "MapFragment", Constants.ANIM_UP_DOWN)
+        swapFragment(R.id.container, mMapFragment, Constants.fragmentMap, Constants.ANIM_UP_DOWN)
     }
 
     @SuppressLint("ResourceAsColor")
@@ -166,17 +164,31 @@ open class MainActivity : AppCompatActivity() {
             onBackPressed()
         }
         mDrawerLayout?.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
-        if (currentFragment == "SearchFragment") {
+        if (currentFragment == Constants.fragmentSearch) {
             mSearch?.apply {
                 this.requestFocus()
+                this.animate()
+                    .translationX(1f)
+                    .alpha(1f)
+                    .start()
                 this.isEnabled = true
                 mSearch?.showKeyboard()
-                mToolLayout?.setBackgroundColor(
-                    ContextCompat.getColor(
-                        this@MainActivity,
-                        R.color.green
-                    )
+            }
+            mToolLayout?.setBackgroundColor(
+                ContextCompat.getColor(
+                    this@MainActivity,
+                    R.color.green
                 )
+            )
+
+        } else if (currentFragment == Constants.fragmentDetailSearch) {
+            mToolLayout?.setBackgroundColor(0)
+            mSearch?.apply {
+                this.animate()
+                    .translationX(1000f)
+                    .alpha(1f)
+                    .start()
+                this.hideKeyboard()
             }
         } else {
             mSearch?.apply {
@@ -199,17 +211,15 @@ open class MainActivity : AppCompatActivity() {
         mToolLayout?.setBackgroundColor(0)
         mSearch?.apply {
             this.text.clear()
+            this.clearFocus()
+            this.hideKeyboard()
             this.animate()
                 .translationX(0f)
                 .alpha(1f)
                 .start()
-
         }
 
-        mSearch?.apply {
-            this.clearFocus()
-            this.hideKeyboard()
-        }
+
     }
 
 
@@ -220,6 +230,17 @@ open class MainActivity : AppCompatActivity() {
             if (supportFragmentManager.backStackEntryCount == 1) {
                 this.finish()
             } else {
+                val currentFragment =
+                    supportFragmentManager.getBackStackEntryAt(supportFragmentManager.backStackEntryCount - 1).name
+                if (currentFragment == Constants.fragmentSearch) {
+                    mHamburger?.changeSearchState(supportFragmentManager.backStackEntryCount)
+                    mViewModel.mCountry.postValue(null)
+                    mViewModel.mFailureMessage.postValue(null)
+                }else if(currentFragment == Constants.fragmentStatistic){
+                    mHamburger?.changeSearchState(supportFragmentManager.backStackEntryCount)
+                }else if(currentFragment == Constants.fragmentDetailMap){
+                    mHamburger?.changeSearchState(supportFragmentManager.backStackEntryCount)
+                }
                 supportFragmentManager.popBackStack()
             }
         }
@@ -245,6 +266,13 @@ open class MainActivity : AppCompatActivity() {
         transaction.addToBackStack(tag)
         transaction.replace(res, fragment)
         transaction.commit()
+        if (supportFragmentManager.backStackEntryCount != 0) {
+            val currentFragment =
+                supportFragmentManager.getBackStackEntryAt(supportFragmentManager.backStackEntryCount - 1).name
+            if (currentFragment == Constants.fragmentMap) {
+                mHamburger?.changeSearchState(supportFragmentManager.backStackEntryCount)
+            }
+        }
     }
 
 

@@ -54,7 +54,7 @@ class DrawerButton : ImageButton, DrawerLayout.DrawerListener {
 
     fun changeSearchState(fragmentsCount: Int) {
         val anim =
-            if (fragmentsCount == 1) {
+            if (fragmentsCount == 2) {
                 ValueAnimator.ofFloat(1f, 0f)
             } else {
                 ValueAnimator.ofFloat(0f, 1f)
