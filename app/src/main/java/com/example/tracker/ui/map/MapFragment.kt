@@ -3,18 +3,22 @@ package com.example.tracker.ui.map
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
+import android.os.Handler
+import android.util.Log
 import android.view.*
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.example.tracker.App
 import com.example.tracker.Constants
 import com.example.tracker.R
 import com.example.tracker.model.CountriesStatisticModel
 import com.example.tracker.ui.MainActivity
 import com.example.tracker.ui.details.CountriesDetailFragment
+import com.yandex.mapkit.Animation
 import com.yandex.mapkit.MapKitFactory
 import com.yandex.mapkit.geometry.Point
 import com.yandex.mapkit.map.CameraPosition
@@ -26,7 +30,7 @@ import com.yandex.runtime.image.ImageProvider
 
 class MapFragment : Fragment() {
     private var mMapView: MapView? = null
-    private val mViewModel: MapViewModel by viewModels()
+    private lateinit var mViewModel: MapViewModel
     private var data: ArrayList<CountriesStatisticModel>? = null
 
     private lateinit var listener: MapObjectTapListener
@@ -53,12 +57,29 @@ class MapFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        mViewModel =
+            ViewModelProvider((requireActivity() as MainActivity)).get(MapViewModel::class.java)
 
         val builder = AlertDialog.Builder(requireContext())
         builder.setView(R.layout.waiting_dialog)
         builder.setCancelable(false)
         val dialog = builder.create()
         dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        mViewModel.mSearchCountry.observe(viewLifecycleOwner, Observer {
+            it?.let {
+               Handler().postDelayed({
+                   Log.d("TAG", "${it.countryInfo.lat!!} , ${it.countryInfo.long!!}")
+                   mMapView?.map!!.move(
+                       CameraPosition(
+                           Point(it.countryInfo.lat, it.countryInfo.long),
+                           5f,
+                           0f,
+                           0f
+                       ), Animation(Animation.Type.SMOOTH, 1f), null
+                   )
+               } , 300)
+            }
+        })
 
         mViewModel.mCountriesStatistic.observe(viewLifecycleOwner, Observer {
             listener = getTapListener(it)
@@ -70,10 +91,10 @@ class MapFragment : Fragment() {
         })
 
         mViewModel.mShowProgress.observe(viewLifecycleOwner, Observer {
-            if (it){
+            if (it) {
                 mMapView?.visibility = View.GONE
                 dialog.show()
-            }else{
+            } else {
                 mMapView?.visibility = View.VISIBLE
                 dialog.dismiss()
             }
@@ -86,17 +107,20 @@ class MapFragment : Fragment() {
                 it.countryInfo.lat == (p0 as PlacemarkMapObject).geometry.latitude &&
                         it.countryInfo.long == p0.geometry.longitude
             }
-            (requireActivity() as MainActivity).swapFragment(R.id.container,
+            (requireActivity() as MainActivity).swapFragment(
+                R.id.container,
                 CountriesDetailFragment(
                     dataModel
-                ), Constants.fragmentDetailMap , Constants.ANIM_SLIDE_LEFT)
+                ), Constants.fragmentDetailMap, Constants.ANIM_SLIDE_LEFT
+            )
+
             true
         }
     }
 
     private fun addPlaceMarkToMap(it: List<CountriesStatisticModel>) {
         data?.addAll(it)
-            it.forEach {
+        it.forEach {
             val a = mMapView?.map?.mapObjects?.apply {
                 this.addPlacemark(
                     Point(it.countryInfo.lat!!, it.countryInfo.long!!),
@@ -112,7 +136,6 @@ class MapFragment : Fragment() {
     }
 
 
-
     override fun onStart() {
         super.onStart()
         mMapView?.onStart()
@@ -122,34 +145,53 @@ class MapFragment : Fragment() {
         }
         MapKitFactory.getInstance().onStart()
     }
+
     @SuppressLint("CommitPrefEdits")
     override fun onPause() {
         super.onPause()
-        val  mPref = (requireActivity() as MainActivity).getSharedPreferences("MAP",Context.MODE_PRIVATE)
-        mPref?.edit().apply{
+        mViewModel.mSearchCountry.postValue(null)
+        val mPref =
+            (requireActivity() as MainActivity).getSharedPreferences("MAP", Context.MODE_PRIVATE)
+        mPref?.edit().apply {
             this?.putFloat(Constants.MAP_ZOOM_KEY, mMapView?.map!!.cameraPosition.zoom)
-            this?.putFloat(Constants.MAP_TARGET_LAT, mMapView?.map!!.cameraPosition.target.latitude.toFloat())
-            this?.putFloat(Constants.MAP_TARGET_LON, mMapView?.map!!.cameraPosition.target.longitude.toFloat())
+            this?.putFloat(
+                Constants.MAP_TARGET_LAT,
+                mMapView?.map!!.cameraPosition.target.latitude.toFloat()
+            )
+            this?.putFloat(
+                Constants.MAP_TARGET_LON,
+                mMapView?.map!!.cameraPosition.target.longitude.toFloat()
+            )
             this?.putFloat(Constants.MAP_ZOOM_AZIMUTH, mMapView?.map!!.cameraPosition.azimuth)
             this?.putFloat(Constants.MAP_ZOOM_TILT, mMapView?.map!!.cameraPosition.tilt)
             this?.apply()
         }
         mMapView?.visibility = View.INVISIBLE
     }
+
     override fun onResume() {
         super.onResume()
-        val mPref = (requireActivity() as MainActivity).getSharedPreferences("MAP", Context.MODE_PRIVATE)
+        val mPref =
+            (requireActivity() as MainActivity).getSharedPreferences("MAP", Context.MODE_PRIVATE)
+
         mMapView?.apply {
             this.visibility = View.VISIBLE
-            this.map.move(CameraPosition(Point(
-                mPref.getFloat(Constants.MAP_TARGET_LAT, 0f).toDouble(),
-                mPref.getFloat(Constants.MAP_TARGET_LON, 0f).toDouble()),
-                mPref.getFloat(Constants.MAP_ZOOM_KEY, 0f),
-                mPref.getFloat(Constants.MAP_ZOOM_AZIMUTH, 0f),
-                mPref.getFloat(Constants.MAP_ZOOM_TILT , 0f))
+            this.map.move(
+                CameraPosition(
+                    Point(
+                        mPref.getFloat(Constants.MAP_TARGET_LAT, 0f).toDouble(),
+                        mPref.getFloat(Constants.MAP_TARGET_LON, 0f).toDouble()
+                    ),
+                    mPref.getFloat(Constants.MAP_ZOOM_KEY, 0f),
+                    mPref.getFloat(Constants.MAP_ZOOM_AZIMUTH, 0f),
+                    mPref.getFloat(Constants.MAP_ZOOM_TILT, 0f)
+                )
             )
         }
+
+
     }
+
 
     override fun onStop() {
         mMapView?.onStop()

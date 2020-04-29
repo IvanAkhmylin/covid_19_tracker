@@ -191,6 +191,7 @@ open class MainActivity : AppCompatActivity() {
                 this.hideKeyboard()
             }
         } else {
+            mToolLayout?.setBackgroundColor(0)
             mSearch?.apply {
                 this.animate()
                     .translationX(1000F)
@@ -222,7 +223,6 @@ open class MainActivity : AppCompatActivity() {
 
     }
 
-
     override fun onBackPressed() {
         if (mDrawerLayout?.isDrawerOpen(Gravity.LEFT)!!) {
             mDrawerLayout?.closeDrawer(Gravity.LEFT)
@@ -236,9 +236,9 @@ open class MainActivity : AppCompatActivity() {
                     mHamburger?.changeSearchState(supportFragmentManager.backStackEntryCount)
                     mViewModel.mCountry.postValue(null)
                     mViewModel.mFailureMessage.postValue(null)
-                }else if(currentFragment == Constants.fragmentStatistic){
+                } else if (currentFragment == Constants.fragmentStatistic) {
                     mHamburger?.changeSearchState(supportFragmentManager.backStackEntryCount)
-                }else if(currentFragment == Constants.fragmentDetailMap){
+                } else if (currentFragment == Constants.fragmentDetailMap) {
                     mHamburger?.changeSearchState(supportFragmentManager.backStackEntryCount)
                 }
                 supportFragmentManager.popBackStack()
@@ -273,6 +273,7 @@ open class MainActivity : AppCompatActivity() {
                 mHamburger?.changeSearchState(supportFragmentManager.backStackEntryCount)
             }
         }
+
     }
 
 

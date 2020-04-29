@@ -20,7 +20,9 @@ import com.example.tracker.Constants
 import com.example.tracker.R
 import com.example.tracker.ui.MainActivity
 import com.example.tracker.ui.details.CountriesDetailFragment
+import com.example.tracker.ui.map.MapViewModel
 import com.facebook.drawee.view.SimpleDraweeView
+import com.yandex.mapkit.mapview.MapView
 import kotlinx.android.synthetic.main.fragment_search.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -28,6 +30,7 @@ import java.util.*
 
 class SearchFragment : Fragment() {
     private lateinit var mViewModel: SearchViewModel
+    private lateinit var  mMapViewModel: MapViewModel
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -40,6 +43,7 @@ class SearchFragment : Fragment() {
     @SuppressLint("SetTextI18n")
     private fun init(v: View) {
         mViewModel = ViewModelProvider(requireActivity() as MainActivity).get(SearchViewModel::class.java)
+        mMapViewModel = ViewModelProvider(requireActivity() as MainActivity).get(MapViewModel::class.java)
 
         mViewModel.mFailureMessage.observe(viewLifecycleOwner, Observer {
             it?.let {
@@ -71,7 +75,6 @@ class SearchFragment : Fragment() {
                     "Country Code: ${data?.countryInfo?.iso2}, ${data?.countryInfo?.iso3}"
                 v.findViewById<TextView>(R.id.continent).text = "Continent: ${data?.continent}"
                 v.findViewById<Button>(R.id.show_details).setOnClickListener {
-
                     (requireActivity() as MainActivity).swapFragment(
                         R.id.container,
                         CountriesDetailFragment(data), Constants.fragmentDetailSearch, Constants.ANIM_SLIDE_LEFT
@@ -79,7 +82,8 @@ class SearchFragment : Fragment() {
                 }
 
                 v.findViewById<Button>(R.id.show_on_map).setOnClickListener {
-                    Toast.makeText(requireContext(), "Map", Toast.LENGTH_SHORT).show()
+                    mMapViewModel.mSearchCountry.postValue(data)
+                    requireActivity().onBackPressed()
                 }
             } else {
                 search_container.visibility = View.GONE

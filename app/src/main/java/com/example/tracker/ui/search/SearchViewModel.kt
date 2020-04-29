@@ -6,7 +6,6 @@ import androidx.lifecycle.MutableLiveData
 import com.example.tracker.model.CountriesStatisticModel
 import com.example.tracker.repository.SearchRepository
 
-
 class SearchViewModel(application: Application) : AndroidViewModel(application) {
     private val model = SearchRepository()
     val mShowProgress = MutableLiveData<Boolean>()
