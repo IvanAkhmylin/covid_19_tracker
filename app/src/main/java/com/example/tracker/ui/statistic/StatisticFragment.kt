@@ -12,27 +12,26 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.example.tracker.R
-import com.example.tracker.model.StatisticModel
-import com.example.tracker.ui.map.MapViewModel
+import com.example.tracker.model.Statistic
 import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
-import kotlinx.android.synthetic.main.overall_statistic_layout.*
+import kotlinx.android.synthetic.main.statistic_layout.*
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
 
-class OverallFragment : Fragment() {
+class StatisticFragment : Fragment() {
     private var mChart: PieChart? = null
-    private val mViewModel: OverallViewModel by viewModels()
+    private val mViewModel: StatisticViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val v = inflater.inflate(R.layout.overall_statistic_layout, container, false)
+        val v = inflater.inflate(R.layout.statistic_layout, container, false)
         init(v)
         return v
     }
@@ -77,7 +76,7 @@ class OverallFragment : Fragment() {
     }
 
     @SuppressLint("SetTextI18n", "SimpleDateFormat")
-    private fun initStatistic(it: StatisticModel) {
+    private fun initStatistic(it: Statistic) {
         val dateFormat = SimpleDateFormat("dd MMMM yyyy")
         val timeFormat = SimpleDateFormat("hh:mm:ss a")
         val netDate = Date(it.updated)

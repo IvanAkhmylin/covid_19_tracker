@@ -6,18 +6,19 @@ import android.os.Bundle
 import android.os.Handler
 import android.util.Log
 import android.view.*
+import android.widget.SearchView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.tracker.App
 import com.example.tracker.Constants
 import com.example.tracker.R
-import com.example.tracker.model.CountriesStatisticModel
+import com.example.tracker.model.Country
 import com.example.tracker.ui.MainActivity
 import com.example.tracker.ui.details.CountriesDetailFragment
+import com.example.tracker.ui.search.SearchViewModel
 import com.yandex.mapkit.Animation
 import com.yandex.mapkit.MapKitFactory
 import com.yandex.mapkit.geometry.Point
@@ -30,8 +31,9 @@ import com.yandex.runtime.image.ImageProvider
 
 class MapFragment : Fragment() {
     private var mMapView: MapView? = null
-    private lateinit var mViewModel: MapViewModel
-    private var data: ArrayList<CountriesStatisticModel>? = null
+    private lateinit var mMapViewModel: MapViewModel
+    private lateinit var mSearchViewModel: SearchViewModel
+    private var data: ArrayList<Country>? = null
 
     private lateinit var listener: MapObjectTapListener
 
@@ -56,52 +58,53 @@ class MapFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        mViewModel =
-            ViewModelProvider((requireActivity() as MainActivity)).get(MapViewModel::class.java)
+            super.onViewCreated(view, savedInstanceState)
+            mMapViewModel = ViewModelProvider((requireActivity() as MainActivity)).get(MapViewModel::class.java)
+            mSearchViewModel = ViewModelProvider((requireActivity() as MainActivity)).get(SearchViewModel::class.java)
 
-        val builder = AlertDialog.Builder(requireContext())
-        builder.setView(R.layout.waiting_dialog)
-        builder.setCancelable(false)
-        val dialog = builder.create()
-        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
-        mViewModel.mSearchCountry.observe(viewLifecycleOwner, Observer {
-            it?.let {
-               Handler().postDelayed({
-                   Log.d("TAG", "${it.countryInfo.lat!!} , ${it.countryInfo.long!!}")
-                   mMapView?.map!!.move(
-                       CameraPosition(
-                           Point(it.countryInfo.lat, it.countryInfo.long),
-                           5f,
-                           0f,
-                           0f
-                       ), Animation(Animation.Type.SMOOTH, 1f), null
-                   )
-               } , 300)
-            }
-        })
+            val builder = AlertDialog.Builder(requireContext())
+            builder.setView(R.layout.waiting_dialog)
+            builder.setCancelable(false)
+            val dialog = builder.create()
+            dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+    //        mMapViewModel.mSearchCountry.observe(viewLifecycleOwner, Observer {
+    //            it?.let {
+    //                Handler().postDelayed({
+    //                    Log.d("TAG", "${it.countryInfo.lat!!} , ${it.countryInfo.long!!}")
+    //                    mMapView?.map!!.move(
+    //                        CameraPosition(
+    //                            Point(it.countryInfo.lat, it.countryInfo.long),
+    //                            5f,
+    //                            0f,
+    //                            0f
+    //                        ), Animation(Animation.Type.SMOOTH, 1f), null
+    //                    )
+    //                }, 300)
+    //            }
+    //        })
 
-        mViewModel.mCountriesStatistic.observe(viewLifecycleOwner, Observer {
-            listener = getTapListener(it)
-            addPlaceMarkToMap(it)
-        })
+            mMapViewModel.mCountriesStatistic.observe(viewLifecycleOwner, Observer {
+                mSearchViewModel.setCountryList(it as ArrayList<Country>)
+                listener = getTapListener(it)
+                addPlaceMarkToMap(it)
+            })
 
-        mViewModel.mFailureMessage.observe(viewLifecycleOwner, Observer {
-            Toast.makeText(requireActivity(), it, Toast.LENGTH_SHORT).show()
-        })
+            mMapViewModel.mFailureMessage.observe(viewLifecycleOwner, Observer {
+                Toast.makeText(requireActivity(), it, Toast.LENGTH_SHORT).show()
+            })
 
-        mViewModel.mShowProgress.observe(viewLifecycleOwner, Observer {
-            if (it) {
-                mMapView?.visibility = View.GONE
-                dialog.show()
-            } else {
-                mMapView?.visibility = View.VISIBLE
-                dialog.dismiss()
-            }
-        })
+            mMapViewModel.mShowProgress.observe(viewLifecycleOwner, Observer {
+                if (it) {
+                    mMapView?.visibility = View.GONE
+                    dialog.show()
+                } else {
+                    mMapView?.visibility = View.VISIBLE
+                    dialog.dismiss()
+                }
+            })
     }
 
-    private fun getTapListener(it: List<CountriesStatisticModel>?): MapObjectTapListener {
+    private fun getTapListener(it: List<Country>?): MapObjectTapListener {
         return MapObjectTapListener { p0, p1 ->
             val dataModel = it?.firstOrNull {
                 it.countryInfo.lat == (p0 as PlacemarkMapObject).geometry.latitude &&
@@ -118,7 +121,7 @@ class MapFragment : Fragment() {
         }
     }
 
-    private fun addPlaceMarkToMap(it: List<CountriesStatisticModel>) {
+    private fun addPlaceMarkToMap(it: List<Country>) {
         data?.addAll(it)
         it.forEach {
             val a = mMapView?.map?.mapObjects?.apply {
@@ -149,7 +152,7 @@ class MapFragment : Fragment() {
     @SuppressLint("CommitPrefEdits")
     override fun onPause() {
         super.onPause()
-        mViewModel.mSearchCountry.postValue(null)
+        mMapViewModel.mSearchCountry.postValue(null)
         val mPref =
             (requireActivity() as MainActivity).getSharedPreferences("MAP", Context.MODE_PRIVATE)
         mPref?.edit().apply {

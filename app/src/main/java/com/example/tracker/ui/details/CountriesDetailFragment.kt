@@ -13,14 +13,13 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.example.tracker.Constants
 import com.example.tracker.R
-import com.example.tracker.model.CountriesStatisticModel
+import com.example.tracker.model.Country
 import com.facebook.drawee.view.SimpleDraweeView
-import kotlinx.android.synthetic.main.detail_layout.*
 import java.text.SimpleDateFormat
 import java.util.*
 
 
-class CountriesDetailFragment(dataModel: CountriesStatisticModel?) : Fragment() {
+class CountriesDetailFragment(dataModel: Country?) : Fragment() {
     private var data = dataModel
     override fun onCreateView(
         inflater: LayoutInflater,

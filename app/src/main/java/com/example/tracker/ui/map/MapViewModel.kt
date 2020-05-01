@@ -3,17 +3,16 @@ package com.example.tracker.ui.map
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import com.example.tracker.model.CountriesStatisticModel
-import com.example.tracker.model.StatisticModel
-import com.example.tracker.repository.StatisticRepository
+import com.example.tracker.model.Country
+import com.example.tracker.ui.statistic.StatisticRepository
 
 
 class MapViewModel(application: Application) : AndroidViewModel(application) {
-    private val model = StatisticRepository()
+    val model = CountriesRepository()
     val mShowProgress = MutableLiveData<Boolean>()
-    val mCountriesStatistic = MutableLiveData<List<CountriesStatisticModel>>()
+    val mCountriesStatistic = MutableLiveData<List<Country>>()
     val mFailureMessage = MutableLiveData<String>()
-    val mSearchCountry = MutableLiveData<CountriesStatisticModel>()
+    val mSearchCountry = MutableLiveData<Country>()
 
     init {
         getCountriesStatistic()
@@ -21,7 +20,7 @@ class MapViewModel(application: Application) : AndroidViewModel(application) {
 
     private fun getCountriesStatistic() {
         mShowProgress.postValue(true)
-        model.getCountryStatistic(getApplication(),{
+        model.getCountries(getApplication(),{
             mCountriesStatistic.postValue(it)
             mShowProgress.postValue(false)
         }, {

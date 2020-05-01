@@ -2,8 +2,8 @@ package com.example.tracker.api
 
 import android.app.Application
 import com.example.tracker.R
-import com.example.tracker.model.CountriesStatisticModel
-import com.example.tracker.model.StatisticModel
+import com.example.tracker.model.Country
+import com.example.tracker.model.Statistic
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
@@ -17,18 +17,18 @@ import retrofit2.http.Query
 interface Interfaces {
     @Headers("Content-Type: application/json")
     @GET("v2/all")
-    fun getStatistic(): Call<StatisticModel>
+    fun getStatistic(): Call<Statistic>
 
     @Headers("Content-Type: application/json")
     @GET("v2/countries/{query}" )
     fun searchCountry(
         @Path("query")country: String,
-        @Query("strict")strictSearch: Boolean): Call<CountriesStatisticModel>
+        @Query("strict")strictSearch: Boolean): Call<Country>
 
 
     @Headers("Content-Type: application/json")
     @GET("v2/countries")
-    fun getCountriesStatistic(): Call<List<CountriesStatisticModel>>
+    fun getCountriesStatistic(): Call<List<Country>>
 
 
     companion object{

@@ -21,7 +21,7 @@ import com.example.tracker.App.Companion.showKeyboard
 import com.example.tracker.Constants
 import com.example.tracker.R
 import com.example.tracker.ui.map.MapFragment
-import com.example.tracker.ui.statistic.OverallFragment
+import com.example.tracker.ui.statistic.StatisticFragment
 import com.example.tracker.ui.search.SearchFragment
 import com.example.tracker.ui.search.SearchViewModel
 import com.example.tracker.view.DrawerButton
@@ -29,12 +29,13 @@ import com.google.android.material.navigation.NavigationView
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.util.*
 
 
 open class MainActivity : AppCompatActivity() {
     private val mMapFragment: MapFragment = MapFragment()
-    private val mOverallFragment: OverallFragment = OverallFragment()
-    private lateinit var mViewModel: SearchViewModel
+    private val mOverallFragment: StatisticFragment = StatisticFragment()
+    private lateinit var mSearchViewModel: SearchViewModel
     private var mSearch: EditText? = null
     private var mToolLayout: LinearLayout? = null
     private var mHamburger: DrawerButton? = null
@@ -48,7 +49,7 @@ open class MainActivity : AppCompatActivity() {
 
     @SuppressLint("ClickableViewAccessibility")
     private fun init() {
-        mViewModel = ViewModelProvider(this@MainActivity).get(SearchViewModel::class.java)
+        mSearchViewModel = ViewModelProvider(this@MainActivity).get(SearchViewModel::class.java)
 
         mHamburger = findViewById(R.id.hamburger)
         mDrawerLayout = findViewById(R.id.drawer_layout)
@@ -122,31 +123,34 @@ open class MainActivity : AppCompatActivity() {
                 }
 
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                    val countryName = s.toString().trim()
-
-                    if (countryName == searchFor)
-                        return
-                    searchFor = countryName
-                    mViewModel.mCountry.postValue(null)
-                    GlobalScope.launch {
-                        delay(1000)
-                        if (countryName != searchFor)
-                            return@launch
-
-                        countryName.isNotEmpty().let {
-                            if (it) {
-                                mViewModel.searchCountry(countryName)
-                                Log.d("TAG", "launch")
-                            }
-                        }
+                    if (s?.isNotEmpty()!!){
+                        mSearchViewModel.searchCountry(s.toString().toLowerCase(Locale.getDefault()))
                     }
+
+//                    val countryName = s.toString().trim()
+//
+//                    if (countryName == searchFor)
+//                        return
+//                    searchFor = countryName
+//                    mSearchViewModel.mCountry.postValue(null)
+//                    GlobalScope.launch {
+//                        delay(1000)
+//                        if (countryName != searchFor)
+//                            return@launch
+//
+//                        countryName.isNotEmpty().let {
+//                            if (it) {
+//                                mSearchViewModel.searchCountry(countryName)
+//                                Log.d("TAG", "launch")
+//                            }
+//                        }
+//                    }
                 }
 
 
             })
         }
         supportFragmentManager.addOnBackStackChangedListener {
-
             if (supportFragmentManager.backStackEntryCount == 1) {
                 closeFragment()
             } else {
@@ -234,8 +238,6 @@ open class MainActivity : AppCompatActivity() {
                     supportFragmentManager.getBackStackEntryAt(supportFragmentManager.backStackEntryCount - 1).name
                 if (currentFragment == Constants.fragmentSearch) {
                     mHamburger?.changeSearchState(supportFragmentManager.backStackEntryCount)
-                    mViewModel.mCountry.postValue(null)
-                    mViewModel.mFailureMessage.postValue(null)
                 } else if (currentFragment == Constants.fragmentStatistic) {
                     mHamburger?.changeSearchState(supportFragmentManager.backStackEntryCount)
                 } else if (currentFragment == Constants.fragmentDetailMap) {
