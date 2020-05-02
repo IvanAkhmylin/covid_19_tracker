@@ -5,22 +5,24 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.tracker.Constants
 import com.example.tracker.R
 import com.example.tracker.ui.MainActivity
+import com.example.tracker.ui.details.CountriesDetailFragment
 import com.example.tracker.ui.map.MapViewModel
 import kotlinx.android.synthetic.main.fragment_search.*
 
 
 class SearchFragment : Fragment() {
     private lateinit var mSearchViewModel: SearchViewModel
-    private lateinit var  mMapViewModel: MapViewModel
-    private var mRecyclerView: RecyclerView? = null
+    private lateinit var mMapViewModel: MapViewModel
+    private var mSearchRecycler: RecyclerView? = null
+    private var mRecentlyRecycler: RecyclerView? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,52 +35,72 @@ class SearchFragment : Fragment() {
 
     @SuppressLint("SetTextI18n")
     private fun init(v: View) {
-        mRecyclerView = v.findViewById(R.id.search_recycler)
+        mSearchRecycler = v.findViewById(R.id.search_recycler)
+        mRecentlyRecycler = v.findViewById(R.id.recently_recycler)
 
-        mSearchViewModel = ViewModelProvider(requireActivity() as MainActivity).get(SearchViewModel::class.java)
-        mMapViewModel = ViewModelProvider(requireActivity() as MainActivity).get(MapViewModel::class.java)
+        mSearchViewModel =
+            ViewModelProvider(requireActivity() as MainActivity).get(SearchViewModel::class.java)
+        mMapViewModel =
+            ViewModelProvider(requireActivity() as MainActivity).get(MapViewModel::class.java)
 
-        mSearchViewModel.searchResult.observe(viewLifecycleOwner, Observer {
-            mRecyclerView?.visibility = View.VISIBLE
-            mRecyclerView?.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
-                mRecyclerView?.adapter = SearchAdapter(it) {
-                    Toast.makeText(requireContext(), "CLICK" , Toast.LENGTH_SHORT).show()
+        mSearchViewModel.searchResult.observe(viewLifecycleOwner, Observer { list ->
+            if (list != null) {
+                recently_container.visibility = View.GONE
+                mSearchRecycler?.visibility = View.VISIBLE
+                mSearchRecycler?.layoutManager =
+                    LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
+                mSearchRecycler?.adapter = SearchAdapter(list) {
+                    mSearchViewModel.addRecentlyCountry(it)
+                    (requireActivity() as MainActivity).swapFragment(
+                        R.id.container,
+                        CountriesDetailFragment(
+                            it
+                        ), Constants.fragmentDetailMap, Constants.ANIM_SLIDE_LEFT
+                    )
+
                 }
-                mRecyclerView?.adapter!!.notifyDataSetChanged()
+                mSearchRecycler?.adapter!!.notifyDataSetChanged()
+            } else {
+                mSearchRecycler?.visibility = View.GONE
+            }
         })
-//        mSearchViewModel.mRecentlySeen.observe(viewLifecycleOwner, Observer {
-//            it?.let {
-//                mRecyclerView?.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
-//                mRecyclerView?.adapter = RecentlyRecyclerAdapter(it) {
-//                    Toast.makeText(requireContext(), "CLICK" , Toast.LENGTH_SHORT).show()
-//                }
-//                mRecyclerView?.adapter!!.notifyDataSetChanged()
-//            }
-//        })
 
+        mSearchViewModel.mRecentlySeen.observe(viewLifecycleOwner, Observer { list ->
+            if (list != null) {
+                recently_container.visibility = View.VISIBLE
+                mRecentlyRecycler?.layoutManager =
+                    LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
+                mRecentlyRecycler?.adapter = SearchAdapter(list) {
+                    mSearchViewModel.addRecentlyCountry(it)
+                    (requireActivity() as MainActivity).swapFragment(
+                        R.id.container,
+                        CountriesDetailFragment(
+                            it
+                        ), Constants.fragmentDetailMap, Constants.ANIM_SLIDE_LEFT
+                    )
 
-//
-//        mSearchViewModel.mFailureMessage.observe(viewLifecycleOwner, Observer {
-//            it?.let {
-//                error_text.visibility = View.VISIBLE
-//            }
-//        })
+                }
+                mRecentlyRecycler?.adapter!!.notifyDataSetChanged()
+            } else {
+                recently_container.visibility = View.GONE
+            }
+        })
 
-//        mSearchViewModel.mShowProgress.observe(viewLifecycleOwner, Observer {
-//            if (it) {
-//                 progress.visibility = View.VISIBLE
-//                search_container.visibility = View.GONE
-//            } else {
-//                progress.visibility = View.GONE
-//            }
-//        })
-
-
-
+        mSearchViewModel.notFound.observe(viewLifecycleOwner, Observer {
+            when (it) {
+                true -> error_container.visibility = View.VISIBLE
+                false -> error_container.visibility = View.GONE
+            }
+        })
     }
 
 
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        mSearchViewModel.searchResult.postValue(null)
+        mSearchViewModel.notFound.postValue(false)
+    }
 }
 
 

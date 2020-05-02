@@ -3,10 +3,7 @@ package com.example.tracker.ui.map
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
-import android.os.Handler
-import android.util.Log
 import android.view.*
-import android.widget.SearchView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
@@ -19,7 +16,6 @@ import com.example.tracker.model.Country
 import com.example.tracker.ui.MainActivity
 import com.example.tracker.ui.details.CountriesDetailFragment
 import com.example.tracker.ui.search.SearchViewModel
-import com.yandex.mapkit.Animation
 import com.yandex.mapkit.MapKitFactory
 import com.yandex.mapkit.geometry.Point
 import com.yandex.mapkit.map.CameraPosition
@@ -47,7 +43,7 @@ class MapFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val v = inflater.inflate(R.layout.countries_statistic_layout, container, false)
+        val v = inflater.inflate(R.layout.map_layout, container, false)
         init(v)
         return v
     }
@@ -124,7 +120,7 @@ class MapFragment : Fragment() {
     private fun addPlaceMarkToMap(it: List<Country>) {
         data?.addAll(it)
         it.forEach {
-            val a = mMapView?.map?.mapObjects?.apply {
+            mMapView?.map?.mapObjects?.apply {
                 this.addPlacemark(
                     Point(it.countryInfo.lat!!, it.countryInfo.long!!),
                     ImageProvider.fromBitmap(

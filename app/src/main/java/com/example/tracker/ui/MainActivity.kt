@@ -123,9 +123,7 @@ open class MainActivity : AppCompatActivity() {
                 }
 
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                    if (s?.isNotEmpty()!!){
-                        mSearchViewModel.searchCountry(s.toString().toLowerCase(Locale.getDefault()))
-                    }
+                        mSearchViewModel.searchCountry(s.toString().toLowerCase(Locale.getDefault()).trim())
 
 //                    val countryName = s.toString().trim()
 //

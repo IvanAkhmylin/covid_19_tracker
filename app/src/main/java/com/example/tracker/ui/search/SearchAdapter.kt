@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tracker.R
 import com.example.tracker.model.Country
@@ -27,12 +28,12 @@ class SearchAdapter(private val items: List<Country>, var onClick : (Country) ->
         val countryName = holder.v.findViewById<TextView>(R.id.country_name)
         val countryIso = holder.v.findViewById<TextView>(R.id.country_iso)
         val flag = holder.v.findViewById<SimpleDraweeView>(R.id.country_flag)
-        val button = holder.v.findViewById<ImageButton>(R.id.icon_show)
+        val card = holder.v.findViewById<CardView>(R.id.item_container)
 
         flag.setImageURI(items[position].countryInfo.flag)
         countryName.text = items[position].country
         countryIso.text = "${items[position].countryInfo.iso2}, ${items[position].countryInfo.iso3}"
-        button.setOnClickListener{
+        card.setOnClickListener{
             onClick(items[position])
         }
     }

@@ -26,7 +26,6 @@ import kotlin.collections.ArrayList
 class StatisticFragment : Fragment() {
     private var mChart: PieChart? = null
     private val mViewModel: StatisticViewModel by viewModels()
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
