@@ -37,9 +37,7 @@ class CountriesDetailFragment(dataModel: Country?) : Fragment() {
             .getBackStackEntryAt(requireActivity().supportFragmentManager.backStackEntryCount - 1)
             .name
 
-        val mShowMore= v.findViewById<ImageButton>(R.id.show_more)
         if (currentFragment == Constants.fragmentDetailSearch){
-            mShowMore.visibility = View.GONE
         }
 
         data.apply {
@@ -56,55 +54,55 @@ class CountriesDetailFragment(dataModel: Country?) : Fragment() {
 
             val view = v.findViewById<LinearLayout>(R.id.additional_data)
             var flag = false
-            mShowMore.setOnClickListener {
-                if (flag){
-                    view.animate().translationY((view.height.toFloat()).unaryMinus()).alpha(0f)
-                        .setListener(object : Animator.AnimatorListener{
-                            override fun onAnimationRepeat(animation: Animator?) {}
-                            override fun onAnimationEnd(animation: Animator?) {
-                                view.visibility = View.GONE
-                                flag = false
-                            }
-                            override fun onAnimationCancel(animation: Animator?) {}
-                            override fun onAnimationStart(animation: Animator?) {
-                                mShowMore.animate().translationY(0f).rotationBy(-180f).start()
-                            }
-                        }).start()
+//            mShowMore.setOnClickListener {
+//                if (flag){
+//                    view.animate().translationY((view.height.toFloat()).unaryMinus()).alpha(0f)
+//                        .setListener(object : Animator.AnimatorListener{
+//                            override fun onAnimationRepeat(animation: Animator?) {}
+//                            override fun onAnimationEnd(animation: Animator?) {
+//                                view.visibility = View.GONE
+//                                flag = false
+//                            }
+//                            override fun onAnimationCancel(animation: Animator?) {}
+//                            override fun onAnimationStart(animation: Animator?) {
+//                                mShowMore.animate().translationY(0f).rotationBy(-180f).start()
+//                            }
+//                        }).start()
+//
+//                }else{
+//                    view.animate().translationY(-96f).alpha(1f).setListener(object : Animator.AnimatorListener{
+//                        override fun onAnimationRepeat(animation: Animator?) {}
+//                        override fun onAnimationEnd(animation: Animator?) {
+//                            flag = true
+//                        }
+//                        override fun onAnimationCancel(animation: Animator?) {}
+//                        override fun onAnimationStart(animation: Animator?) {
+//                            view.visibility = View.VISIBLE
+//                            Handler().postDelayed(Runnable {
+//                                mShowMore.animate().translationY(view.height.toFloat()).rotationBy(180f).start()
+//                            }, 5)
+//                        }
+//                    }).start()
+//
+//                }
+//            }
 
-                }else{
-                    view.animate().translationY(-96f).alpha(1f).setListener(object : Animator.AnimatorListener{
-                        override fun onAnimationRepeat(animation: Animator?) {}
-                        override fun onAnimationEnd(animation: Animator?) {
-                            flag = true
-                        }
-                        override fun onAnimationCancel(animation: Animator?) {}
-                        override fun onAnimationStart(animation: Animator?) {
-                            view.visibility = View.VISIBLE
-                            Handler().postDelayed(Runnable {
-                                mShowMore.animate().translationY(view.height.toFloat()).rotationBy(180f).start()
-                            }, 5)
-                        }
-                    }).start()
-
-                }
-            }
 
 
-
-            v.findViewById<TextView>(R.id.cases).text = data?.cases.toString()
-            v.findViewById<TextView>(R.id.active).text = data?.active.toString()
-            v.findViewById<TextView>(R.id.critical).text = data?.critical.toString()
-            v.findViewById<TextView>(R.id.today_cases).text = data?.todayCases.toString()
-            v.findViewById<TextView>(R.id.deaths).text = data?.deaths.toString()
-            v.findViewById<TextView>(R.id.today_deaths).text = data?.todayDeaths.toString()
-            v.findViewById<TextView>(R.id.recovered).text = data?.recovered.toString()
-            v.findViewById<TextView>(R.id.tests).text = data?.tests.toString()
-            v.findViewById<TextView>(R.id.cases_per_million).text =
-                data?.casesPerOneMillion.toString()
-            v.findViewById<TextView>(R.id.deaths_per_million).text =
-                data?.deathsPerOneMillion.toString()
-            v.findViewById<TextView>(R.id.tests_per_million).text =
-                data?.testsPerOneMillion.toString()
+//            v.findViewById<TextView>(R.id.cases).text = data?.cases.toString()
+//            v.findViewById<TextView>(R.id.active).text = data?.active.toString()
+//            v.findViewById<TextView>(R.id.critical).text = data?.critical.toString()
+//            v.findViewById<TextView>(R.id.today_cases).text = data?.todayCases.toString()
+//            v.findViewById<TextView>(R.id.deaths).text = data?.deaths.toString()
+//            v.findViewById<TextView>(R.id.today_deaths).text = data?.todayDeaths.toString()
+//            v.findViewById<TextView>(R.id.recovered).text = data?.recovered.toString()
+//            v.findViewById<TextView>(R.id.tests).text = data?.tests.toString()
+//            v.findViewById<TextView>(R.id.cases_per_million).text =
+//                data?.casesPerOneMillion.toString()
+//            v.findViewById<TextView>(R.id.deaths_per_million).text =
+//                data?.deathsPerOneMillion.toString()
+//            v.findViewById<TextView>(R.id.tests_per_million).text =
+//                data?.testsPerOneMillion.toString()
 
         }
     }

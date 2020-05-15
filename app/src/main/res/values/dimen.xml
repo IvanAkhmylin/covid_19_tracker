@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <dimen name="LowSizeText">18sp</dimen>
-    <dimen name="MiniSizeText">15sp</dimen>
-    <dimen name="MaxSizeText">25sp</dimen>
-    <dimen name="UltraSizeText">35sp</dimen>
-    <dimen name="card_padding">10dp</dimen>
-    <dimen name="anim_duration">300</dimen>
-</resources>

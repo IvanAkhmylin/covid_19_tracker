@@ -8,7 +8,6 @@
     android:layout_marginBottom="5dp"
     android:layout_marginLeft="10dp"
     android:layout_marginRight="10dp"
-    android:backgroundTint="@color/light_dark"
     android:layout_height="wrap_content">
     <LinearLayout
         android:layout_width="match_parent"
@@ -31,15 +30,15 @@
             <TextView
                 android:id="@+id/country_name"
                 android:text="Russia"
-                android:textColor="@color/light_grey"
-                android:textSize="@dimen/LowSizeText"
+                android:textColor="@color/light_gray"
+                android:textSize="@dimen/TitleCardTextSize"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
             <TextView
                 android:id="@+id/country_iso"
                 android:text="Russia"
-                android:textColor="@color/light_grey"
-                android:textSize="@dimen/MiniSizeText"
+                android:textColor="@color/light_gray"
+                android:textSize="@dimen/BodySecondaryTextSize"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
         </LinearLayout>

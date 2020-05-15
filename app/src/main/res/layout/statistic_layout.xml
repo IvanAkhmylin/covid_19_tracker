@@ -1,517 +1,447 @@
-<?xml version="1.0" encoding="utf-8"?>
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="68dp"
-    android:background="@color/dark"
+    android:background="@color/light_gray"
     android:fillViewport="true"
     android:orientation="vertical"
     android:overScrollMode="never">
 
-    <LinearLayout
-        android:id="@+id/overall_container"
+
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/dark"
         android:orientation="vertical">
 
-        <androidx.cardview.widget.CardView
+        <ProgressBar
+            android:visibility="gone"
+            android:id="@+id/progress"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="center" />
+
+        <LinearLayout
+            android:id="@+id/overall_container"
             android:layout_width="match_parent"
-            android:layout_height="350dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginBottom="5dp"
-            android:layout_weight="1"
-            android:backgroundTint="@color/light_dark"
-            app:cardCornerRadius="15dp">
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
 
-            <LinearLayout
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-
-                <com.github.mikephil.charting.charts.PieChart
-                    android:id="@+id/pie_chart"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_margin="10dp"
-                    android:layout_weight="1"
-                    android:background="@color/light_dark" />
+                android:layout_height="350dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                android:elevation="1dp"
+                android:focusable="true"
+                app:cardCornerRadius="@dimen/corner_radius">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:orientation="horizontal">
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/date"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:textAlignment="center"
-                        android:textColor="@color/blue"
-                        android:textSize="@dimen/LowSizeText"
-                        android:textStyle="bold" />
+                    <com.github.mikephil.charting.charts.PieChart
+                        android:id="@+id/pie_chart"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_margin="10dp"
+                        android:layout_weight="1" />
 
-                    <TextView
-                        android:id="@+id/time"
-                        android:layout_width="0dp"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:textAlignment="center"
-                        android:textColor="@color/blue"
-                        android:textSize="@dimen/LowSizeText"
-                        android:textStyle="bold" />
+                        android:layout_marginBottom="10dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            style="@style/TitleTextStyle"
+                            android:text="Data Updated: 12 may at 18:42"
+                            android:id="@+id/updated"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:textAlignment="center"
+                            android:textColor="@color/colorAccent"
+                            android:textSize="@dimen/BodySecondaryTextSize" />
+
+
+                    </LinearLayout>
                 </LinearLayout>
-            </LinearLayout>
 
-        </androidx.cardview.widget.CardView>
+            </com.google.android.material.card.MaterialCardView>
 
+            <GridLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="10dp"
+                android:columnCount="2"
+                android:rowCount="5">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:orientation="horizontal">
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <androidx.cardview.widget.CardView
-                    android:layout_width="match_parent"
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginRight="5dp"
-                    android:backgroundTint="@color/light_dark"
-                    app:cardCornerRadius="20dp">
+                    android:layout_columnWeight="1"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginBottom="5dp"
+
+                    app:cardCornerRadius="@dimen/corner_radius">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="vertical"
-                        android:padding="10dp">
+                        android:padding="15dp">
+
+                        <TextView
+                            style="@style/TitleTextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Cases" />
 
                         <TextView
                             android:id="@+id/cases"
+                            style="@style/PrimaryTextStyle"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="-"
-                            android:textAlignment="center"
-                            android:textColor="@color/blue"
-                            android:textSize="@dimen/MaxSizeText"
-                            android:textStyle="bold" />
+                            android:layout_marginTop="5dp"
+                            android:textColor="@color/blue" />
 
                         <TextView
+                            android:id="@+id/cases_today"
+                            style="@style/SecondaryTextStyle"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Cases"
-                            android:textAlignment="center"
-                            android:textColor="@color/light_grey"
-                            android:textSize="@dimen/LowSizeText" />
-                    </LinearLayout>
-                </androidx.cardview.widget.CardView>
+                            android:layout_marginTop="5dp"
+                            android:textColor="@color/secondary_text" />
 
-                <androidx.cardview.widget.CardView
-                    android:layout_width="match_parent"
+
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginRight="5dp"
-                    android:backgroundTint="@color/light_dark"
-                    app:cardCornerRadius="15dp">
+                    android:layout_columnWeight="1"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="5dp"
+                    app:cardCornerRadius="@dimen/corner_radius">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="vertical"
-                        android:padding="10dp">
+                        android:padding="15dp">
+
+                        <TextView
+                            style="@style/TitleTextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Deaths" />
 
                         <TextView
                             android:id="@+id/deaths"
+                            style="@style/PrimaryTextStyle"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="-"
-                            android:textAlignment="center"
-                            android:textColor="@color/red"
-                            android:textSize="@dimen/MaxSizeText"
-                            android:textStyle="bold" />
+                            android:layout_marginTop="5dp"
+                            android:textColor="@color/red" />
 
                         <TextView
+                            android:id="@+id/deaths_today"
+                            style="@style/SecondaryTextStyle"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Deaths"
-                            android:textAlignment="center"
-                            android:textColor="@color/light_grey"
-                            android:textSize="@dimen/LowSizeText" />
-                    </LinearLayout>
-                </androidx.cardview.widget.CardView>
+                            android:layout_marginTop="5dp"
+                            android:textColor="@color/secondary_text" />
 
-                <androidx.cardview.widget.CardView
-                    android:layout_width="match_parent"
+
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginRight="5dp"
-                    android:backgroundTint="@color/light_dark"
-                    app:cardCornerRadius="15dp">
+                    android:layout_columnWeight="1"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginBottom="5dp"
+                    app:cardCornerRadius="@dimen/corner_radius">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="vertical"
-                        android:padding="10dp">
+                        android:padding="15dp">
+
+                        <TextView
+                            style="@style/TitleTextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Recovered" />
 
                         <TextView
                             android:id="@+id/recovered"
+                            style="@style/PrimaryTextStyle"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="-"
-                            android:textAlignment="center"
-                            android:textColor="@color/green"
-                            android:textSize="@dimen/MaxSizeText"
-                            android:textStyle="bold" />
+                            android:layout_marginTop="5dp"
+                            android:textColor="@color/green" />
 
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Recovered"
-                            android:textAlignment="center"
-                            android:textColor="@color/light_grey"
-                            android:textSize="@dimen/LowSizeText" />
+
                     </LinearLayout>
-                </androidx.cardview.widget.CardView>
+                </com.google.android.material.card.MaterialCardView>
 
-                <androidx.cardview.widget.CardView
-                    android:layout_width="match_parent"
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginRight="5dp"
-                    android:backgroundTint="@color/light_dark"
-                    app:cardCornerRadius="15dp">
+                    android:layout_columnWeight="1"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="5dp"
+                    app:cardCornerRadius="@dimen/corner_radius">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="vertical"
-                        android:padding="10dp">
+                        android:padding="15dp">
+
+                        <TextView
+                            style="@style/TitleTextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Active" />
 
                         <TextView
                             android:id="@+id/active"
+                            style="@style/PrimaryTextStyle"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="-"
-                            android:textAlignment="center"
-                            android:textColor="@color/green"
-                            android:textSize="@dimen/MaxSizeText"
-                            android:textStyle="bold" />
+                            android:layout_marginTop="5dp"
+                            android:textColor="@color/purple" />
 
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Active"
-                            android:textAlignment="center"
-                            android:textColor="@color/light_grey"
-                            android:textSize="@dimen/LowSizeText" />
+
                     </LinearLayout>
-                </androidx.cardview.widget.CardView>
+                </com.google.android.material.card.MaterialCardView>
 
-                <androidx.cardview.widget.CardView
-                    android:layout_width="match_parent"
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginRight="5dp"
-                    android:backgroundTint="@color/light_dark"
-                    app:cardCornerRadius="15dp">
+                    android:layout_columnWeight="1"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginBottom="5dp"
+
+                    app:cardCornerRadius="@dimen/corner_radius">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="vertical"
-                        android:padding="10dp">
+                        android:padding="15dp">
 
                         <TextView
-                            android:id="@+id/cases_per_million"
+                            style="@style/TitleTextStyle"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="-"
-                            android:textAlignment="center"
-                            android:textColor="@color/green"
-                            android:textSize="@dimen/MaxSizeText"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Cases Per One Million"
-                            android:textAlignment="center"
-                            android:textColor="@color/light_grey"
-                            android:textSize="@dimen/LowSizeText" />
-                    </LinearLayout>
-                </androidx.cardview.widget.CardView>
-
-                <androidx.cardview.widget.CardView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginRight="5dp"
-                    android:backgroundTint="@color/light_dark"
-                    app:cardCornerRadius="15dp">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical"
-                        android:padding="10dp">
-
-                        <TextView
-                            android:id="@+id/tests_per_million"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="-"
-                            android:textAlignment="center"
-                            android:textColor="@color/green"
-                            android:textSize="@dimen/MaxSizeText"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Tests Per One Million"
-                            android:textAlignment="center"
-                            android:textColor="@color/light_grey"
-                            android:textSize="@dimen/LowSizeText" />
-                    </LinearLayout>
-                </androidx.cardview.widget.CardView>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <androidx.cardview.widget.CardView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginRight="10dp"
-                    android:backgroundTint="@color/light_dark"
-                    app:cardCornerRadius="15dp">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical"
-                        android:padding="10dp">
-
-                        <TextView
-                            android:id="@+id/today_cases"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="-"
-                            android:textAlignment="center"
-                            android:textColor="@color/blue"
-                            android:textSize="@dimen/MaxSizeText"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Today Cases"
-                            android:textAlignment="center"
-                            android:textColor="@color/light_grey"
-                            android:textSize="@dimen/LowSizeText" />
-                    </LinearLayout>
-                </androidx.cardview.widget.CardView>
-
-                <androidx.cardview.widget.CardView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginRight="10dp"
-                    android:backgroundTint="@color/light_dark"
-                    app:cardCornerRadius="15dp">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical"
-                        android:padding="10dp">
-
-                        <TextView
-                            android:id="@+id/today_deaths"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="-"
-                            android:textAlignment="center"
-                            android:textColor="@color/red"
-                            android:textSize="@dimen/MaxSizeText"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Today Deaths"
-                            android:textAlignment="center"
-                            android:textColor="@color/light_grey"
-                            android:textSize="@dimen/LowSizeText" />
-                    </LinearLayout>
-                </androidx.cardview.widget.CardView>
-
-                <androidx.cardview.widget.CardView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginRight="10dp"
-                    android:backgroundTint="@color/light_dark"
-                    app:cardCornerRadius="15dp">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical"
-                        android:padding="10dp">
-
-                        <TextView
-                            android:id="@+id/tests"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="-"
-                            android:textAlignment="center"
-                            android:textColor="@color/green"
-                            android:textSize="@dimen/MaxSizeText"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Tests"
-                            android:textAlignment="center"
-                            android:textColor="@color/light_grey"
-                            android:textSize="@dimen/LowSizeText" />
-                    </LinearLayout>
-                </androidx.cardview.widget.CardView>
-
-                <androidx.cardview.widget.CardView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginRight="10dp"
-                    android:backgroundTint="@color/light_dark"
-                    app:cardCornerRadius="15dp">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical"
-                        android:padding="10dp">
+                            android:text="Critical" />
 
                         <TextView
                             android:id="@+id/critical"
+                            style="@style/PrimaryTextStyle"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="-"
-                            android:textAlignment="center"
-                            android:textColor="@color/green"
-                            android:textSize="@dimen/MaxSizeText"
-                            android:textStyle="bold" />
+                            android:layout_marginTop="5dp"
+                            android:textColor="@color/orange" />
 
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Critical"
-                            android:textAlignment="center"
-                            android:textColor="@color/light_grey"
-                            android:textSize="@dimen/LowSizeText" />
+
                     </LinearLayout>
-                </androidx.cardview.widget.CardView>
+                </com.google.android.material.card.MaterialCardView>
 
-                <androidx.cardview.widget.CardView
-                    android:layout_width="match_parent"
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginRight="10dp"
-                    android:backgroundTint="@color/light_dark"
-                    app:cardCornerRadius="15dp">
+                    android:layout_columnWeight="1"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="5dp"
+                    app:cardCornerRadius="@dimen/corner_radius">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="vertical"
-                        android:padding="10dp">
+                        android:padding="15dp">
+
+                        <TextView
+                            style="@style/TitleTextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Tests" />
+
+                        <TextView
+                            android:id="@+id/tests"
+                            style="@style/PrimaryTextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:textColor="@color/teal" />
+
+
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginBottom="5dp"
+
+                    app:cardCornerRadius="@dimen/corner_radius">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:padding="15dp">
+
+                        <TextView
+                            style="@style/TitleTextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Cases in 1 M" />
+
+                        <TextView
+                            android:id="@+id/cases_per_million"
+                            style="@style/PrimaryTextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:textColor="@color/blue" />
+
+
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="5dp"
+                    app:cardCornerRadius="@dimen/corner_radius">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:padding="15dp">
+
+                        <TextView
+                            style="@style/TitleTextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Deaths in 1 M" />
 
                         <TextView
                             android:id="@+id/deaths_per_million"
+                            style="@style/PrimaryTextStyle"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="-"
-                            android:textAlignment="center"
-                            android:textColor="@color/green"
-                            android:textSize="@dimen/MaxSizeText"
-                            android:textStyle="bold" />
+                            android:layout_marginTop="5dp"
+                            android:textColor="@color/red" />
 
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Deaths Per One Million"
-                            android:textAlignment="center"
-                            android:textColor="@color/light_grey"
-                            android:textSize="@dimen/LowSizeText" />
+
                     </LinearLayout>
-                </androidx.cardview.widget.CardView>
+                </com.google.android.material.card.MaterialCardView>
 
-                <androidx.cardview.widget.CardView
-                    android:layout_width="match_parent"
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginRight="10dp"
-                    android:backgroundTint="@color/light_dark"
-                    app:cardCornerRadius="15dp">
+                    android:layout_columnWeight="1"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginBottom="5dp"
+
+                    app:cardCornerRadius="@dimen/corner_radius">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="vertical"
-                        android:padding="10dp">
+                        android:padding="15dp">
+
+                        <TextView
+                            style="@style/TitleTextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Tests in 1 M" />
+
+                        <TextView
+                            android:id="@+id/tests_per_million"
+                            style="@style/PrimaryTextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:textColor="@color/teal" />
+
+
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="5dp"
+                    app:cardCornerRadius="@dimen/corner_radius">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:padding="15dp">
+
+                        <TextView
+                            style="@style/TitleTextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Countries" />
 
                         <TextView
                             android:id="@+id/affected_country"
+                            style="@style/PrimaryTextStyle"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="-"
-                            android:textAlignment="center"
-                            android:textColor="@color/green"
-                            android:textSize="@dimen/MaxSizeText"
-                            android:textStyle="bold" />
+                            android:layout_marginTop="5dp"
+                            android:textColor="@color/lime" />
 
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Affected Countries"
-                            android:textAlignment="center"
-                            android:textColor="@color/light_grey"
-                            android:textSize="@dimen/LowSizeText" />
+
                     </LinearLayout>
-                </androidx.cardview.widget.CardView>
-
-            </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+            </GridLayout>
         </LinearLayout>
+    </FrameLayout>
 
-    </LinearLayout>
 </androidx.core.widget.NestedScrollView>

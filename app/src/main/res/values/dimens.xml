@@ -5,4 +5,11 @@
     <dimen name="nav_header_vertical_spacing">8dp</dimen>
     <dimen name="nav_header_height">176dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
+    <dimen name="corner_radius">8dp</dimen>
+
+    <dimen name="TitleCardTextSize">20dp</dimen>
+    <dimen name="BodyPrimaryTextSize">25dp</dimen>
+    <dimen name="BodySecondaryTextSize">16dp</dimen>
+    <dimen name="card_padding">10dp</dimen>
+    <dimen name="anim_duration">300</dimen>
 </resources>

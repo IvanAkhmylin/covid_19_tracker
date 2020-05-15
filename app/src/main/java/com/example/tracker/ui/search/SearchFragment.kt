@@ -51,12 +51,7 @@ class SearchFragment : Fragment() {
                     LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
                 mSearchRecycler?.adapter = SearchAdapter(list) {
                     mSearchViewModel.addRecentlyCountry(it)
-                    (requireActivity() as MainActivity).swapFragment(
-                        R.id.container,
-                        CountriesDetailFragment(
-                            it
-                        ), Constants.fragmentDetailMap, Constants.ANIM_SLIDE_LEFT
-                    )
+
 
                 }
                 mSearchRecycler?.adapter!!.notifyDataSetChanged()
@@ -72,12 +67,7 @@ class SearchFragment : Fragment() {
                     LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
                 mRecentlyRecycler?.adapter = SearchAdapter(list) {
                     mSearchViewModel.addRecentlyCountry(it)
-                    (requireActivity() as MainActivity).swapFragment(
-                        R.id.container,
-                        CountriesDetailFragment(
-                            it
-                        ), Constants.fragmentDetailMap, Constants.ANIM_SLIDE_LEFT
-                    )
+
 
                 }
                 mRecentlyRecycler?.adapter!!.notifyDataSetChanged()

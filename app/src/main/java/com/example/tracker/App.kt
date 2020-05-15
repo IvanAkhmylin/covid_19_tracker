@@ -17,34 +17,4 @@ class App : Application(){
         super.onCreate()
     }
 
-    companion object{
-
-        fun getBitmapFromVectorDrawable(context: Context?, drawableId: Int): Bitmap? {
-            val drawable = ContextCompat.getDrawable(context!!, drawableId)
-            val bitmap = Bitmap.createBitmap(
-                drawable!!.intrinsicWidth,
-                drawable.intrinsicHeight, Bitmap.Config.ARGB_8888
-            )
-            val canvas = Canvas(bitmap)
-            drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight())
-            drawable.draw(canvas)
-            return bitmap
-        }
-
-        fun View.hideKeyboard() {
-            val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.hideSoftInputFromWindow(windowToken, 0)
-        }
-
-        fun View.showKeyboard() {
-            val imm =
-                context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY)
-        }
-
-
-
-    }
-
-
 }

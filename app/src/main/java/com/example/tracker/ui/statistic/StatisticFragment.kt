@@ -6,20 +6,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat.getColor
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.example.tracker.R
+import com.example.tracker.Utils.Utils
+import com.example.tracker.Utils.ExpansionUtils.decimalFormatter
+import com.example.tracker.Utils.ExpansionUtils.setColorBefore
 import com.example.tracker.model.Statistic
 import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import kotlinx.android.synthetic.main.statistic_layout.*
-import java.text.SimpleDateFormat
-import java.util.*
 import kotlin.collections.ArrayList
 
 
@@ -35,16 +35,17 @@ class StatisticFragment : Fragment() {
         return v
     }
 
+    private fun init(v: View) {
+        mChart = v.findViewById(R.id.pie_chart)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initChart(0F, 0F, 0F)
+        initObservers()
+    }
 
-        val builder = AlertDialog.Builder(requireContext())
-        builder.setView(R.layout.waiting_dialog)
-        builder.setCancelable(false)
-        val dialog = builder.create()
-        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
-
+    private fun initObservers() {
         mViewModel.mStatistic.observe(
             viewLifecycleOwner,
             Observer {
@@ -59,43 +60,37 @@ class StatisticFragment : Fragment() {
             Toast.makeText(requireActivity(), it, Toast.LENGTH_LONG).show()
         })
         mViewModel.mShowProgress.observe(viewLifecycleOwner, Observer {
-            if (it){
+            if (it) {
                 overall_container?.visibility = View.GONE
-                dialog.show()
-            }else{
+                progress?.visibility = View.VISIBLE
+            } else {
                 overall_container?.visibility = View.VISIBLE
-                dialog.dismiss()
+                progress?.visibility = View.GONE
             }
         })
     }
 
-    private fun init(v: View?) {
-        mChart = v?.findViewById(R.id.pie_chart)
-
-    }
-
     @SuppressLint("SetTextI18n", "SimpleDateFormat")
     private fun initStatistic(it: Statistic) {
-        val dateFormat = SimpleDateFormat("dd MMMM yyyy")
-        val timeFormat = SimpleDateFormat("hh:mm:ss a")
-        val netDate = Date(it.updated)
+        updated.text = Utils.timestampToDate(it.updated)
 
-        date.text = dateFormat.format(netDate)
-        time.text = timeFormat.format(netDate)
+        cases.text = it.cases?.decimalFormatter()
+        deaths.text = it.deaths?.decimalFormatter()
 
-        cases.text = it.cases.toString()
-        today_cases.text = it.todayCases.toString()
-        deaths.text = it.deaths.toString()
-        today_deaths.text = it.todayDeaths.toString()
-        recovered.text = it.recovered.toString()
-        active.text = it.active.toString()
-        tests.text = it.tests.toString()
-        critical.text = it.critical.toString()
-        cases_per_million.text = it.casesPerOneMillion.toString()
-        deaths_per_million.text = it.deathsPerOneMillion.toString()
-        tests_per_million.text = it.testsPerOneMillion.toString()
-        affected_country.text = it.affectedCountries.toString()
+        cases_today.text = "+${it.todayCases?.decimalFormatter()} today"
+        cases_today.setColorBefore("today")
 
+        deaths_today.text = "+${it.todayDeaths?.decimalFormatter()} today"
+        deaths_today.setColorBefore("today")
+
+        recovered.text = it.recovered?.decimalFormatter()
+        active.text = it.active?.decimalFormatter()
+        tests.text = it.tests?.decimalFormatter()
+        critical.text = it.critical?.decimalFormatter()
+        cases_per_million.text = it.casesPerOneMillion?.toString()
+        deaths_per_million.text = it.deathsPerOneMillion?.toString()
+        tests_per_million.text = it.testsPerOneMillion?.toString()
+        affected_country.text = it.affectedCountries?.decimalFormatter()
 
 
     }
@@ -135,6 +130,5 @@ class StatisticFragment : Fragment() {
         }
 
     }
-
 
 }

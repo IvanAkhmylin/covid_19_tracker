@@ -1,22 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#34EE00</color>
-    <color name="colorPrimaryDark">#00B31E</color>
-    <color name="colorAccent">#03DA4B</color>
+    <color name="colorPrimary">#1976d2</color>
+    <color name="colorPrimaryDark">#1565c0</color>
+    <color name="colorAccent">#4CAF50</color>
+    <color name="primary_light">#B3E5FC</color>
+
+    <color name="light_gray">#F3F3F3</color>
+    <color name="gray">#747474</color>
+
+    <color name="primary_text">#212121</color>
+    <color name="secondary_text">#757575</color>
+
     <color name="white" >#FFFFFF</color>
     <color name="black" >#000000</color>
-    <color name="grey_transparent">#ADACACAC</color>
-    <color name="transparent">#23DCDCDC</color>
-    <color name="red">#D21D23</color>
-    <color name="green">#4CFF00</color>
-    <color name="blue">#869bf0</color>
-    <color name="turquoise">#00B7FF</color>
+
+    <color name="red">#D50000</color>
+    <color name="green">#64DD17</color>
+    <color name="blue">#0091EA</color>
     <color name="dark">#121212 </color>
-    <color name="light_dark">#1d1d1d</color>
-    <color name="light_black">#323232</color>
-    <color name="light_grey">#F3F3F3</color>
-    <color name="purple">#673AB7</color>
-    <color name="yellow">#FFEB3B</color>
+    <color name="purple">#D500F9</color>
+    <color name="lime">#C0CA33</color>
+    <color name="orange">#FF6D00</color>
+    <color name="teal">#00897B</color>
 
 
 </resources>
