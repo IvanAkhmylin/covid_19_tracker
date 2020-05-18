@@ -11,7 +11,7 @@
         tools:layout="@layout/statistic_layout" />
     <fragment
         android:id="@+id/map"
-        android:name="com.example.tracker.ui.map.MapBoxFragment"
+        android:name="com.example.tracker.ui.map.MapFragment"
         android:label="Map"
         tools:layout="@layout/fragment_map_box" />
     <fragment

@@ -8,21 +8,22 @@ import com.example.tracker.model.Statistic
 
 class StatisticViewModel(application: Application) : AndroidViewModel(application) {
     private val model = StatisticRepository()
+    val mFailure = MutableLiveData<Boolean>()
     val mShowProgress = MutableLiveData<Boolean>()
     val mStatistic = MutableLiveData<Statistic>()
-    val mFailureMessage = MutableLiveData<String>()
 
     init {
         getStatistic()
     }
 
-    private fun getStatistic() {
+    fun getStatistic() {
         mShowProgress.postValue(true)
         model.getStatistic(getApplication(),{
             mStatistic.postValue(it)
+            mFailure.postValue(false)
             mShowProgress.postValue(false)
         }, {
-            mFailureMessage.postValue(it)
+            mFailure.postValue(true)
             mShowProgress.postValue(false)
         })
     }

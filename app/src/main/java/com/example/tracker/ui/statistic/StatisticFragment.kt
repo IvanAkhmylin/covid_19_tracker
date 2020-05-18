@@ -19,6 +19,8 @@ import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
+import com.google.android.material.button.MaterialButton
+import kotlinx.android.synthetic.main.loading_and_error_layout.*
 import kotlinx.android.synthetic.main.statistic_layout.*
 import kotlin.collections.ArrayList
 
@@ -37,6 +39,9 @@ class StatisticFragment : Fragment() {
 
     private fun init(v: View) {
         mChart = v.findViewById(R.id.pie_chart)
+        v.findViewById<MaterialButton>(R.id.retry).setOnClickListener {
+            mViewModel.getStatistic()
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -46,25 +51,29 @@ class StatisticFragment : Fragment() {
     }
 
     private fun initObservers() {
-        mViewModel.mStatistic.observe(
-            viewLifecycleOwner,
-            Observer {
-                initStatistic(it!!)
-                initChart(
-                    it.cases!!.toFloat(),
-                    it.deaths!!.toFloat(),
-                    it.recovered!!.toFloat()
-                )
-            })
-        mViewModel.mFailureMessage.observe(viewLifecycleOwner, Observer {
-            Toast.makeText(requireActivity(), it, Toast.LENGTH_LONG).show()
+        mViewModel.mStatistic.observe(viewLifecycleOwner, Observer {
+            overall_container?.visibility = View.VISIBLE
+            initStatistic(it!!)
+            initChart(
+                it.cases!!.toFloat(),
+                it.deaths!!.toFloat(),
+                it.recovered!!.toFloat()
+            )
+        })
+        mViewModel.mFailure.observe(viewLifecycleOwner, Observer {
+            if (it) {
+                failure_container.visibility = View.VISIBLE
+                overall_container.visibility = View.GONE
+            } else {
+                failure_container.visibility = View.GONE
+                overall_container.visibility = View.VISIBLE
+            }
         })
         mViewModel.mShowProgress.observe(viewLifecycleOwner, Observer {
             if (it) {
-                overall_container?.visibility = View.GONE
+                failure_container?.visibility = View.GONE
                 progress?.visibility = View.VISIBLE
             } else {
-                overall_container?.visibility = View.VISIBLE
                 progress?.visibility = View.GONE
             }
         })

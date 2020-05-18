@@ -13,19 +13,14 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <ProgressBar
-            android:visibility="gone"
-            android:id="@+id/progress"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_gravity="center" />
+        <include layout="@layout/loading_and_error_layout"/>
 
         <LinearLayout
+            android:visibility="gone"
             android:id="@+id/overall_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            >
+            android:orientation="vertical">
 
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
@@ -57,12 +52,12 @@
                         android:orientation="horizontal">
 
                         <TextView
-                            style="@style/TitleTextStyle"
-                            android:text="Data Updated: 12 may at 18:42"
                             android:id="@+id/updated"
+                            style="@style/TitleTextStyle"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:text="Data Updated: 12 may at 18:42"
                             android:textAlignment="center"
                             android:textColor="@color/colorAccent"
                             android:textSize="@dimen/BodySecondaryTextSize" />
