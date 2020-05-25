@@ -11,20 +11,21 @@ class MapViewModel(application: Application) : AndroidViewModel(application) {
     val model = CountriesRepository()
     val mShowProgress = MutableLiveData<Boolean>()
     val mCountriesStatistic = MutableLiveData<List<Country>>()
-    val mFailureMessage = MutableLiveData<String>()
+    val mFailure = MutableLiveData<Boolean>()
     val mSearchCountry = MutableLiveData<Country>()
 
     init {
         getCountriesStatistic()
     }
 
-    private fun getCountriesStatistic() {
+    fun getCountriesStatistic() {
         mShowProgress.postValue(true)
         model.getCountries(getApplication(),{
             mCountriesStatistic.postValue(it)
+            mFailure.postValue(false)
             mShowProgress.postValue(false)
         }, {
-            mFailureMessage.postValue(it)
+            mFailure.postValue(true)
             mShowProgress.postValue(false)
         })
     }

@@ -2,6 +2,7 @@ package com.example.tracker.Utils
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
@@ -13,6 +14,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.startActivity
 import com.example.tracker.R
 import java.text.DecimalFormat
 import java.text.NumberFormat
@@ -55,6 +57,15 @@ object Utils {
         drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight())
         drawable.draw(canvas)
         return bitmap
+    }
+
+    fun shareNews(it: String, context: Context) {
+        val shareIntent = Intent().apply {
+            action = Intent.ACTION_SEND
+            putExtra(Intent.EXTRA_TEXT , it)
+            type = "text/plain"
+        }
+        context.startActivity(Intent.createChooser(shareIntent , "Choose"))
     }
 
 

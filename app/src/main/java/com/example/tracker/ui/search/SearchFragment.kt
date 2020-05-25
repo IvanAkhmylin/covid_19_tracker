@@ -10,10 +10,8 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.tracker.Constants
 import com.example.tracker.R
 import com.example.tracker.ui.MainActivity
-import com.example.tracker.ui.details.CountriesDetailFragment
 import com.example.tracker.ui.map.MapViewModel
 import kotlinx.android.synthetic.main.fragment_search.*
 

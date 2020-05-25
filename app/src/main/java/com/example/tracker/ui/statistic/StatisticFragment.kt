@@ -39,7 +39,7 @@ class StatisticFragment : Fragment() {
 
     private fun init(v: View) {
         mChart = v.findViewById(R.id.pie_chart)
-        v.findViewById<MaterialButton>(R.id.retry).setOnClickListener {
+        v.findViewById<MaterialButton>(R.id.try_again).setOnClickListener {
             mViewModel.getStatistic()
         }
     }
@@ -60,6 +60,7 @@ class StatisticFragment : Fragment() {
                 it.recovered!!.toFloat()
             )
         })
+
         mViewModel.mFailure.observe(viewLifecycleOwner, Observer {
             if (it) {
                 failure_container.visibility = View.VISIBLE
@@ -69,6 +70,7 @@ class StatisticFragment : Fragment() {
                 overall_container.visibility = View.VISIBLE
             }
         })
+
         mViewModel.mShowProgress.observe(viewLifecycleOwner, Observer {
             if (it) {
                 failure_container?.visibility = View.GONE

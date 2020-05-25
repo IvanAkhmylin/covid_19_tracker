@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/home">
+    app:startDestination="@id/news">
     <fragment
         android:id="@+id/overall"
         android:name="com.example.tracker.ui.statistic.StatisticFragment"
@@ -15,8 +15,22 @@
         android:label="Map"
         tools:layout="@layout/fragment_map_box" />
     <fragment
-        android:id="@+id/home"
-        android:name="com.example.tracker.ui.HomeFragment"
-        android:label="Home"
-        tools:layout="@layout/fragment_home" />
+        android:id="@+id/news"
+        android:name="com.example.tracker.ui.news.NewsFragment"
+        android:label="News"
+        tools:layout="@layout/fragment_news">
+        <action
+            android:id="@+id/action_news_to_newsDetailFragment"
+            app:destination="@id/newsDetailFragment"
+            app:enterAnim="@anim/enter_left"
+            app:exitAnim="@anim/exit_right"
+            app:launchSingleTop="false"
+            app:popEnterAnim="@anim/pop_enter_left"
+            app:popExitAnim="@anim/pop_exit_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/newsDetailFragment"
+        android:name="com.example.tracker.ui.news.NewsDetailFragment"
+        tools:layout="@layout/fragment_news_detail">
+    </fragment>
 </navigation>

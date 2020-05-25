@@ -10,6 +10,10 @@
     <dimen name="TitleCardTextSize">20dp</dimen>
     <dimen name="BodyPrimaryTextSize">25dp</dimen>
     <dimen name="BodySecondaryTextSize">16dp</dimen>
+
+    <dimen name="NewsTitleTextSize">15dp</dimen>
+    <dimen name="NewsSecondaryTextSize">11dp</dimen>
+
     <dimen name="card_padding">10dp</dimen>
     <dimen name="anim_duration">300</dimen>
 </resources>

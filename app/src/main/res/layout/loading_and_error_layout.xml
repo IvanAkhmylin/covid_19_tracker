@@ -8,6 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:paddingBottom="5dp"
         android:gravity="center_horizontal"
         android:orientation="vertical"
         android:visibility="gone">
@@ -34,17 +35,17 @@
             android:textAlignment="center" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/retry"
+            android:id="@+id/try_again"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Try again" />
     </LinearLayout>
 
     <ProgressBar
+        android:visibility="gone"
         android:id="@+id/progress"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:layout_gravity="center"
-        android:visibility="gone" />
+        android:layout_gravity="center" />
 
 </FrameLayout>
