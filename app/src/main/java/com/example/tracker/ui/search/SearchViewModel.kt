@@ -1,65 +1,95 @@
 package com.example.tracker.ui.search
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
+import com.example.tracker.Constants.Constants
+import com.example.tracker.Constants.Status
 import com.example.tracker.model.Country
-import java.util.*
-import java.util.function.Predicate
-import kotlin.collections.ArrayList
+import com.example.tracker.ui.map.CountriesRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class SearchViewModel(application: Application) : AndroidViewModel(application) {
-    private val countryList = ArrayList<Country>()
-    private val recentlyList = ArrayList<Country>()
-    val searchResult = MutableLiveData<List<Country>>()
-    val notFound = MutableLiveData<Boolean>()
-    val mRecentlySeen = MutableLiveData<List<Country>>()
+    val model = CountriesRepository()
+    private val mCountriesList = ArrayList<Country>()
+    private val mSearchedList = ArrayList<Country>()
+    private val mFilteredList = ArrayList<Country>()
+    private var mSearchRequest = ""
+    val mCountriesStatus = MutableLiveData<String>()
+    val mFilteredData = MutableLiveData<List<Country>>()
 
-    fun setCountryList(list: ArrayList<Country>) {
-        countryList.clear()
-        countryList.addAll(list)
+    init {
+        getCountriesStatistic()
     }
 
-    fun searchCountry(text: String) {
-        if (text.trim().isNotEmpty()) {
-            val list = countryList.filter {
-                it.country?.toLowerCase(Locale.getDefault())?.startsWith(text)!!
-            }
 
-            if (list.isEmpty()){
-                notFound.postValue(true)
+
+    private fun getCountriesStatistic() {
+        mCountriesStatus.postValue(Status.LOADING)
+        model.getCountries(getApplication(),{
+            mCountriesStatus.postValue(Status.SUCCESS)
+            mCountriesList.addAll(it)
+            mFilteredList.addAll(it)
+            mFilteredData.postValue(it)
+        }, {
+            mCountriesStatus.postValue(Status.ERROR)
+        })
+    }
+
+    fun getCountriesByContinent(checkedId: Int) {
+       GlobalScope.launch {
+           if (checkedId == -1 ){
+               mFilteredList.clear()
+               mFilteredList.addAll(mCountriesList)
+               mFilteredData.postValue(mCountriesList)
+               searchByFilteredData(mSearchRequest)
+           }else{
+               mFilteredList.clear()
+               val continent =  Constants.CONTINENTS[checkedId]
+               mCountriesList.forEach() {
+                   if (it.continent == continent){
+                       mFilteredList.add(it)
+                   }
+               }
+               GlobalScope.launch(Dispatchers.Main){
+                   mFilteredData.postValue(mFilteredList)
+                   searchByFilteredData(mSearchRequest)
+
+               }
+           }
+       }
+    }
+
+    fun searchByFilteredData(newText: String?) {
+        mSearchRequest = newText!!
+        GlobalScope.launch {
+            if (newText.isNotEmpty()){
+                mSearchedList.clear()
+                mFilteredList.forEach() {
+                    if (it.country?.toLowerCase()?.startsWith(newText.toLowerCase())!!){
+                        mSearchedList.add(it)
+                    }
+                }
+                GlobalScope.launch(Dispatchers.Main){
+                    if (mSearchedList.isNotEmpty()) {
+                        mFilteredData.postValue(mSearchedList)
+                        mCountriesStatus.postValue(Status.SUCCESS)
+                    }else{
+                        mCountriesStatus.postValue(Status.NOT_FOUND)
+                    }
+                }
             }else{
-                notFound.postValue(false)
+                mFilteredData.postValue(mFilteredList)
+                mCountriesStatus.postValue(Status.SUCCESS)
             }
-
-            searchResult.postValue(list)
-        }else{
-            searchResult.postValue(null)
         }
     }
-    fun addRecentlyCountry(country : Country){
-            recentlyList.forEachIndexed{index, it ->
-                if (it.country == country.country){
-                    recentlyList.removeAt(index)
-                }
-            }
 
-        recentlyList.add(0,country)
-        mRecentlySeen.postValue(recentlyList)
-    }
-//    fun searchCountry(countryName: String) {
-//        mShowProgress.postValue(true)
-//        model.getCountrySearch(getApplication(), countryName ,{
-//            mCountry.postValue(it)
-//            recentlyList.add(it)
-//            mRecentlySeen.postValue(recentlyList)
-//            mShowProgress.postValue(false)
-//        }, {
-//            mFailureMessage.postValue(it)
-//            mShowProgress.postValue(false)
-//        })
-//    }
+
 }
+
+
 
 

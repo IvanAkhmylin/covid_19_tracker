@@ -4,10 +4,15 @@
     android:layout_height="match_parent"
     android:background="@color/light_gray"
     tools:context="com.example.tracker.ui.news.NewsListFragment">
-    <include layout="@layout/loading_and_error_layout"/>
+
+    <include layout="@layout/loading_and_error_layout" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/news_recycler"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:scrollbarSize="4dp"
+        android:scrollbarThumbVertical="@color/colorPrimary"
+        android:scrollbars="vertical"
         android:visibility="gone" />
 </FrameLayout>

@@ -1,49 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:id="@+id/item_container"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:cardCornerRadius="15dp"
+    android:id="@+id/item"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="10dp"
     android:layout_marginTop="5dp"
+    android:layout_marginEnd="10dp"
     android:layout_marginBottom="5dp"
-    android:layout_marginLeft="10dp"
-    android:layout_marginRight="10dp"
-    android:layout_height="wrap_content">
+    android:elevation="1dp"
+    app:cardCornerRadius="@dimen/corner_radius"
+    app:contentPadding="10dp">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/country_flag"
-            android:layout_weight="0.8"
+            android:layout_width="80dp"
+            android:layout_height="50dp"
             app:roundAsCircle="true"
-            android:layout_margin="13dp"
-            android:layout_width="0dp"
-            android:layout_height="40dp"/>
+            app:roundingBorderColor="@color/light_gray"
+            app:roundingBorderWidth="1dp" />
+
         <LinearLayout
-            android:gravity="center_vertical"
-            android:layout_weight="5"
-            android:paddingLeft="15dp"
-            android:paddingRight="15dp"
-            android:orientation="vertical"
             android:layout_width="0dp"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_weight="5"
+            android:gravity="center_vertical"
+            android:orientation="vertical"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp">
+
             <TextView
                 android:id="@+id/country_name"
-                android:text="Russia"
-                android:textColor="@color/light_gray"
-                android:textSize="@dimen/TitleCardTextSize"
+                style="@style/TitleTextStyle"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:text="Russia"
+                android:textColor="@color/black" />
+
             <TextView
                 android:id="@+id/country_iso"
-                android:text="Russia"
-                android:textColor="@color/light_gray"
-                android:textSize="@dimen/BodySecondaryTextSize"
+                style="@style/SecondaryTextStyle"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:text="Russia"
+                android:textColor="@color/black" />
         </LinearLayout>
-        
 
-        
+
     </LinearLayout>
-</androidx.cardview.widget.CardView>
+</com.google.android.material.card.MaterialCardView>

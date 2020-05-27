@@ -4,6 +4,33 @@
     android:layout_height="match_parent">
 
     <LinearLayout
+        android:visibility="gone"
+        android:id="@+id/not_find_data"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:paddingBottom="5dp"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_marginBottom="10dp"
+            android:src="@drawable/ic_sentiment" />
+
+        <TextView
+            style="@style/TitleTextStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Nothing to be found"
+            android:textAlignment="center" />
+
+
+    </LinearLayout>
+
+
+    <LinearLayout
         android:id="@+id/failure_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

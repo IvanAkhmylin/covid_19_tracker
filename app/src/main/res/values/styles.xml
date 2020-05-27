@@ -7,6 +7,8 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="colorControlHighlight">@android:color/transparent</item>
         <item name="drawerArrowStyle">@style/DrawerStyle</item>
+        <item name="ChipStyle">@style/ChipFilter</item>
+
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -15,12 +17,13 @@
         <item name="android:statusBarColor">@android:color/transparent</item>
     </style>
 
+
     <style name="Widget.Custom.NavigationView" parent="Widget.Design.NavigationView">
         <item name="itemIconTint">@drawable/nav_icon_color</item>
         <item name="itemTextColor">@drawable/nav_text_color</item>
     </style>
 
-    <style name="MenuItemShape" parent="">
+    <style name="MenuItemShape" >
         <item name="android:shape">rectangle</item>
         <item name="cornerSizeBottomLeft">0dp</item>
         <item name="cornerSizeTopLeft">0dp</item>
@@ -28,9 +31,20 @@
         <item name="cornerSizeBottomRight">50%</item>
     </style>
 
-    <style name="toolbarStyle">
+    <style name="toolbarStyle" parent="Theme.MaterialComponents.Light.DarkActionBar">
+        <item name="android:textColorSecondary">@color/white</item>
         <item name="android:background">@color/colorPrimary</item>
         <item name="titleTextColor">@color/white</item>
+        <item name="theme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
+    </style>
+
+    <style name="ChipFilter" parent="Widget.MaterialComponents.Chip.Filter" >
+        <item name="android:checkable">true</item>
+        <item name="chipBackgroundColor">@color/chip_selector</item>
+        <item name="android:textColor">@drawable/nav_text_color</item>
+        <item name="checkedIcon">@drawable/ic_check</item>
+
+
     </style>
 
     <style name="DrawerStyle" parent="Widget.AppCompat.DrawerArrowToggle">
@@ -68,4 +82,7 @@
         <item name="android:textSize">@dimen/NewsTitleTextSize</item>
         <item name="android:textColor">@color/primary_text</item>
     </style>
+
+
+
 </resources>

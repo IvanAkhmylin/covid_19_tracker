@@ -27,7 +27,6 @@ class NewsListFragment() : Fragment() {
     private var mRecycler: RecyclerView? = null
     private var mState: Bundle? = null
     private lateinit var mViewModel: NewsViewModel
-    private var mProgressBar: ProgressBar? = null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -44,7 +43,6 @@ class NewsListFragment() : Fragment() {
         mRecycler = v.findViewById(R.id.news_recycler)
         mRecycler?.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
 
-        mProgressBar = v.findViewById(R.id.progress)
         v.findViewById<MaterialButton>(R.id.try_again).setOnClickListener {
             mViewModel.getNewsData(arguments?.getString(QUERY, "")!!)
         }
@@ -73,15 +71,15 @@ class NewsListFragment() : Fragment() {
             when (it) {
                 Status.LOADING -> {
                     failure_container.visibility = View.GONE
-                    mProgressBar?.visibility = View.VISIBLE
+                    progress?.visibility = View.VISIBLE
                 }
                 Status.SUCCESS -> {
-                    mProgressBar?.visibility = View.GONE
+                    progress?.visibility = View.GONE
                     failure_container.visibility = View.GONE
                     mRecycler?.visibility = View.VISIBLE
                 }
                 Status.ERROR -> {
-                    mProgressBar?.visibility = View.GONE
+                    progress?.visibility = View.GONE
                     mRecycler?.visibility = View.GONE
                     failure_container.visibility = View.VISIBLE
                 }

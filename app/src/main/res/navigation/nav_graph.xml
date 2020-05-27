@@ -33,4 +33,9 @@
         android:name="com.example.tracker.ui.news.NewsDetailFragment"
         tools:layout="@layout/fragment_news_detail">
     </fragment>
+    <fragment
+        android:id="@+id/countries"
+        tools:layout="@layout/fragment_search"
+        android:name="com.example.tracker.ui.search.SearchFragment"
+        android:label="Countries" />
 </navigation>
