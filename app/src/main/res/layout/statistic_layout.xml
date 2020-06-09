@@ -30,7 +30,7 @@
                 android:layout_marginRight="10dp"
                 android:layout_weight="1"
                 android:elevation="1dp"
-                android:focusable="true"
+                android:focusable="false"
                 app:cardCornerRadius="@dimen/corner_radius">
 
                 <LinearLayout

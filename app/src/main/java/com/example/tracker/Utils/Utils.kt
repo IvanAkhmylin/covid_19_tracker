@@ -24,16 +24,7 @@ import java.util.*
 
 object Utils {
 
-    @SuppressLint("SimpleDateFormat")
-    fun timestampToDate(timestamp: Long): String {
-        val dateFormat = SimpleDateFormat("dd MMMM")
-        val timeFormat = SimpleDateFormat("k:mm")
-        val netDate = Date(timestamp)
-        val date = dateFormat.format(netDate)
-        val time = timeFormat.format(netDate)
 
-        return "Data Updated: $date at $time"
-    }
 
     fun createDialog(context: Context): AlertDialog {
         val builder = AlertDialog.Builder(context)

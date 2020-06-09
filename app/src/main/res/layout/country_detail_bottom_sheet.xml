@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:contentPadding="10dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:layout_behavior="@string/bottom_sheet_behavior">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/day"
+                    style="@style/TitleTextStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="23"
+                    android:textAlignment="center"
+                    android:textSize="50sp" />
+
+                <TextView
+                    android:id="@+id/month"
+                    style="@style/TitleTextStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="september"
+                    android:textAlignment="center" />
+            </LinearLayout>
+        <View
+            android:background="@color/light_gray"
+            android:layout_width="2dp"
+            android:layout_height="match_parent"/>
+        <LinearLayout
+            android:paddingLeft="10dp"
+            android:gravity="center_vertical"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+                <LinearLayout
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                        <TextView
+                            style="@style/SecondaryTextStyle"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:text="Cases:" />
+
+                        <TextView
+                            android:id="@+id/cases"
+                            style="@style/PrimaryTextStyle"
+                            android:layout_width="0dp"
+                            android:layout_weight="2"                            android:layout_height="wrap_content"
+                            android:text="11213123"
+                            android:textAlignment="center"
+                            android:textColor="@color/blue" />
+                </LinearLayout>
+                <LinearLayout
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                        <TextView
+                            style="@style/SecondaryTextStyle"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:text="Recovered:" />
+
+                        <TextView
+                            android:id="@+id/recovered"
+                            style="@style/PrimaryTextStyle"
+                            android:layout_width="0dp"
+                            android:layout_weight="2"                            android:layout_height="wrap_content"
+                            android:text="11213123"
+                            android:textAlignment="center"
+                            android:textColor="@color/green" />
+                </LinearLayout>
+                <LinearLayout
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                        <TextView
+                            style="@style/SecondaryTextStyle"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"                            android:layout_height="wrap_content"
+                            android:text="Deaths:" />
+
+                        <TextView
+                            android:id="@+id/deaths"
+                            style="@style/PrimaryTextStyle"
+                            android:layout_width="0dp"
+                            android:layout_weight="2"                                 android:layout_height="wrap_content"
+                            android:text="11213123"
+                            android:textAlignment="center"
+                            android:textColor="@color/red" />
+                </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</com.google.android.material.card.MaterialCardView>
+
+

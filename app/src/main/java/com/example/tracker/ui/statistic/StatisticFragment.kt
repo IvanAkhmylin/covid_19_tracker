@@ -10,10 +10,12 @@ import androidx.core.content.ContextCompat.getColor
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import com.example.tracker.Constants.Status
 import com.example.tracker.R
 import com.example.tracker.Utils.Utils
 import com.example.tracker.Utils.ExpansionUtils.decimalFormatter
 import com.example.tracker.Utils.ExpansionUtils.setColorBefore
+import com.example.tracker.Utils.ExpansionUtils.timestampToDate
 import com.example.tracker.model.Statistic
 import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.data.PieData
@@ -51,6 +53,27 @@ class StatisticFragment : Fragment() {
     }
 
     private fun initObservers() {
+        mViewModel.mNewsListStatus.observe(viewLifecycleOwner, Observer {
+            when (it) {
+                Status.LOADING -> {
+                    failure_container?.visibility = View.GONE
+                    progress?.visibility = View.VISIBLE
+                }
+                Status.SUCCESS -> {
+                    failure_container.visibility = View.GONE
+                    progress.visibility = View.GONE
+                    overall_container.visibility = View.VISIBLE
+                }
+                Status.ERROR -> {
+                    progress.visibility = View.GONE
+                    failure_container.visibility = View.VISIBLE
+                    overall_container.visibility = View.GONE
+                }
+
+            }
+
+        })
+
         mViewModel.mStatistic.observe(viewLifecycleOwner, Observer {
             overall_container?.visibility = View.VISIBLE
             initStatistic(it!!)
@@ -61,29 +84,12 @@ class StatisticFragment : Fragment() {
             )
         })
 
-        mViewModel.mFailure.observe(viewLifecycleOwner, Observer {
-            if (it) {
-                failure_container.visibility = View.VISIBLE
-                overall_container.visibility = View.GONE
-            } else {
-                failure_container.visibility = View.GONE
-                overall_container.visibility = View.VISIBLE
-            }
-        })
 
-        mViewModel.mShowProgress.observe(viewLifecycleOwner, Observer {
-            if (it) {
-                failure_container?.visibility = View.GONE
-                progress?.visibility = View.VISIBLE
-            } else {
-                progress?.visibility = View.GONE
-            }
-        })
     }
 
     @SuppressLint("SetTextI18n", "SimpleDateFormat")
     private fun initStatistic(it: Statistic) {
-        updated.text = Utils.timestampToDate(it.updated)
+        updated.text = it.updated.timestampToDate()
 
         cases.text = it.cases?.decimalFormatter()
         deaths.text = it.deaths?.decimalFormatter()
@@ -96,7 +102,7 @@ class StatisticFragment : Fragment() {
 
         recovered.text = it.recovered?.decimalFormatter()
         active.text = it.active?.decimalFormatter()
-        tests.text = it.tests?.decimalFormatter()
+        tests.text = it.tests?.toString()
         critical.text = it.critical?.decimalFormatter()
         cases_per_million.text = it.casesPerOneMillion?.toString()
         deaths_per_million.text = it.deathsPerOneMillion?.toString()

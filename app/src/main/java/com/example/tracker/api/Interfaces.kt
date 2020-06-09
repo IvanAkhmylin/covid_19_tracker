@@ -3,6 +3,7 @@ package com.example.tracker.api
 import android.app.Application
 import com.example.tracker.R
 import com.example.tracker.model.Country
+import com.example.tracker.model.Historic
 import com.example.tracker.model.Statistic
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -30,6 +31,9 @@ interface Interfaces {
     @GET("v2/countries")
     fun getCountriesStatistic(): Call<List<Country>>
 
+    @Headers("Content-Type: application/json")
+    @GET("v2/historical/{path}?lastdays=100")
+    fun getCountriesHistoric(@Path("path") countries: String): Call<List<Historic>>
 
     companion object{
         fun initRetrofit(application: Application): Interfaces {
@@ -47,7 +51,7 @@ interface Interfaces {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
 
-            return retrofit?.create(Interfaces::class.java)!!
+            return retrofit.create(Interfaces::class.java)
         }
     }
 }

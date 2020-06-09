@@ -2,6 +2,7 @@
 <resources>
     <declare-styleable name="AppTheme">
         <attr name="ChipStyle" format="reference" />
-
     </declare-styleable>
+
+    <integer name="Duration">350</integer>
 </resources>

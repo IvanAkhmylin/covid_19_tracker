@@ -36,6 +36,19 @@
     <fragment
         android:id="@+id/countries"
         tools:layout="@layout/fragment_search"
-        android:name="com.example.tracker.ui.search.SearchFragment"
-        android:label="Countries" />
+        android:name="com.example.tracker.ui.countries.CountriesFragment"
+        android:label="Countries" >
+        <action
+            app:enterAnim="@anim/enter_left"
+            app:exitAnim="@anim/exit_right"
+            app:launchSingleTop="false"
+            app:popEnterAnim="@anim/pop_enter_left"
+            app:popExitAnim="@anim/pop_exit_right"
+            android:id="@+id/action_countries_to_detailCountryFragment"
+            app:destination="@id/detailCountryFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailCountryFragment"
+        android:name="com.example.tracker.ui.countries.CountryDetailFragment"
+        tools:layout="@layout/fragment_detail_country" />
 </navigation>

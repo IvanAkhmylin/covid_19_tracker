@@ -1,15 +1,16 @@
 package com.example.tracker.ui.statistic
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
+import com.example.tracker.Constants.Status
 import com.example.tracker.model.Statistic
 
 
 class StatisticViewModel(application: Application) : AndroidViewModel(application) {
     private val model = StatisticRepository()
-    val mFailure = MutableLiveData<Boolean>()
-    val mShowProgress = MutableLiveData<Boolean>()
+    var mNewsListStatus = MutableLiveData<String>()
     val mStatistic = MutableLiveData<Statistic>()
 
     init {
@@ -17,14 +18,13 @@ class StatisticViewModel(application: Application) : AndroidViewModel(applicatio
     }
 
     fun getStatistic() {
-        mShowProgress.postValue(true)
+        mNewsListStatus.postValue(Status.LOADING)
         model.getStatistic(getApplication(),{
             mStatistic.postValue(it)
-            mFailure.postValue(false)
-            mShowProgress.postValue(false)
+            mNewsListStatus.postValue(Status.SUCCESS)
         }, {
-            mFailure.postValue(true)
-            mShowProgress.postValue(false)
+            Log.d("TAG" , it)
+            mNewsListStatus.postValue(Status.ERROR)
         })
     }
 

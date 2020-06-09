@@ -6,12 +6,18 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelStore
+import com.example.tracker.Constants.Status
 import com.example.tracker.R
 import com.example.tracker.Utils.ExpansionUtils.decimalFormatter
 import com.example.tracker.model.Country
 import com.example.tracker.ui.MainActivity
+import com.example.tracker.ui.countries.CountriesViewModel
 import com.facebook.drawee.view.SimpleDraweeView
 import com.google.android.material.button.MaterialButton
 import com.mapbox.mapboxsdk.Mapbox
@@ -21,13 +27,13 @@ import com.mapbox.mapboxsdk.camera.CameraUpdateFactory
 import com.mapbox.mapboxsdk.geometry.LatLng
 import com.mapbox.mapboxsdk.maps.MapboxMap
 import com.mapbox.mapboxsdk.maps.Style
-import kotlinx.android.synthetic.main.fragment_map_box.*
+import kotlinx.android.synthetic.main.info_window_layout.view.*
 import kotlinx.android.synthetic.main.loading_and_error_layout.*
 
 
 class MapFragment : Fragment() {
     private var mMapBox: com.mapbox.mapboxsdk.maps.MapView? = null
-    private val mViewModel: MapViewModel by viewModels()
+    private lateinit var mViewModel: CountriesViewModel
     private var countriesList = ArrayList<Country>()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,33 +46,38 @@ class MapFragment : Fragment() {
     }
 
     private fun init(v: View) {
+        mViewModel = ViewModelProvider(requireActivity() as MainActivity).get(CountriesViewModel::class.java)
+
         mMapBox = v.findViewById(R.id.mapView)
         v.findViewById<MaterialButton>(R.id.try_again).setOnClickListener {
             mViewModel.getCountriesStatistic()
         }
-        mViewModel.mShowProgress.observe(viewLifecycleOwner, Observer {
-            if (it) {
-                failure_container.visibility = View.GONE
-                progress.visibility = View.VISIBLE
-            } else {
-                progress.visibility = View.GONE
-            }
-        })
 
-        mViewModel.mFailure.observe(viewLifecycleOwner, Observer {
-            if (it) {
-                progress.visibility = View.GONE
-                mMapBox?.visibility = View.GONE
-                failure_container.visibility = View.VISIBLE
-            } else {
-                failure_container.visibility = View.GONE
-                mMapBox?.visibility = View.VISIBLE
+        mViewModel.mCountriesStatus.observe(viewLifecycleOwner, Observer {
+            when (it) {
+                Status.LOADING -> {
+                    mMapBox?.visibility = View.GONE
+                    failure_container.visibility = View.GONE
+                    progress?.visibility = View.VISIBLE
+                }
+                Status.SUCCESS -> {
+                    mMapBox?.visibility = View.VISIBLE
+                    not_find_data.visibility = View.GONE
+                    progress?.visibility = View.GONE
+                    failure_container.visibility = View.GONE
+                }
+                Status.ERROR -> {
+                    mMapBox?.visibility = View.GONE
+                    failure_container.visibility = View.VISIBLE
+                    progress?.visibility = View.GONE
+                }
+
             }
         })
 
         mMapBox?.getMapAsync { map ->
             map.setStyle(Style.LIGHT)
-            mViewModel.mCountriesStatistic.observe(viewLifecycleOwner, Observer { list ->
+            mViewModel.mFilteredData.observe(viewLifecycleOwner, Observer { list ->
                 countriesList.clear()
                 countriesList.addAll(list)
                 list.forEach { country ->
@@ -92,7 +103,6 @@ class MapFragment : Fragment() {
                 val view = layoutInflater.inflate(R.layout.info_window_layout, null)
                 view.findViewById<SimpleDraweeView>(R.id.flag).setImageURI(data?.countryInfo?.flag)
                 view.findViewById<TextView>(R.id.country).text = data?.country
-
                 view.findViewById<TextView>(R.id.cases).text = data?.cases?.decimalFormatter()
                 view.findViewById<TextView>(R.id.deaths).text = data?.deaths?.decimalFormatter()
                 view.findViewById<TextView>(R.id.recovered).text =

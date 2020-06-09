@@ -16,6 +16,7 @@ import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tracker.Constants.Constants
+import com.example.tracker.Constants.Constants.RECYCLER_STATE
 import com.example.tracker.Constants.Status
 import com.example.tracker.R
 import com.example.tracker.Utils.Utils
@@ -110,7 +111,6 @@ class NewsListFragment() : Fragment() {
 
     companion object {
         const val QUERY = "QUERY"
-        const val RECYCLER_STATE = "RECYCLER STATE"
 
         @JvmStatic
         fun newInstance(query: String): Fragment {

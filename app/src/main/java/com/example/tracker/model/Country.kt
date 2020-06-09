@@ -11,9 +11,10 @@ data class Country(
     val recovered: Int? = 0,
     val active: Int? = 0,
     val critical: Int? = 0,
+    val population: Int? = 0,
     val casesPerOneMillion: Double? = 0.0,
     val deathsPerOneMillion: Double? = 0.0,
-    val tests: Int? = 0,
+    val tests: Double? = 0.0,
     val testsPerOneMillion: Double? = 0.0,
     val continent: String? = ""
 )

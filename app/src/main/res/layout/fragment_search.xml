@@ -17,6 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <HorizontalScrollView
+            android:id="@+id/chip_scroll"
             android:scrollbarAlwaysDrawHorizontalTrack="false"
             android:layout_width="match_parent"
             android:scrollbars="none"
@@ -38,6 +39,7 @@
             android:id="@+id/search_recycler"
             android:layout_width="match_parent"
             android:scrollbars="vertical"
+            android:visibility="gone"
             android:scrollbarThumbVertical="@color/colorPrimary"
             android:scrollbarSize="5dp"
             android:layout_height="match_parent"

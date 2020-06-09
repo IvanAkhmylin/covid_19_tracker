@@ -2,8 +2,6 @@ package com.example.tracker.Utils
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.Bitmap
-import android.graphics.Canvas
 import android.graphics.Color
 import android.text.Spannable
 import android.text.SpannableString
@@ -11,9 +9,8 @@ import android.text.style.ForegroundColorSpan
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
-import androidx.appcompat.app.AlertDialog
-import androidx.core.content.ContextCompat
 import com.example.tracker.R
+import com.example.tracker.Utils.ExpansionUtils.timestampToDate
 import java.text.DecimalFormat
 import java.text.NumberFormat
 import java.text.SimpleDateFormat
@@ -21,6 +18,31 @@ import java.util.*
 
 
 object ExpansionUtils {
+    @SuppressLint("SimpleDateFormat")
+    fun Long.timestampToDate() : String{
+        val dateFormat = SimpleDateFormat("dd MMMM")
+        val timeFormat = SimpleDateFormat("k:mm")
+        val netDate = Date(this)
+        val date = dateFormat.format(netDate)
+        val time = timeFormat.format(netDate)
+
+        return "Data Updated: $date at $time"
+    }
+    fun ArrayList<String>.getAreaCount(): ArrayList<String>? {
+        val label: ArrayList<String> = ArrayList()
+        for (i in 0 until this.size) label.add(this.get(i))
+        return label
+    }
+    fun String.toMillis(): Long{
+        val df = SimpleDateFormat("MM/dd/yy", Locale.getDefault())
+        return df.parse(this).time
+    }
+
+    fun Long.fromMillis(format: String) : String{
+        val dateFormat = java.text.SimpleDateFormat(format)
+        val netDate = Date(this.toLong())
+        return dateFormat.format(netDate)
+    }
 
     @SuppressLint("ResourceType")
     fun TextView.setColorBefore(word: String) {
