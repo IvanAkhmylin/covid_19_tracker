@@ -93,6 +93,7 @@ class StatisticFragment : Fragment() {
 
         cases.text = it.cases?.decimalFormatter()
         deaths.text = it.deaths?.decimalFormatter()
+        recovered.text = it.recovered?.decimalFormatter()
 
         cases_today.text = "+${it.todayCases?.decimalFormatter()} today"
         cases_today.setColorBefore("today")
@@ -100,9 +101,11 @@ class StatisticFragment : Fragment() {
         deaths_today.text = "+${it.todayDeaths?.decimalFormatter()} today"
         deaths_today.setColorBefore("today")
 
-        recovered.text = it.recovered?.decimalFormatter()
+        recovered_today.text = "+${it.todayRecovered?.decimalFormatter()} today"
+        recovered_today.setColorBefore("today")
+
         active.text = it.active?.decimalFormatter()
-        tests.text = it.tests?.toString()
+        tests.text = it.tests?.decimalFormatter()
         critical.text = it.critical?.decimalFormatter()
         cases_per_million.text = it.casesPerOneMillion?.toString()
         deaths_per_million.text = it.deathsPerOneMillion?.toString()

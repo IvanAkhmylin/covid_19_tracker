@@ -2,7 +2,6 @@ package com.example.tracker.model
 
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
-import java.sql.Time
 
 data class Historic (
     val country: String ,

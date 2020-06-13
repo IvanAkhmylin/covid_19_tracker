@@ -8,7 +8,7 @@
         <item name="colorControlHighlight">@android:color/transparent</item>
         <item name="drawerArrowStyle">@style/DrawerStyle</item>
         <item name="ChipStyle">@style/ChipFilter</item>
-
+        <item name="android:itemTextAppearance">@style/ToolbarMenuItemsStyle</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -23,7 +23,7 @@
         <item name="itemTextColor">@drawable/nav_text_color</item>
     </style>
 
-    <style name="MenuItemShape" >
+    <style name="MenuItemShape">
         <item name="android:shape">rectangle</item>
         <item name="cornerSizeBottomLeft">0dp</item>
         <item name="cornerSizeTopLeft">0dp</item>
@@ -31,11 +31,14 @@
         <item name="cornerSizeBottomRight">50%</item>
     </style>
 
+    <style name="ToolbarMenuItemsStyle" parent="@android:style/TextAppearance.Widget.IconMenu.Item">
+        <item name="android:textColor">@color/dark</item>
+        <item name="android:textSize">@dimen/BodySecondaryTextSize</item>
+    </style>
+
     <style name="toolbarStyle" parent="Theme.MaterialComponents.Light.DarkActionBar">
-        <item name="android:textColorSecondary">@color/white</item>
         <item name="android:background">@color/colorPrimary</item>
-        <item name="titleTextColor">@color/white</item>
-        <item name="theme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
+        <item name="theme">@style/ThemeOverlay.MaterialComponents.Dark.ActionBar</item>
     </style>
 
     <style name="ChipFilter" parent="Widget.MaterialComponents.Chip.Filter" >
@@ -61,7 +64,6 @@
     <style name="PrimaryTextStyle">
         <item name="android:textStyle">normal</item>
         <item name="android:textColor">@color/primary_text</item>
-
         <item name="android:textSize">@dimen/BodyPrimaryTextSize</item>
     </style>
 

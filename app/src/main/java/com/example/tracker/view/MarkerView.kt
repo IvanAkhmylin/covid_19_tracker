@@ -19,25 +19,27 @@ import com.github.mikephil.charting.utils.MPPointF
 import kotlinx.android.synthetic.main.marker_layout.view.*
 
 
+@SuppressLint("ViewConstructor")
 class MarkerView(context: Context, layoutResource: Int) : MarkerView(context, layoutResource) {
 
     @SuppressLint("SetTextI18n")
     override fun refreshContent(e: Entry?, highlight: Highlight?) {
-        val data = e?.data as Triple<Long , Int, String>
+        val data = e?.data as Triple<Long , Pair<Int , Int>, String>
+
         when(data.third){
             CASES -> {
                 tvDate.text = "$DATE ${data.first.fromMillis(DAY_MONTH)}"
-                tvValue.text = "$CASES ${data.second.decimalFormatter()}"
+                tvValue.text = "$CASES ${data.second.first} (+${data.second.first.minus(data.second.second)})"
                 marker_card.strokeColor = context.getColor(R.color.blue)
             }
             DEATHS -> {
                 tvDate.text = "$DATE ${data.first.fromMillis(DAY_MONTH)}"
-                tvValue.text = "$DEATHS ${data.second.decimalFormatter()}"
+                tvValue.text = "$DEATHS ${data.second.first} (+${data.second.first.minus(data.second.second)})"
                 marker_card.strokeColor = context.getColor(R.color.red)
             }
             RECOVERED -> {
                 tvDate.text = "$DATE ${data.first.fromMillis(DAY_MONTH)}"
-                tvValue.text = "$RECOVERED${data.second.decimalFormatter()}"
+                tvValue.text = "$DEATHS ${data.second.first} (+${data.second.first.minus(data.second.second)})"
                 marker_card.strokeColor = context.getColor(R.color.green)
             }
         }

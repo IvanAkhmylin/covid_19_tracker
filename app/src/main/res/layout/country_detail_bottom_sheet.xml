@@ -2,114 +2,200 @@
 
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:contentPadding="10dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    app:strokeWidth="2dp"
+    app:strokeColor="@color/light_gray"
     app:layout_behavior="@string/bottom_sheet_behavior">
 
     <LinearLayout
-        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="120dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/day"
+                style="@style/TitleTextStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="23"
+                android:textAlignment="center"
+                android:textSize="50sp" />
+
+            <TextView
+                android:id="@+id/month"
+                style="@style/TitleTextStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="september"
+                android:textAlignment="center" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="2dp"
+            android:layout_height="match_parent"
+            android:background="@color/light_gray" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="vertical">
 
             <LinearLayout
-                android:layout_width="120dp"
-                android:layout_height="120dp"
-                android:gravity="center"
-                android:orientation="vertical">
+                android:layout_marginTop="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="10dp">
 
                 <TextView
-                    android:id="@+id/day"
-                    style="@style/TitleTextStyle"
-                    android:layout_width="match_parent"
+                    style="@style/NewsTitleTextStyle"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="23"
-                    android:textAlignment="center"
-                    android:textSize="50sp" />
+                    android:layout_weight="1"
+                    android:text="Cases:" />
 
-                <TextView
-                    android:id="@+id/month"
-                    style="@style/TitleTextStyle"
-                    android:layout_width="match_parent"
+                <LinearLayout
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="september"
-                    android:textAlignment="center" />
+                    android:layout_weight="2"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/cases"
+                        style="@style/PrimaryTextStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="11213123"
+                        android:textAlignment="center"
+                        android:textColor="@color/blue" />
+
+                    <TextView
+                        android:id="@+id/cases_on_day"
+                        style="@style/SecondaryTextStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="+12002101"
+                        android:textAlignment="center"
+                        android:textColor="@color/blue" />
+
+
+                </LinearLayout>
+
+
             </LinearLayout>
-        <View
-            android:background="@color/light_gray"
-            android:layout_width="2dp"
-            android:layout_height="match_parent"/>
-        <LinearLayout
-            android:paddingLeft="10dp"
-            android:gravity="center_vertical"
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-                <LinearLayout
-                    android:gravity="center_vertical"
-                    android:layout_width="match_parent"
+
+            <View
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/light_gray" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="10dp">
+
+                <TextView
+                    style="@style/NewsTitleTextStyle"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:layout_weight="1"
+                    android:text="Recovered:" />
 
-                        <TextView
-                            style="@style/SecondaryTextStyle"
-                            android:layout_width="0dp"
-                            android:layout_weight="1"
-                            android:layout_height="wrap_content"
-                            android:text="Cases:" />
 
-                        <TextView
-                            android:id="@+id/cases"
-                            style="@style/PrimaryTextStyle"
-                            android:layout_width="0dp"
-                            android:layout_weight="2"                            android:layout_height="wrap_content"
-                            android:text="11213123"
-                            android:textAlignment="center"
-                            android:textColor="@color/blue" />
-                </LinearLayout>
                 <LinearLayout
-                    android:gravity="center_vertical"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:layout_weight="2"
+                    android:orientation="vertical">
 
-                        <TextView
-                            style="@style/SecondaryTextStyle"
-                            android:layout_width="0dp"
-                            android:layout_weight="1"
-                            android:layout_height="wrap_content"
-                            android:text="Recovered:" />
+                    <TextView
+                        android:id="@+id/recovered"
+                        style="@style/PrimaryTextStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="11213123"
+                        android:textAlignment="center"
+                        android:textColor="@color/green" />
 
-                        <TextView
-                            android:id="@+id/recovered"
-                            style="@style/PrimaryTextStyle"
-                            android:layout_width="0dp"
-                            android:layout_weight="2"                            android:layout_height="wrap_content"
-                            android:text="11213123"
-                            android:textAlignment="center"
-                            android:textColor="@color/green" />
+                    <TextView
+                        android:id="@+id/recovered_on_today"
+                        style="@style/SecondaryTextStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:text="+12002101"
+                        android:textAlignment="center"
+                        android:textColor="@color/green" />
+
+
                 </LinearLayout>
+
+            </LinearLayout>
+
+            <View
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/light_gray" />
+
+            <LinearLayout
+                android:layout_marginBottom="5dp"
+                android:paddingLeft="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/NewsTitleTextStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Deaths:" />
+
                 <LinearLayout
-                    android:gravity="center_vertical"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:layout_weight="2"
+                    android:orientation="vertical">
 
-                        <TextView
-                            style="@style/SecondaryTextStyle"
-                            android:layout_width="0dp"
-                            android:layout_weight="1"                            android:layout_height="wrap_content"
-                            android:text="Deaths:" />
+                    <TextView
+                        android:id="@+id/deaths"
+                        style="@style/PrimaryTextStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="11213123"
+                        android:textAlignment="center"
+                        android:textColor="@color/red" />
 
-                        <TextView
-                            android:id="@+id/deaths"
-                            style="@style/PrimaryTextStyle"
-                            android:layout_width="0dp"
-                            android:layout_weight="2"                                 android:layout_height="wrap_content"
-                            android:text="11213123"
-                            android:textAlignment="center"
-                            android:textColor="@color/red" />
+                    <TextView
+                        android:id="@+id/deaths_on_today"
+                        style="@style/SecondaryTextStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:text="+12002101"
+                        android:textAlignment="center"
+                        android:textColor="@color/red" />
+
+
                 </LinearLayout>
+
+            </LinearLayout>
 
         </LinearLayout>
 

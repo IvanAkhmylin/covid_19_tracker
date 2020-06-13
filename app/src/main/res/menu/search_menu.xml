@@ -7,4 +7,20 @@
         app:showAsAction="always"
         app:actionViewClass="androidx.appcompat.widget.SearchView"
         android:title="" />
+    <item android:id="@+id/sort_item"
+        android:icon="@drawable/ic_sort"
+        app:itemIconTint="@color/white"
+        app:showAsAction="always"
+        android:title="Sort by">
+        <menu>
+            <item android:id="@+id/sort_cases"
+                android:title="Cases"/>
+
+            <item android:id="@+id/sort_recovered"
+                android:title="Recovered"/>
+
+            <item android:id="@+id/sort_deaths"
+                android:title="Deaths"/>
+        </menu>
+    </item>
 </menu>

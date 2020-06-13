@@ -43,9 +43,11 @@ class CountryDetailFragment : Fragment() {
     }
 
     fun init(v: View) {
-        mViewModel = ViewModelProvider(requireActivity() as MainActivity).get(CountriesViewModel::class.java)
+        mViewModel =
+            ViewModelProvider(requireActivity() as MainActivity).get(CountriesViewModel::class.java)
         mRecyclerView = v.findViewById(R.id.statistic_days)
-        mRecyclerView.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL , false)
+        mRecyclerView.layoutManager =
+            LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
 
         mLineChart = v.findViewById(R.id.line_chart)
     }
@@ -53,10 +55,11 @@ class CountryDetailFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         arguments?.let {
-            (requireContext() as MainActivity).toolbar.title = it.getString(Constants.COUNTRIES_TITLE)
-            val historicData =  it.get(Constants.HISTORIC_OF_COUNTRIES) as Historic
+            (requireContext() as MainActivity).toolbar.title =
+                it.getString(Constants.COUNTRIES_TITLE)
+            val historicData = it.get(Constants.HISTORIC_OF_COUNTRIES) as Historic
 
-            historicData.let  {
+            historicData.let {
                 initLineChart(it)
                 mRecyclerView.adapter = CountriesDaysAdapter(it)
                 mRecyclerView.adapter!!.notifyDataSetChanged()
@@ -71,45 +74,84 @@ class CountryDetailFragment : Fragment() {
         val cases = ArrayList<Entry>()
         val deaths = ArrayList<Entry>()
         val recovered = ArrayList<Entry>()
+        val keys = historic.timeLine.cases.keys.toTypedArray()
 
-        for ((key, value) in historic.timeLine.cases) {
-            val x_points = key.toMillis().toFloat()
-            val y_points: Float = value.toFloat()
-            cases.add(
-                Entry(
-                    x_points,
-                    y_points,
-                    null,
-                    Triple<Long, Int, String>(key.toMillis(), value, Constants.CASES)
+        for ((index, key) in keys.withIndex()) {
+            val previousKey = keys.getOrNull(index - 1)
+            if (previousKey != null) {
+                val data = Triple<Long, Pair<Int, Int>, String>(
+                    key.toMillis(),
+                    Pair(
+                        historic.timeLine.cases.getOrDefault(key, 0),
+                        historic.timeLine.cases.getOrDefault(previousKey.toString(), 0)
+                    ),
+                    Constants.CASES
                 )
-            )
-            xAxisLabel.add(key.toMillis().fromMillis(DAY_MONTH))
+
+                val x_points = key.toMillis().toFloat()
+                val y_points: Float = historic.timeLine.cases[key]?.toFloat()!!
+                cases.add(
+                    Entry(
+                        x_points,
+                        y_points,
+                        null,
+                        data
+                    )
+                )
+                xAxisLabel.add(key.toMillis().fromMillis(DAY_MONTH))
+            }
         }
 
-        for ((key, value) in historic.timeLine.deaths) {
-            val x_points = key.toMillis().toFloat()
-            val y_points: Float = value.toFloat()
-            deaths.add(
-                Entry(
-                    x_points,
-                    y_points,
-                    null,
-                    Triple(key.toMillis(), value, Constants.DEATHS)
+        for ((index, key) in keys.withIndex()) {
+            val previousKey = keys.getOrNull(index - 1)
+            if (previousKey != null) {
+                val data = Triple<Long, Pair<Int, Int>, String>(
+                    key.toMillis(),
+                    Pair(
+                        historic.timeLine.recovered.getOrDefault(key, 0),
+                        historic.timeLine.recovered.getOrDefault(previousKey.toString(), 0)
+                    ),
+                    Constants.RECOVERED
                 )
-            )
+
+                val x_points = key.toMillis().toFloat()
+                val y_points: Float = historic.timeLine.recovered[key]?.toFloat()!!
+                recovered.add(
+                    Entry(
+                        x_points,
+                        y_points,
+                        null,
+                        data
+                    )
+                )
+                xAxisLabel.add(key.toMillis().fromMillis(DAY_MONTH))
+            }
         }
 
-        for ((key, value) in historic.timeLine.recovered) {
-            val x_points = key.toMillis().toFloat()
-            val y_points: Float = value.toFloat()
-            recovered.add(
-                Entry(
-                    x_points,
-                    y_points,
-                    null,
-                    Triple(key.toMillis(), value, Constants.RECOVERED)
+        for ((index, key) in keys.withIndex()) {
+            val previousKey = keys.getOrNull(index - 1)
+            if (previousKey != null) {
+                val data = Triple<Long, Pair<Int, Int>, String>(
+                    key.toMillis(),
+                    Pair(
+                        historic.timeLine.deaths.getOrDefault(key, 0),
+                        historic.timeLine.deaths.getOrDefault(previousKey.toString(), 0)
+                    ),
+                    Constants.DEATHS
                 )
-            )
+
+                val x_points = key.toMillis().toFloat()
+                val y_points: Float = historic.timeLine.deaths[key]?.toFloat()!!
+                deaths.add(
+                    Entry(
+                        x_points,
+                        y_points,
+                        null,
+                        data
+                    )
+                )
+                xAxisLabel.add(key.toMillis().fromMillis(DAY_MONTH))
+            }
         }
 
         val casesDataSet = LineDataSet(cases, null).apply {
@@ -156,7 +198,7 @@ class CountryDetailFragment : Fragment() {
                 setAvoidFirstLastClipping(true)
                 spaceMax = 0.01f;
                 spaceMin = 0.01f;
-                setLabelCount(4 , false)
+                setLabelCount(4, false)
                 isGranularityEnabled = true
                 granularity = 1f
                 position = XAxis.XAxisPosition.BOTTOM

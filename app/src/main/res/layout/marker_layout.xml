@@ -28,5 +28,6 @@
             android:clipChildren="false"
             android:clipToPadding="false"
             android:text="Cases: 0" />
+
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

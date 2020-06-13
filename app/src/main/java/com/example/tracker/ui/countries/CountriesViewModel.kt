@@ -131,11 +131,39 @@ class CountriesViewModel(application: Application) : AndroidViewModel(applicatio
         mFilteredData.postValue(mCountriesList)
     }
 
-    fun  getHistoric(country: String?): Historic? {
+    fun getHistoric(country: String?): Historic? {
         return mCountryHistoric.value!!.firstOrNull {
             it.country == country
         }
 
+    }
+
+    fun sortBy(type: String) {
+        when (type) {
+            Constants.CASES -> {
+                mFilteredList.sortByDescending {
+                    it.cases
+                }
+
+                mFilteredData.postValue(mFilteredList)
+            }
+
+            Constants.RECOVERED -> {
+                mFilteredList.sortByDescending {
+                    it.recovered
+                }
+
+                mFilteredData.postValue(mFilteredList)
+            }
+
+            Constants.DEATHS -> {
+                mFilteredList.sortByDescending {
+                    it.deaths
+                }
+
+                mFilteredData.postValue(mFilteredList)
+            }
+        }
     }
 
 

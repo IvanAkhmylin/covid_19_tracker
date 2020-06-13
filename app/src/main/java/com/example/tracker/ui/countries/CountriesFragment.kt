@@ -3,7 +3,6 @@ package com.example.tracker.ui.countries
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.os.Parcelable
-import android.util.Log
 import android.view.*
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
@@ -32,7 +31,8 @@ class CountriesFragment : Fragment() {
     private lateinit var mViewModel: CountriesViewModel
     private var mSearchView: SearchView? = null
     private lateinit var mChipGroup: ChipGroup
-    private lateinit var mMenuItem: MenuItem
+    private lateinit var mSearchItem: MenuItem
+    private lateinit var mSortItem: MenuItem
     private lateinit var mFab: FloatingActionButton
     private var mRecycler: RecyclerView? = null
     private var mQuery = ""
@@ -130,7 +130,7 @@ class CountriesFragment : Fragment() {
     private fun initFab() {
         mFab.setOnClickListener {
             if (mSearchView!!.isIconified) {
-               showSearchView()
+                showSearchView()
             } else {
                 hideSearchView()
             }
@@ -142,14 +142,18 @@ class CountriesFragment : Fragment() {
             setImageDrawable(requireContext().getDrawable(R.drawable.ic_search))
             hideKeyboard()
         }
-        mMenuItem.isVisible = false
+        mSearchItem.isVisible = false
         mSearchView!!.onActionViewCollapsed()
+
+        mSortItem.isVisible = true
     }
 
     private fun showSearchView() {
         mFab.setImageDrawable(requireContext().getDrawable(R.drawable.ic_close))
-        mMenuItem.isVisible = true
+        mSearchItem.isVisible = true
         mSearchView!!.onActionViewExpanded()
+
+        mSortItem.isVisible = false
     }
 
     private fun initChips() {
@@ -183,14 +187,35 @@ class CountriesFragment : Fragment() {
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
         inflater.inflate(R.menu.search_menu, menu)
-        mMenuItem = menu.findItem(R.id.search_item)
-        mMenuItem.apply {
+
+        mSearchItem = menu.findItem(R.id.search_item)
+        mSortItem = menu.findItem(R.id.sort_item)
+
+        mSearchItem.apply {
             expandActionView()
             isVisible = false
-            mSearchView = mMenuItem.actionView as SearchView
+            mSearchView = mSearchItem.actionView as SearchView
         }
 
         initSearchView()
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.sort_cases -> {
+                mViewModel.sortBy(Constants.CASES)
+            }
+
+            R.id.sort_recovered -> {
+                mViewModel.sortBy(Constants.RECOVERED)
+            }
+
+            R.id.sort_deaths -> {
+                mViewModel.sortBy(Constants.DEATHS)
+            }
+        }
+
+        return super.onOptionsItemSelected(item)
     }
 
     private fun initSearchView() {
