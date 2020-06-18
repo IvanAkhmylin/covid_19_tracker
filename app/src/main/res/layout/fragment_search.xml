@@ -9,40 +9,40 @@
     android:gravity="center"
     android:orientation="vertical">
 
-    <include layout="@layout/loading_and_error_layout"/>
+    <include layout="@layout/loading_and_error_layout" />
 
     <LinearLayout
 
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
         <HorizontalScrollView
             android:id="@+id/chip_scroll"
-            android:scrollbarAlwaysDrawHorizontalTrack="false"
             android:layout_width="match_parent"
-            android:scrollbars="none"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:scrollbarAlwaysDrawHorizontalTrack="false"
+            android:scrollbars="none">
+
             <com.google.android.material.chip.ChipGroup
-                android:layout_width="match_parent"
-                style="@style/Widget.MaterialComponents.Chip.Filter"
                 android:id="@+id/chip_group"
-                app:singleSelection="true"
+                style="@style/Widget.MaterialComponents.Chip.Filter"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
-                android:layout_height="wrap_content">
+                app:singleSelection="true" />
 
 
-            </com.google.android.material.chip.ChipGroup>
         </HorizontalScrollView>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/search_recycler"
             android:layout_width="match_parent"
-            android:scrollbars="vertical"
-            android:visibility="gone"
-            android:scrollbarThumbVertical="@color/colorPrimary"
-            android:scrollbarSize="5dp"
             android:layout_height="match_parent"
+            android:scrollbarSize="5dp"
+            android:scrollbarThumbVertical="@color/colorPrimary"
+            android:scrollbars="vertical"
             tools:listitem="@layout/search_item_layout" />
     </LinearLayout>
 

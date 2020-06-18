@@ -85,6 +85,14 @@
         <item name="android:textColor">@color/primary_text</item>
     </style>
 
-
+    <style name="RightRoundedButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerFamilyTopRight">cut</item>
+        <item name="cornerFamilyBottomLeft">cut</item>
+        <item name="cornerSizeTopLeft">32dp</item>
+        <item name="cornerSizeBottomLeft">0dp</item>
+        <item name="cornerSizeTopRight">0dp</item>
+        <item name="cornerSizeBottomRight">@dimen/corner_radius</item>
+    </style>
 
 </resources>

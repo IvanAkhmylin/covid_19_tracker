@@ -55,7 +55,7 @@ class NewsRepository {
                             resource,
                             time,
                             "https://news.google.com/$link",
-                            image.replace("h100", "h200").replace("w100", "w200")
+                            image.replace("h100", "h800").replace("w100", "w800")
                         )
                     )
 

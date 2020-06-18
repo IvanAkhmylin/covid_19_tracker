@@ -24,22 +24,22 @@ class MarkerView(context: Context, layoutResource: Int) : MarkerView(context, la
 
     @SuppressLint("SetTextI18n")
     override fun refreshContent(e: Entry?, highlight: Highlight?) {
-        val data = e?.data as Triple<Long , Pair<Int , Int>, String>
+        val data = e?.data as Triple<Long , Int, String>
 
         when(data.third){
             CASES -> {
                 tvDate.text = "$DATE ${data.first.fromMillis(DAY_MONTH)}"
-                tvValue.text = "$CASES ${data.second.first} (+${data.second.first.minus(data.second.second)})"
+                tvValue.text = "$CASES +${data.second}"
                 marker_card.strokeColor = context.getColor(R.color.blue)
             }
             DEATHS -> {
                 tvDate.text = "$DATE ${data.first.fromMillis(DAY_MONTH)}"
-                tvValue.text = "$DEATHS ${data.second.first} (+${data.second.first.minus(data.second.second)})"
+                tvValue.text = "$DEATHS +${data.second}"
                 marker_card.strokeColor = context.getColor(R.color.red)
             }
             RECOVERED -> {
                 tvDate.text = "$DATE ${data.first.fromMillis(DAY_MONTH)}"
-                tvValue.text = "$DEATHS ${data.second.first} (+${data.second.first.minus(data.second.second)})"
+                tvValue.text = "$DEATHS +${data.second}"
                 marker_card.strokeColor = context.getColor(R.color.green)
             }
         }

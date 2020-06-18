@@ -48,7 +48,6 @@ class CountriesFragment : Fragment() {
         return v
     }
 
-
     @SuppressLint("SetTextI18n")
     private fun init(v: View) {
         mViewModel =
@@ -72,6 +71,7 @@ class CountriesFragment : Fragment() {
         mViewModel.mCountriesStatus.observe(viewLifecycleOwner, Observer {
             when (it) {
                 Status.LOADING -> {
+                    mRecycler?.visibility = View.GONE
                     mFab.visibility = View.GONE
                     mChipGroup.visibility = View.GONE
                     failure_container.visibility = View.GONE

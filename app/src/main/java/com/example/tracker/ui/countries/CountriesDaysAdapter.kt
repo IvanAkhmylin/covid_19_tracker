@@ -13,8 +13,9 @@ import com.example.tracker.Utils.ExpansionUtils.decimalFormatter
 import com.example.tracker.Utils.ExpansionUtils.fromMillis
 import com.example.tracker.Utils.ExpansionUtils.toMillis
 import com.example.tracker.model.Historic
+import com.example.tracker.model.TimeLine
 
-class CountriesDaysAdapter(val historic: Historic) : RecyclerView.Adapter<CountriesDaysAdapter.ViewHolder>() {
+class CountriesDaysAdapter(val timeLine: TimeLine) : RecyclerView.Adapter<CountriesDaysAdapter.ViewHolder>() {
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -24,7 +25,7 @@ class CountriesDaysAdapter(val historic: Historic) : RecyclerView.Adapter<Countr
     }
     inner class ViewHolder(val v: View): RecyclerView.ViewHolder(v)
 
-    override fun getItemCount(): Int = historic.timeLine.cases.size - 1
+    override fun getItemCount(): Int = timeLine.cases.size - 1
 
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: CountriesDaysAdapter.ViewHolder, position: Int) {
@@ -37,19 +38,19 @@ class CountriesDaysAdapter(val historic: Historic) : RecyclerView.Adapter<Countr
         val mDeaths = holder.v.findViewById<TextView>(R.id.deaths)
         val mDeathsOnDay = holder.v.findViewById<TextView>(R.id.deaths_on_today)
 
-        val keys = historic.timeLine.cases.keys.reversed().toTypedArray()
+        val keys = timeLine.cases.keys.reversed().toTypedArray()
 
         val day = keys[position].toMillis().fromMillis(DAY)
         val month = keys[position].toMillis().fromMillis(MONTH)
 
-        val cases = historic.timeLine.cases.getValue(keys[position])
-        val casesOnDay = cases.minus(historic.timeLine.cases.getValue(keys[position + 1]))
+        val cases = timeLine.cases.getValue(keys[position])
+        val casesOnDay = cases.minus(timeLine.cases.getValue(keys[position + 1]))
 
-        val recovered = historic.timeLine.recovered.getValue(keys[position])
-        val recoveredOnDay = recovered.minus(historic.timeLine.recovered.getValue(keys[position + 1]))
+        val recovered = timeLine.recovered.getValue(keys[position])
+        val recoveredOnDay = recovered.minus(timeLine.recovered.getValue(keys[position + 1]))
 
-        val death= historic.timeLine.deaths.getValue(keys[position])
-        val deathOnDay= death.minus(historic.timeLine.deaths.getValue(keys[position + 1]))
+        val death= timeLine.deaths.getValue(keys[position])
+        val deathOnDay= death.minus(timeLine.deaths.getValue(keys[position + 1]))
 
         mDay.text = day
         mMonth.text = month

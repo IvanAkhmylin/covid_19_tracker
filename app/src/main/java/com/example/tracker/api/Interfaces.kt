@@ -5,6 +5,7 @@ import com.example.tracker.R
 import com.example.tracker.model.Country
 import com.example.tracker.model.Historic
 import com.example.tracker.model.Statistic
+import com.example.tracker.model.TimeLine
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
@@ -18,13 +19,18 @@ import retrofit2.http.Query
 interface Interfaces {
     @Headers("Content-Type: application/json")
     @GET("v2/all")
-    fun getStatistic(): Call<Statistic>
+    fun getOverallStatistic(): Call<Statistic>
 
     @Headers("Content-Type: application/json")
-    @GET("v2/countries/{query}" )
+    @GET("v2/historical/all?lastdays=99")
+    fun getOverallHistoric(): Call<TimeLine>
+
+    @Headers("Content-Type: application/json")
+    @GET("v2/countries/{query}")
     fun searchCountry(
-        @Path("query")country: String,
-        @Query("strict")strictSearch: Boolean): Call<Country>
+        @Path("query") country: String,
+        @Query("strict") strictSearch: Boolean
+    ): Call<Country>
 
 
     @Headers("Content-Type: application/json")
@@ -35,7 +41,8 @@ interface Interfaces {
     @GET("v2/historical/{path}?lastdays=100")
     fun getCountriesHistoric(@Path("path") countries: String): Call<List<Historic>>
 
-    companion object{
+
+    companion object {
         fun initRetrofit(application: Application): Interfaces {
             val interceptor: HttpLoggingInterceptor = HttpLoggingInterceptor().apply {
                 this.level = HttpLoggingInterceptor.Level.BODY
