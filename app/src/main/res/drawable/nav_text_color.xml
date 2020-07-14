@@ -3,5 +3,5 @@
     <!-- This is used when the Navigation Item is checked -->
     <item android:color="@color/white" android:state_checked="true"/>
     <!-- This is the default text color -->
-    <item android:color="@color/dark" />
+    <item android:color="@color/primary_text" />
 </selector>

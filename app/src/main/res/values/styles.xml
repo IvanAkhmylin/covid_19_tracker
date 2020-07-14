@@ -1,7 +1,6 @@
 <resources>
 
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.MaterialComponents.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
@@ -9,6 +8,15 @@
         <item name="drawerArrowStyle">@style/DrawerStyle</item>
         <item name="ChipStyle">@style/ChipFilter</item>
         <item name="android:itemTextAppearance">@style/ToolbarMenuItemsStyle</item>
+        <item name="android:dialogTheme">@style/AppTheme.Dialog</item>
+        <item name="android:alertDialogTheme">@style/AppTheme.Dialog</item>
+        <item name="alertDialogTheme">@style/AppTheme.Dialog</item>
+    </style>
+
+    <style name="AppTheme.Dialog" parent="Theme.MaterialComponents.DayNight.Dialog">
+        <item name="colorPrimary">@color/colorAccent</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -17,6 +25,14 @@
         <item name="android:statusBarColor">@android:color/transparent</item>
     </style>
 
+    <style name="ColdStartStyle" parent="AppTheme.NoActionBar">
+        <item name="android:windowBackground">@drawable/splash_screen_layer</item>
+        <item name="android:fitsSystemWindows">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
 
     <style name="Widget.Custom.NavigationView" parent="Widget.Design.NavigationView">
         <item name="itemIconTint">@drawable/nav_icon_color</item>
@@ -32,7 +48,7 @@
     </style>
 
     <style name="ToolbarMenuItemsStyle" parent="@android:style/TextAppearance.Widget.IconMenu.Item">
-        <item name="android:textColor">@color/dark</item>
+        <item name="android:textColor">@color/primary_text</item>
         <item name="android:textSize">@dimen/BodySecondaryTextSize</item>
     </style>
 
@@ -41,13 +57,11 @@
         <item name="theme">@style/ThemeOverlay.MaterialComponents.Dark.ActionBar</item>
     </style>
 
-    <style name="ChipFilter" parent="Widget.MaterialComponents.Chip.Filter" >
+    <style name="ChipFilter" parent="Widget.MaterialComponents.Chip.Filter">
         <item name="android:checkable">true</item>
-        <item name="chipBackgroundColor">@color/chip_selector</item>
+        <item name="chipBackgroundColor">@color/chip_selector_background</item>
         <item name="android:textColor">@drawable/nav_text_color</item>
         <item name="checkedIcon">@drawable/ic_check</item>
-
-
     </style>
 
     <style name="DrawerStyle" parent="Widget.AppCompat.DrawerArrowToggle">
@@ -85,6 +99,11 @@
         <item name="android:textColor">@color/primary_text</item>
     </style>
 
+    <style name="CircleMaterialButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+
     <style name="RightRoundedButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
         <item name="cornerFamily">rounded</item>
         <item name="cornerFamilyTopRight">cut</item>
@@ -94,5 +113,6 @@
         <item name="cornerSizeTopRight">0dp</item>
         <item name="cornerSizeBottomRight">@dimen/corner_radius</item>
     </style>
+
 
 </resources>

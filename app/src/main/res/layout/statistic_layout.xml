@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background"
     android:animateLayoutChanges="true"
-    android:background="@color/light_gray"
     android:fillViewport="true"
     android:orientation="vertical"
     android:overScrollMode="never">
@@ -41,13 +41,14 @@
                         style="@style/TitleTextStyle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Data Updated: 12 may at 18:42"
+                        android:text="Data Updated: "
                         android:textAlignment="center"
                         android:textColor="@color/colorAccent"
                         android:textSize="@dimen/BodySecondaryTextSize" />
                 </com.google.android.material.card.MaterialCardView>
 
                 <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/chart_card"
                     android:layout_width="match_parent"
                     android:layout_height="450dp"
                     android:layout_marginLeft="10dp"
@@ -132,7 +133,7 @@
                                 style="@style/TitleTextStyle"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Cases" />
+                                android:text="@string/cases" />
 
                             <TextView
                                 android:id="@+id/cases"
@@ -173,7 +174,7 @@
                                 style="@style/TitleTextStyle"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Deaths" />
+                                android:text="@string/deaths" />
 
                             <TextView
                                 android:id="@+id/deaths"
@@ -214,7 +215,7 @@
                                 style="@style/TitleTextStyle"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Recovered" />
+                                android:text="@string/recovered" />
 
                             <TextView
                                 android:id="@+id/recovered"
@@ -255,7 +256,7 @@
                                 style="@style/TitleTextStyle"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Active" />
+                                android:text="@string/active" />
 
                             <TextView
                                 android:id="@+id/active"
@@ -295,7 +296,7 @@
                                 style="@style/TitleTextStyle"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Critical" />
+                                android:text="@string/critical" />
 
                             <TextView
                                 android:id="@+id/critical"
@@ -329,7 +330,7 @@
                                 style="@style/TitleTextStyle"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Tests" />
+                                android:text="@string/tests" />
 
                             <TextView
                                 android:id="@+id/tests"
@@ -364,7 +365,7 @@
                                 style="@style/TitleTextStyle"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Cases in 1 M" />
+                                android:text="@string/casesInMillion"/>
 
                             <TextView
                                 android:id="@+id/cases_per_million"
@@ -398,7 +399,7 @@
                                 style="@style/TitleTextStyle"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Deaths in 1 M" />
+                                android:text="@string/deathsInMillion" />
 
                             <TextView
                                 android:id="@+id/deaths_per_million"
@@ -433,7 +434,7 @@
                                 style="@style/TitleTextStyle"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Tests in 1 M" />
+                                android:text="@string/testsInMillion"/>
 
                             <TextView
                                 android:id="@+id/tests_per_million"
@@ -467,7 +468,7 @@
                                 style="@style/TitleTextStyle"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Countries" />
+                                android:text="@string/countries" />
 
                             <TextView
                                 android:id="@+id/affected_country"

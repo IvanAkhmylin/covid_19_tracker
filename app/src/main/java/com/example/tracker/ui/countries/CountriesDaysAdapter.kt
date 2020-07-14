@@ -14,6 +14,7 @@ import com.example.tracker.Utils.ExpansionUtils.fromMillis
 import com.example.tracker.Utils.ExpansionUtils.toMillis
 import com.example.tracker.model.Historic
 import com.example.tracker.model.TimeLine
+import java.util.*
 
 class CountriesDaysAdapter(val timeLine: TimeLine) : RecyclerView.Adapter<CountriesDaysAdapter.ViewHolder>() {
     override fun onCreateViewHolder(
@@ -40,8 +41,8 @@ class CountriesDaysAdapter(val timeLine: TimeLine) : RecyclerView.Adapter<Countr
 
         val keys = timeLine.cases.keys.reversed().toTypedArray()
 
-        val day = keys[position].toMillis().fromMillis(DAY)
-        val month = keys[position].toMillis().fromMillis(MONTH)
+        val day = keys[position].toMillis().fromMillis(DAY , Locale(holder.v.context.resources.getString(R.string.app_locale)))
+        val month = keys[position].toMillis().fromMillis(MONTH, Locale(holder.v.context.resources.getString(R.string.app_locale)))
 
         val cases = timeLine.cases.getValue(keys[position])
         val casesOnDay = cases.minus(timeLine.cases.getValue(keys[position + 1]))

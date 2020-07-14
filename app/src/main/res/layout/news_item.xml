@@ -1,74 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    xmlns:fresco="http://schemas.android.com/tools"
-    android:id="@+id/item"
-    android:layout_marginStart="10dp"
-    android:layout_marginEnd="10dp"
-    android:layout_marginTop="5dp"
-    android:layout_marginBottom="5dp"
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:cardCornerRadius="@dimen/corner_radius"
+    android:id="@+id/item"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="10dp"
+    android:layout_marginTop="5dp"
+    android:layout_marginEnd="10dp"
+    android:layout_marginBottom="5dp"
     android:elevation="1dp"
-    android:layout_height="wrap_content">
+    app:cardCornerRadius="@dimen/corner_radius">
 
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="5"
             android:orientation="vertical">
+
             <com.facebook.drawee.view.SimpleDraweeView
                 android:id="@+id/news_image"
-                android:src="@drawable/ic_launcher_background"
                 android:layout_width="match_parent"
-                android:layout_marginBottom="25dp"
-                android:layout_height="250dp"/>
+                app:placeholderImage="@color/gray"
+                android:layout_height="250dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_launcher_background" />
 
-            <com.facebook.drawee.view.SimpleDraweeView
-                fresco:roundedCornerRadius="5dp"
-                fresco:roundBottomStart="false"
-                app:actualImageUri=""
-                fresco:roundBottomEnd="false"
-                fresco:roundWithOverlayColor="@color/blue"
-                fresco:roundingBorderWidth="1dp"
-                fresco:roundingBorderColor="@color/red"
-                app:roundingBorderColor="@color/white"
-                android:img="@drawable/ic_launcher_background"
-                android:layout_gravity="center_horizontal|bottom"
-                android:layout_width="60dp"
-                android:layout_height="60dp"/>
-
-
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_gravity="bottom"
+                android:background="@color/background" />
 
         </FrameLayout>
 
         <TextView
-            android:layout_marginTop="10dp"
-            android:text="Coronavirus world map : which countries have the most"
             android:id="@+id/title"
             style="@style/TitleTextStyle"
-            android:layout_marginEnd="10dp"
-            android:textAlignment="center"
-            android:layout_marginStart="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:maxLines="2"/>
-        <TextView
-            android:text="adsadsasd"
+            android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
+            android:layout_marginEnd="10dp"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:text=""
+            android:textAlignment="center" />
+
+        <TextView
             android:id="@+id/resource"
-            android:textAlignment="center"
             style="@style/SecondaryTextStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="10dp"/>
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:text="adsadsasd"
+            android:textAlignment="center" />
 
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

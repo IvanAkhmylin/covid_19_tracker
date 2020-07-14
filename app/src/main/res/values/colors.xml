@@ -1,12 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#1976d2</color>
+    <color name="TransparentColorPrimary">#801976D2</color>
     <color name="colorPrimaryDark">#1565c0</color>
     <color name="colorAccent">#4CAF50</color>
     <color name="primary_light">#B3E5FC</color>
 
-    <color name="light_gray">#F3F3F3</color>
+    <color name="background">#F3F3F3</color>
+    <color name="surface">#F3F3F3</color>
+
     <color name="gray">#747474</color>
+    <color name="edit_text_background">#FFFFFF</color>
+    <color name="chip_background_color">#FFFFFF</color>
+    <color name="chip_text_color">#000000</color>
 
     <color name="primary_text">#212121</color>
     <color name="secondary_text">#757575</color>
@@ -14,6 +20,9 @@
     <color name="white" >#FFFFFF</color>
     <color name="black" >#000000</color>
 
+    <color name="drawer_background" >#121212</color>
+
+    \\ color for charts
     <color name="red">#D50000</color>
     <color name="green">#64DD17</color>
     <color name="blue">#0091EA</color>

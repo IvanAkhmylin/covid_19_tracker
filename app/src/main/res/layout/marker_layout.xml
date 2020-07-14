@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:id="@+id/marker_card"
     app:strokeWidth="2dp"
-    app:strokeColor="@color/light_gray"
+    app:strokeColor="@color/background"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:contentPadding="5dp"
     android:orientation="vertical">

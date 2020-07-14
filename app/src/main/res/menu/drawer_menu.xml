@@ -1,42 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
     <group android:checkableBehavior="single">
 
 
         <item
             android:id="@+id/news"
             android:icon="@drawable/ic_home"
-            android:title="News" />
+            android:title="@string/news" />
 
         <item
-            android:id="@+id/overall"
+            android:id="@+id/statistics"
             android:icon="@drawable/ic_dashboard"
-            android:title="Overall" />
+            android:title="@string/statistics" />
 
         <item
             android:id="@+id/countries"
             android:icon="@drawable/ic_world"
-            android:title="Countries" />
+            android:title="@string/countries" />
 
         <item
             android:id="@+id/map"
             android:icon="@drawable/ic_map"
-            android:title="Map" />
+            android:title="@string/map" />
 
-        <item
-            android:id="@+id/notifications"
-            android:icon="@drawable/ic_notifications"
-            android:title="Notifications" />
         <item
             android:id="@+id/settings"
             android:icon="@drawable/ic_settings"
-            android:title="Settings" />
+            android:title="@string/settings" />
 
         <item
-            android:id="@+id/info"
+            android:id="@+id/about"
             android:icon="@drawable/ic_info"
-            android:title="About" />
+            android:title="@string/about_app" />
 
 
     </group>

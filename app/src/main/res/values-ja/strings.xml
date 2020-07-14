@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">COVID-19 Tracker</string>
+    <string name="open">" 開いた"</string>
+    <string name="close">閉じる</string>
+    <string name="today">今日</string>
+    <string name="updated">"更新されたデータ "</string>
+    <string name="at">で</string>
+    <string name="app_locale">ja</string>
+    <string name="cases">ケース</string>
+    <string name="deaths">"死亡者（数 "</string>
+    <string name="recovered">"回復した "</string>
+    <string name="active">アクティブ</string>
+    <string name="critical">クリティカル</string>
+    <string name="tests">テスト</string>
+    <string name="casesInMillion">"1 Mのケース "</string>
+    <string name="deathsInMillion">1 Mでの死亡</string>
+    <string name="testsInMillion">1 Mでのテスト</string>
+    <string name="countries">国々</string>
+    <string name="choose">"選ぶ "</string>
+    <string name="settings">設定</string>
+    <string name="map">地図</string>
+    <string name="statistics">統計学</string>
+    <string name="theme">テーマ</string>
+    <string name="black_theme_enable">暗いテーマ</string>
+    <string name="lang">言語</string>
+    <string name="news">ニュース</string>
+    <string name="about_app">約</string>
+    <string name="sort_by">並べ替え &#8230;</string>
+    <string name="all_news_loaded">ロードされたすべてのニュース</string>
+    <string name="by_world">世界中</string>
+    <string name="search_news_hint">探す</string>
+    <string name="date">日付</string>
+    <string name="error_getting_historic_data">この地域の過去の日付を取得できません</string>
+    <string name="sort_by_cases">ケース</string>
+    <string name="sort_by_deaths">死亡者（数</string>
+    <string name="sort_by_recovered">回復した</string>
+    <string name="countries_search_hint">"国名（EN） "</string>
+    <string name="change_language">"言語を変更 "</string>
+    <string name="check_internet_connection">インターネット接続を確認してください &#8230;</string>
+    <string name="nothing_found">"何も見つかりません "</string>
+    <string name="something_wrong">"エラーが発生しました :（ "</string>
+    <string name="try_again">再試行</string>
+    <string name="night_theme">"夜のテーマ "</string>
+    <string name="day_theme">日のテーマ</string>
+    <string name="system_theme">システムテーマ</string>
+    <string name="change_theme">"テーマを変更 "</string>
+
+    <string name="about_app_info">Covid-19 Tracker - このプロジェクトは、自分自身を使い慣れるために作成されました Covid-19パンデミックに関連して、世界の現状について         モバイルアプリケーションの開発スキルを習得するだけでなく、.</string>
+    <string name="developer_links">翻訳にバグやエラーを見つけたら、私に書いてください。</string>
+</resources>

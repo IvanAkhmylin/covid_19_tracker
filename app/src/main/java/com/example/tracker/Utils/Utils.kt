@@ -7,7 +7,6 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.view.MotionEvent
 import android.view.View
-import android.view.View.OnTouchListener
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.core.widget.NestedScrollView
@@ -16,7 +15,7 @@ import com.example.tracker.R
 import com.example.tracker.Utils.ExpansionUtils.fromMillis
 import com.example.tracker.Utils.ExpansionUtils.toMillis
 import com.example.tracker.model.TimeLine
-import com.example.tracker.view.MarkerView
+import com.example.tracker.view.LineChartMarker
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.components.XAxis
@@ -31,7 +30,7 @@ object Utils {
 
     fun createDialog(context: Context): AlertDialog {
         val builder = AlertDialog.Builder(context)
-        builder.setView(R.layout.waiting_dialog)
+//        builder.setView(R.layout.waiting_dialog)
         builder.setCancelable(false)
         val dialog = builder.create()
         dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
@@ -58,7 +57,7 @@ object Utils {
             putExtra(Intent.EXTRA_TEXT, it)
             type = "text/plain"
         }
-        context.startActivity(Intent.createChooser(shareIntent, "Choose"))
+        context.startActivity(Intent.createChooser(shareIntent, context.getString(R.string.choose)))
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -99,7 +98,7 @@ object Utils {
                         data
                     )
                 )
-                xAxisLabel.add(key.toMillis().fromMillis(Constants.DAY_MONTH))
+                xAxisLabel.add(key.toMillis().fromMillis(Constants.DAY_MONTH,  Locale(context.resources.getString(R.string.app_locale))))
             }
         }
 
@@ -126,7 +125,7 @@ object Utils {
                         data
                     )
                 )
-                xAxisLabel.add(key.toMillis().fromMillis(Constants.DAY_MONTH))
+                xAxisLabel.add(key.toMillis().fromMillis(Constants.DAY_MONTH , Locale(context.resources.getString(R.string.app_locale))))
             }
         }
 
@@ -152,7 +151,7 @@ object Utils {
                         data
                     )
                 )
-                xAxisLabel.add(key.toMillis().fromMillis(Constants.DAY_MONTH))
+                xAxisLabel.add(key.toMillis().fromMillis(Constants.DAY_MONTH,  Locale(context.resources.getString(R.string.app_locale))))
             }
         }
 
@@ -162,7 +161,7 @@ object Utils {
             lineWidth = 3.0f
             circleRadius = 1f
             color = ContextCompat.getColor(context, R.color.blue)
-            setCircleColor(ContextCompat.getColor(context, R.color.white))
+            setCircleColor(ContextCompat.getColor(context, R.color.blue))
             highLightColor = context.getColor(R.color.blue)
             highlightLineWidth = 2f
             setDrawValues(false)
@@ -172,7 +171,7 @@ object Utils {
             lineWidth = 3.0f
             circleRadius = 1f
             color = ContextCompat.getColor(context, R.color.red)
-            setCircleColor(ContextCompat.getColor(context, R.color.white))
+            setCircleColor(ContextCompat.getColor(context, R.color.red))
             highLightColor = context.getColor(R.color.red)
             highlightLineWidth = 2f
             setDrawValues(false)
@@ -182,7 +181,7 @@ object Utils {
             lineWidth = 3f
             circleRadius = 1f
             color = ContextCompat.getColor(context, R.color.green)
-            setCircleColor(ContextCompat.getColor(context, R.color.white))
+            setCircleColor(ContextCompat.getColor(context, R.color.green))
             highLightColor = context.getColor(R.color.green)
             highlightLineWidth = 2f
             setDrawValues(false)
@@ -196,9 +195,11 @@ object Utils {
 
         mLineChart.apply {
             axisLeft.apply {
+                textColor = context.getColor(R.color.primary_text)
                 valueFormatter = LargeValueFormatter()
             }
             xAxis.apply {
+                textColor = context.getColor(R.color.primary_text)
                 setAvoidFirstLastClipping(true)
                 spaceMax = 0.01f
                 spaceMin = 0.01f
@@ -208,13 +209,13 @@ object Utils {
                 position = XAxis.XAxisPosition.BOTTOM
                 valueFormatter = object : ValueFormatter() {
                     override fun getFormattedValue(value: Float): String {
-                        return value.toLong().fromMillis(Constants.DAY_MONTH)
+                        return value.toLong().fromMillis(Constants.DAY_MONTH ,  Locale(context.resources.getString(R.string.app_locale)))
                     }
                 }
             }
             setTouchEnabled(true)
             setDrawMarkers(true)
-            markerView = MarkerView(
+            markerView = LineChartMarker(
                 context,
                 R.layout.marker_layout
             )
@@ -263,9 +264,9 @@ object Utils {
     ) {
         val data: ArrayList<PieEntry> = ArrayList()
         data.apply {
-            this.add(PieEntry(cases, "Cases"))
-            this.add(PieEntry(deaths, "Deaths"))
-            this.add(PieEntry(recovered, "Recovered"))
+            this.add(PieEntry(cases, context.getString(R.string.cases)))
+            this.add(PieEntry(deaths, context.getString(R.string.deaths)))
+            this.add(PieEntry(recovered, context.getString(R.string.recovered)))
         }
 
         val pieDataSet = PieDataSet(data, "").apply {

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:strokeWidth="2dp"
-    app:strokeColor="@color/light_gray"
+    app:strokeColor="@color/background"
     app:layout_behavior="@string/bottom_sheet_behavior">
 
     <LinearLayout
@@ -40,7 +40,7 @@
         <View
             android:layout_width="2dp"
             android:layout_height="match_parent"
-            android:background="@color/light_gray" />
+            android:background="@color/background" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -61,12 +61,12 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Cases:" />
+                    android:text="@string/cases" />
 
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="2"
+                    android:layout_weight="1.5"
                     android:orientation="vertical">
 
                     <TextView
@@ -98,7 +98,7 @@
                 android:layout_marginBottom="5dp"
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
-                android:background="@color/light_gray" />
+                android:background="@color/background" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -112,13 +112,13 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Recovered:" />
+                    android:text="@string/recovered" />
 
 
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="2"
+                    android:layout_weight="1.5"
                     android:orientation="vertical">
 
                     <TextView
@@ -150,7 +150,7 @@
                 android:layout_marginBottom="5dp"
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
-                android:background="@color/light_gray" />
+                android:background="@color/background" />
 
             <LinearLayout
                 android:layout_marginBottom="5dp"
@@ -165,12 +165,12 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Deaths:" />
+                    android:text="@string/deaths" />
 
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="2"
+                    android:layout_weight="1.5"
                     android:orientation="vertical">
 
                     <TextView

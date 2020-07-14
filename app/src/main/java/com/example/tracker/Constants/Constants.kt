@@ -7,10 +7,14 @@ object Constants {
     const val MONTH = "MMMM"
     const val CASES = "Cases:"
     const val DEATHS = "Deaths:"
-    const val DATE = "Date:"
     const val RECOVERED = "Recovered:"
     const val NEWS_LINK = "News Link"
     const val NEWS_TITLE = "News Title"
-    const val COUNTRIES_TITLE = "Countries Title"
+    const val COUNTRIES_NAME = "Countries Title"
     const val RECYCLER_STATE = "RECYCLER STATE"
+
+    const val STATE_NORMAL = 0
+    const val STATE_LOADING = 1
+
+
     val CONTINENTS =  listOf("Asia" , "Europe" , "Africa" , "North America" , "South America", "Australia/Oceania")}

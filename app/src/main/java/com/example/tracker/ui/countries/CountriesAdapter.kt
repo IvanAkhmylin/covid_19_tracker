@@ -1,25 +1,42 @@
 package com.example.tracker.ui.countries
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tracker.R
+import com.example.tracker.Utils.CountriesDiffUtilCallback
 import com.example.tracker.Utils.ExpansionUtils.decimalFormatter
 import com.example.tracker.model.Country
 import com.facebook.drawee.view.SimpleDraweeView
 import com.google.android.material.card.MaterialCardView
 
-class CountriesAdapter(private val items: List<Country>, var onClick : (Country) -> Unit) : RecyclerView.Adapter<CountriesAdapter.ViewHolder>() {
+class CountriesAdapter(var onClick: (Country) -> Unit) :
+    RecyclerView.Adapter<CountriesAdapter.ViewHolder>() {
+    private var items: ArrayList<Country> = ArrayList()
+
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
     ): ViewHolder {
-        val v = ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.search_item_layout,parent, false))
+        val v = ViewHolder(
+            LayoutInflater.from(parent.context).inflate(R.layout.country_item_layout, parent, false)
+        )
         return v
     }
-    inner class ViewHolder(val v: View): RecyclerView.ViewHolder(v)
+
+    inner class ViewHolder(val v: View) : RecyclerView.ViewHolder(v)
+
+    fun updateRecyclerView(newValues: List<Country>) {
+        Log.d("TAG", "UPDATE recycler view")
+        val diffResult = DiffUtil.calculateDiff(CountriesDiffUtilCallback(items, newValues))
+        items.clear()
+        items.addAll(newValues)
+        diffResult.dispatchUpdatesTo(this)
+    }
 
     override fun getItemCount(): Int = items.size
 
@@ -37,11 +54,9 @@ class CountriesAdapter(private val items: List<Country>, var onClick : (Country)
         cases.text = items[position].cases?.decimalFormatter()
         recovered.text = items[position].recovered?.decimalFormatter()
         deaths.text = items[position].deaths?.decimalFormatter()
-        card.setOnClickListener{
+        card.setOnClickListener {
             onClick(items[position])
         }
     }
-
-
 
 }

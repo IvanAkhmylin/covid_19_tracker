@@ -24,13 +24,16 @@ class CountriesRepository {
         mOverallApi.getCountriesStatistic().enqueue(object : Callback<List<Country>> {
             override fun onFailure(call: Call<List<Country>>, t: Throwable) {
                 onFailure("ERROR MESSAGE: ${t.message}")
+                Log.d("TAG" , "ERROR GETTING  --- > ${t.message}")
             }
 
             override fun onResponse(
                 call: Call<List<Country>>,
                 response: Response<List<Country>>
             ) {
+                Log.d("TAG" , "FINE GETTING  --- > ${response.body()!!.size}")
                 onResult(response.body()!!)
+
             }
         })
     }

@@ -2,42 +2,49 @@ package com.example.tracker.ui.countries
 
 import android.app.Application
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.example.tracker.Constants.Constants
 import com.example.tracker.Constants.Status
 import com.example.tracker.model.Country
 import com.example.tracker.model.Historic
 import kotlinx.coroutines.*
-import okhttp3.internal.wait
+import java.util.*
+import kotlin.collections.ArrayList
 
 class CountriesViewModel(application: Application) : AndroidViewModel(application) {
-    private var mSearchRequest = ""
     val model = CountriesRepository()
 
+    private var mSearchRequest = ""
+    var mAppLang = "en"
     private val mCountriesList = ArrayList<Country>()
     private val mSearchedList = ArrayList<Country>()
     private val mFilteredList = ArrayList<Country>()
 
-    private val mCountryHistoric = MutableLiveData<List<Historic>>()
+    val mCountryHistoric = MutableLiveData<List<Historic>>()
     val mCountriesStatus = MutableLiveData<String>()
     val mFilteredData = MutableLiveData<List<Country>>()
+    val mCountriesNameList = MutableLiveData<List<String>>()
 
     init {
+        Log.d("TAG" , "RE CALL ")
         getCountriesStatistic()
     }
 
     fun getCountriesStatistic() {
-        mCountriesStatus.postValue(Status.LOADING)
-        model.getCountries(getApplication(), {
-            mCountriesList.addAll(it)
-            mFilteredList.addAll(it)
-            mFilteredData.postValue(it)
-            getCountriesHistoric()
-        }, {
-            mCountriesStatus.postValue(Status.ERROR)
-        })
+        viewModelScope.launch {
+            mCountriesStatus.postValue(Status.LOADING)
+            model.getCountries(getApplication(), {
+                mCountriesList.addAll(it)
+                mFilteredList.addAll(it)
+                mFilteredData.postValue(it)
+                getCountriesArray(it)
+                getCountriesHistoric()
+            }, {
+                mCountriesStatus.postValue(it)
+            })
+        }
     }
 
     private fun getCountriesHistoric() {
@@ -45,7 +52,6 @@ class CountriesViewModel(application: Application) : AndroidViewModel(applicatio
             val countries = withContext(Dispatchers.Default) {
                 getCountriesNames()
             }
-            Log.d("TAG", countries)
 
             model.getCountriesHistoric(getApplication(), countries, {
                 mCountryHistoric.postValue(it)
@@ -59,6 +65,7 @@ class CountriesViewModel(application: Application) : AndroidViewModel(applicatio
     fun getCountriesByContinent(checkedId: Int) {
         GlobalScope.launch {
             if (checkedId == -1) {
+                Log.d("TAG" , "-1")
                 mFilteredList.clear()
                 mFilteredList.addAll(mCountriesList)
 
@@ -69,6 +76,7 @@ class CountriesViewModel(application: Application) : AndroidViewModel(applicatio
                 }
 
             } else {
+                Log.d("TAG" , "$checkedId")
                 mFilteredList.clear()
                 val continent = Constants.CONTINENTS[checkedId]
                 mCountriesList.forEach() {
@@ -114,16 +122,41 @@ class CountriesViewModel(application: Application) : AndroidViewModel(applicatio
     }
 
     suspend fun getCountriesNames(): String {
-        var names = ""
+        var countryNamesForHistoricRequest = ""
         val countries = CoroutineScope(Dispatchers.IO).async {
             mCountriesList.forEachIndexed { index, country ->
-                if (index == 0) names += "${country.country}"
-                names += ",${country.country}"
+                if (index == 0) countryNamesForHistoricRequest += "${country.country}"
+                countryNamesForHistoricRequest += ",${country.country}"
             }
             return@async
         }
         countries.await()
-        return names
+        return countryNamesForHistoricRequest
+    }
+
+    fun getCountriesArray(it: List<Country>) {
+        val names = ArrayList<String>()
+        Log.d("TAG", "INIT SHIT ")
+        if (mAppLang != "en") {
+            it.forEachIndexed { index, country ->
+                val inLocale: Locale = Locale.forLanguageTag("en-EN")
+                val outLocale: Locale = Locale.forLanguageTag(mAppLang)
+                for (l in Locale.getAvailableLocales()) {
+                    if (l.getDisplayCountry(inLocale).equals(country.country)) {
+                        names.add(l.getDisplayCountry(outLocale))
+                        break
+                    }
+                }
+            }
+        } else {
+            it.forEachIndexed { index, country ->
+                names.add(country.country!!)
+            }
+        }
+        Log.d("TAG", "GETTING SHIT  ${names.size}")
+
+        mCountriesNameList.postValue(names)
+
     }
 
     fun resetData() {

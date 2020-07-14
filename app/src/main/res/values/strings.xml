@@ -1,7 +1,53 @@
 <resources>
     <string name="app_name">COVID-19 Tracker</string>
 
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="open">Open</string>
     <string name="close">Close</string>
+    <string name="today">today</string>
+    <string name="updated">Data Updated</string>
+    <string name="at">at</string>
+    <string name="app_locale">en</string>
+    <string name="cases">Cases</string>
+    <string name="deaths">Deaths</string>
+    <string name="recovered">Recovered</string>
+    <string name="active">Active</string>
+    <string name="critical">Critical</string>
+    <string name="tests">Tests</string>
+    <string name="casesInMillion">Cases in 1 M</string>
+    <string name="deathsInMillion">Deaths in 1 M</string>
+    <string name="testsInMillion">Tests in 1 M</string>
+    <string name="countries">Countries</string>
+    <string name="choose">Choose</string>
+    <string name="settings">Settings</string>
+    <string name="map">Map</string>
+    <string name="statistics">Statistics</string>
+    <string name="theme">Theme</string>
+    <string name="black_theme_enable">Dark theme</string>
+    <string name="lang">Language</string>
+    <string name="news">News</string>
+    <string name="about_app">About</string>
+    <string name="sort_by">Sorting by &#8230;</string>
+    <string name="all_news_loaded">All news loaded</string>
+    <string name="by_world">World</string>
+    <string name="search_news_hint">Search</string>
+    <string name="date">Date</string>
+    <string name="error_getting_historic_data">Cannot get historic date of this region</string>
+    <string name="sort_by_cases">Cases</string>
+    <string name="sort_by_deaths">"Deaths "</string>
+    <string name="sort_by_recovered">Recovered</string>
+    <string name="countries_search_hint">Country name (EN)</string>
+    <string name="change_language">Change language</string>
+    <string name="change_theme">Change theme</string>
+    <string name="nothing_found">"nothing found "</string>
+    <string name="something_wrong">"Something went wrong : ( "</string>
+    <string name="check_internet_connection">please check your internet connection and &#8230;</string>
+    <string name="try_again">Try again</string>
+    <string name="night_theme">Night theme</string>
+    <string name="day_theme">Day Theme</string>
+    <string name="system_theme">System theme</string>
+
+    <string name="about_app_info">Covid-19 Tracker - this project was created in order to conveniently familiarize yourself with the current state of affairs in the world, in connection with the Covid-19 pandemic, as well as to acquire skills in the development of mobile applications.</string>
+    <string name="developer_links">If you find a bug or error in the translation, you can write to me.</string>
+
+
 </resources>

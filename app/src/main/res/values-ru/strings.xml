@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">COVID-19 Tracker</string>
+    <string name="open">Открыть</string>
+    <string name="close">Закрыть</string>
+    <string name="today">сегодня</string>
+    <string name="updated">Данные обновлены</string>
+    <string name="at">в</string>
+    <string name="app_locale">ru</string>
+    <string name="cases">Случаев</string>
+    <string name="deaths">Смертей</string>
+    <string name="recovered">Вылечились</string>
+    <string name="active">Активных</string>
+    <string name="critical">Критических</string>
+    <string name="tests">Тестов</string>
+    <string name="casesInMillion">Случаев на 1 М</string>
+    <string name="deathsInMillion">Смертей на 1 М</string>
+    <string name="testsInMillion">Тестов на 1 М</string>
+    <string name="countries">Страны</string>
+    <string name="choose">Выберите</string>
+    <string name="settings">Настройки</string>
+    <string name="map">Карта</string>
+    <string name="statistics">Cтатистика</string>
+    <string name="theme">Тема</string>
+    <string name="black_theme_enable">Темная тема</string>
+    <string name="lang">Язык</string>
+    <string name="news">Новости</string>
+    <string name="by_world">В мире</string>
+    <string name="about_app">О приложении</string>
+    <string name="sort_by">Сортировать по &#8230;</string>
+    <string name="all_news_loaded">Все новости загружены</string>
+    <string name="search_news_hint">Поиск</string>
+    <string name="date">Дата</string>
+    <string name="error_getting_historic_data">"Подробные данные об этом регион отсутствуют "</string>
+    <string name="sort_by_cases">по количеству Случаев</string>
+    <string name="sort_by_deaths">по количеству Смертей</string>
+    <string name="sort_by_recovered">"по количеству Выздоровевших "</string>
+    <string name="countries_search_hint">Название страны (EN)</string>
+    <string name="change_language">Сменить язык</string>
+    <string name="something_wrong">"Что-то пошло не так : ( "</string>
+    <string name="nothing_found">Нечего не найдено</string>
+    <string name="check_internet_connection">Проверьте ваше интернет соединение и &#8230;</string>
+    <string name="try_again">"Попробуй еще раз "</string>
+    <string name="night_theme">Темная тема</string>
+    <string name="day_theme">Светлая тема</string>
+    <string name="system_theme">Системная тема</string>
+    <string name="change_theme">Изменить тему</string>
+    <string name="about_app_info">Covid-19 Tracker - данный проект создавался с целью удобного ознакомления с текущим положением дел в мире, в связи с пандемией Covid-19, а также для преобретения навыков в разработке мобильных приложений.</string>
+    <string name="developer_links">Если вы нашли баг или ошибку в переводе, вы можете написать мне.</string>
+
+</resources>

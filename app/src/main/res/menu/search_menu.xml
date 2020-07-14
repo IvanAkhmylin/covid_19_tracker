@@ -11,16 +11,16 @@
         android:icon="@drawable/ic_sort"
         app:itemIconTint="@color/white"
         app:showAsAction="always"
-        android:title="Sort by">
+        android:title="@string/sort_by">
         <menu>
             <item android:id="@+id/sort_cases"
-                android:title="Cases"/>
+                android:title="@string/sort_by_cases"/>
 
             <item android:id="@+id/sort_recovered"
-                android:title="Recovered"/>
+                android:title="@string/sort_by_recovered"/>
 
             <item android:id="@+id/sort_deaths"
-                android:title="Deaths"/>
+                android:title="@string/sort_by_deaths"/>
         </menu>
     </item>
 </menu>

@@ -10,6 +10,7 @@
         android:id="@+id/item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/background"
         android:layout_marginEnd="10dp"
         android:layout_marginStart="10dp"
         android:layout_marginBottom="5dp"
@@ -30,7 +31,7 @@
                 <com.facebook.drawee.view.SimpleDraweeView
                     android:id="@+id/flag"
                     app:roundingBorderWidth="1dp"
-                    app:roundingBorderColor="@color/light_gray"
+                    app:roundingBorderColor="@color/background"
                     android:layout_width="100dp"
                     android:layout_height="70dp" />
 
@@ -47,7 +48,7 @@
                         android:layout_height="wrap_content"
                         android:text="Russia "
                         android:textAlignment="center"
-                        android:textColor="@color/black" />
+                        android:textColor="@color/primary_text" />
                 </FrameLayout>
 
             </LinearLayout>
@@ -70,7 +71,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
-                        android:text="Cases"
+                        android:text="@string/cases"
                         android:textAlignment="center" />
 
                     <TextView
@@ -95,7 +96,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
-                        android:text="Recovered"
+                        android:text="@string/recovered"
                         android:textAlignment="center" />
 
                     <TextView
@@ -120,7 +121,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
-                        android:text="Deaths"
+                        android:text="@string/deaths"
                         android:textAlignment="center" />
 
                     <TextView

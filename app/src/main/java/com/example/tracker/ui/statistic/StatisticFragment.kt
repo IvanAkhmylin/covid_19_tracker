@@ -1,14 +1,13 @@
 package com.example.tracker.ui.statistic
 
 import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.ViewPropertyAnimator
+import android.widget.GridLayout
 import androidx.core.view.isVisible
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
@@ -42,7 +41,6 @@ class StatisticFragment : Fragment() {
 
     private var mNestedScroll: NestedScrollView? = null
     private var mRecyclerView: RecyclerView? = null
-
     private var mLineChart: LineChart? = null
     private var mPieChart: PieChart? = null
 
@@ -67,19 +65,22 @@ class StatisticFragment : Fragment() {
         mLineChart = v.findViewById(R.id.line_chart)
         mPieChart = v.findViewById(R.id.pie_chart)
 
+
         initBottomSheet(v)
 
         v.findViewById<MaterialButton>(R.id.try_again).setOnClickListener {
             mViewModel.getOverallData()
         }
 
+
+
         v.findViewById<MaterialButton>(R.id.change_chart).setOnClickListener {
             if (mLineChart!!.isVisible) {
                 mLineChart!!.animate().apply {
                     alpha(0f)
                     translationY(-mLineChart!!.height.toFloat())
-                    duration = resources.getInteger(R.integer.Duration).toLong()
-                    setListener(object : Animator.AnimatorListener{
+                    duration = resources.getInteger(R.integer.primary_duration).toLong()
+                    setListener(object : Animator.AnimatorListener {
                         override fun onAnimationRepeat(animation: Animator?) {}
 
                         override fun onAnimationEnd(animation: Animator?) {
@@ -94,9 +95,9 @@ class StatisticFragment : Fragment() {
 
                 mPieChart!!.animate().apply {
                     alpha(1f)
-                    duration = resources.getInteger(R.integer.Duration).toLong()
+                    duration = resources.getInteger(R.integer.primary_duration).toLong()
                     translationY(0f)
-                    setListener(object : Animator.AnimatorListener{
+                    setListener(object : Animator.AnimatorListener {
                         override fun onAnimationRepeat(animation: Animator?) {}
 
                         override fun onAnimationEnd(animation: Animator?) {
@@ -116,8 +117,8 @@ class StatisticFragment : Fragment() {
                 mPieChart!!.animate().apply {
                     alpha(0f)
                     translationY(mPieChart!!.height.toFloat())
-                    duration = resources.getInteger(R.integer.Duration).toLong()
-                    setListener(object : Animator.AnimatorListener{
+                    duration = resources.getInteger(R.integer.primary_duration).toLong()
+                    setListener(object : Animator.AnimatorListener {
                         override fun onAnimationRepeat(animation: Animator?) {}
 
                         override fun onAnimationEnd(animation: Animator?) {}
@@ -132,8 +133,8 @@ class StatisticFragment : Fragment() {
                 mLineChart!!.animate().apply {
                     alpha(1f)
                     translationY(0f)
-                    duration = resources.getInteger(R.integer.Duration).toLong()
-                    setListener(object : Animator.AnimatorListener{
+                    duration = resources.getInteger(R.integer.primary_duration).toLong()
+                    setListener(object : Animator.AnimatorListener {
                         override fun onAnimationRepeat(animation: Animator?) {}
 
                         override fun onAnimationEnd(animation: Animator?) {
@@ -202,12 +203,12 @@ class StatisticFragment : Fragment() {
         })
     }
 
+
     private fun initBottomSheet(v: View) {
         val behavior = BottomSheetBehavior.from(mBehaviorCard!!)
 
         behavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
-            override fun onSlide(bottomSheet: View, slideOffset: Float) {
-            }
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {}
 
             override fun onStateChanged(bottomSheet: View, newState: Int) {
                 Log.d("TAG", newState.toString())
@@ -241,20 +242,23 @@ class StatisticFragment : Fragment() {
 
     @SuppressLint("SetTextI18n", "SimpleDateFormat")
     private fun initStatistic(it: Statistic) {
-        updated.text = it.updated.timestampToDate()
+        updated.text = it.updated.timestampToDate(requireContext())
 
         cases.text = it.cases?.decimalFormatter()
         deaths.text = it.deaths?.decimalFormatter()
         recovered.text = it.recovered?.decimalFormatter()
 
-        cases_today.text = "+${it.todayCases?.decimalFormatter()} today"
-        cases_today.setColorBefore("today")
+        cases_today.text =
+            "+${it.todayCases?.decimalFormatter()} ${requireContext().getString(R.string.today)}"
+        cases_today.setColorBefore(requireContext().getString(R.string.today))
 
-        deaths_today.text = "+${it.todayDeaths?.decimalFormatter()} today"
-        deaths_today.setColorBefore("today")
+        deaths_today.text =
+            "+${it.todayDeaths?.decimalFormatter()} ${requireContext().getString(R.string.today)}"
+        deaths_today.setColorBefore(requireContext().getString(R.string.today))
 
-        recovered_today.text = "+${it.todayRecovered?.decimalFormatter()} today"
-        recovered_today.setColorBefore("today")
+        recovered_today.text =
+            "+${it.todayRecovered?.decimalFormatter()} ${requireContext().getString(R.string.today)}"
+        recovered_today.setColorBefore(requireContext().getString(R.string.today))
 
         active.text = it.active?.decimalFormatter()
         tests.text = it.tests?.decimalFormatter()
@@ -264,6 +268,7 @@ class StatisticFragment : Fragment() {
         tests_per_million.text = it.testsPerOneMillion?.toString()
         affected_country.text = it.affectedCountries?.decimalFormatter()
     }
+
 
 
 }

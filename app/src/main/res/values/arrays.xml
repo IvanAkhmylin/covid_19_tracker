@@ -1,0 +1,29 @@
+<resources>
+    <!-- Reply Preference -->
+    <string-array name="reply_entries">
+        <item>Reply</item>
+        <item>Reply to all</item>
+    </string-array>
+
+    <string-array name="reply_values">
+        <item>reply</item>
+        <item>reply_all</item>
+    </string-array>
+    <string-array name="app_lang_arrays">
+        <item>English</item>
+        <item>Русский</item>
+        <item>日本</item>
+    </string-array>
+
+    <string-array name="themes_entries">
+        <item>@string/system_theme</item>
+        <item>@string/night_theme</item>
+        <item>@string/day_theme</item>
+    </string-array>
+
+    <string-array name="themes_values">
+        <item>"-1"</item> \\ System theme value
+        <item>"2"</item>  \\ Dark Mode enable
+        <item>"1"</item>  \\ Dark Mode disable
+    </string-array>
+</resources>

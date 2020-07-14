@@ -4,51 +4,66 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
     app:startDestination="@id/news">
+
     <fragment
-        android:id="@+id/overall"
+        android:id="@+id/statistics"
         android:name="com.example.tracker.ui.statistic.StatisticFragment"
-        android:label="Overall"
+        android:label="@string/statistics"
         tools:layout="@layout/statistic_layout" />
+
     <fragment
         android:id="@+id/map"
         android:name="com.example.tracker.ui.map.MapFragment"
-        android:label="Map"
+        android:label="@string/map"
         tools:layout="@layout/fragment_map_box" />
+
     <fragment
         android:id="@+id/news"
         android:name="com.example.tracker.ui.news.NewsFragment"
-        android:label="News"
-        tools:layout="@layout/fragment_news">
+        android:label="@string/news"
+        tools:layout="@layout/fragment_list_news"/>
+
+    <fragment
+        android:id="@+id/countries"
+        android:name="com.example.tracker.ui.countries.CountriesFragment"
+        android:label="@string/countries"
+        tools:layout="@layout/fragment_search">
         <action
-            android:id="@+id/action_news_to_newsDetailFragment"
-            app:destination="@id/newsDetailFragment"
+            android:id="@+id/action_countries_to_detailCountryFragment"
+            app:destination="@id/detailCountryFragment"
             app:enterAnim="@anim/enter_left"
             app:exitAnim="@anim/exit_right"
             app:launchSingleTop="false"
             app:popEnterAnim="@anim/pop_enter_left"
             app:popExitAnim="@anim/pop_exit_right" />
     </fragment>
-    <fragment
-        android:id="@+id/newsDetailFragment"
-        android:name="com.example.tracker.ui.news.NewsDetailFragment"
-        tools:layout="@layout/fragment_news_detail">
-    </fragment>
-    <fragment
-        android:id="@+id/countries"
-        tools:layout="@layout/fragment_search"
-        android:name="com.example.tracker.ui.countries.CountriesFragment"
-        android:label="Countries" >
-        <action
-            app:enterAnim="@anim/enter_left"
-            app:exitAnim="@anim/exit_right"
-            app:launchSingleTop="false"
-            app:popEnterAnim="@anim/pop_enter_left"
-            app:popExitAnim="@anim/pop_exit_right"
-            android:id="@+id/action_countries_to_detailCountryFragment"
-            app:destination="@id/detailCountryFragment" />
-    </fragment>
+
     <fragment
         android:id="@+id/detailCountryFragment"
         android:name="com.example.tracker.ui.countries.CountryDetailFragment"
         tools:layout="@layout/fragment_detail_country" />
+
+    <fragment
+        android:id="@+id/settings"
+        android:name="com.example.tracker.ui.settings.SettingsFragment"
+        android:label="@string/settings" />
+
+    <activity
+        android:id="@+id/splashScreen"
+        android:name="com.example.tracker.SplashScreen"
+        android:label="activity_splash_screen"
+        tools:layout="@layout/activity_splash_screen">
+    </activity>
+
+    <activity
+        android:id="@+id/mainActivity"
+        android:name="com.example.tracker.ui.MainActivity"
+        android:label="MainActivity"
+        tools:layout="@layout/activity_main" />
+
+    <fragment
+        android:id="@+id/about"
+        android:name="com.example.tracker.ui.about.AboutFragment"
+        android:label="@string/about_app"
+        tools:layout="@layout/fragment_about" />
 </navigation>

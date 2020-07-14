@@ -1,20 +1,20 @@
 package com.example.tracker.ui.map
 
+import android.R.style
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelStore
+import androidx.preference.PreferenceManager
 import com.example.tracker.Constants.Status
 import com.example.tracker.R
 import com.example.tracker.Utils.ExpansionUtils.decimalFormatter
+import com.example.tracker.Utils.ExpansionUtils.isDarkThemeOn
 import com.example.tracker.model.Country
 import com.example.tracker.ui.MainActivity
 import com.example.tracker.ui.countries.CountriesViewModel
@@ -27,7 +27,8 @@ import com.mapbox.mapboxsdk.camera.CameraUpdateFactory
 import com.mapbox.mapboxsdk.geometry.LatLng
 import com.mapbox.mapboxsdk.maps.MapboxMap
 import com.mapbox.mapboxsdk.maps.Style
-import kotlinx.android.synthetic.main.info_window_layout.view.*
+import com.mapbox.mapboxsdk.style.layers.Layer
+import com.mapbox.mapboxsdk.style.layers.PropertyFactory.textField
 import kotlinx.android.synthetic.main.loading_and_error_layout.*
 
 
@@ -46,7 +47,8 @@ class MapFragment : Fragment() {
     }
 
     private fun init(v: View) {
-        mViewModel = ViewModelProvider(requireActivity() as MainActivity).get(CountriesViewModel::class.java)
+        mViewModel =
+            ViewModelProvider(requireActivity() as MainActivity).get(CountriesViewModel::class.java)
 
         mMapBox = v.findViewById(R.id.mapView)
         v.findViewById<MaterialButton>(R.id.try_again).setOnClickListener {
@@ -61,10 +63,11 @@ class MapFragment : Fragment() {
                     progress?.visibility = View.VISIBLE
                 }
                 Status.SUCCESS -> {
-                    mMapBox?.visibility = View.VISIBLE
+                    initMap()
                     not_find_data.visibility = View.GONE
                     progress?.visibility = View.GONE
                     failure_container.visibility = View.GONE
+                    mMapBox?.visibility = View.VISIBLE
                 }
                 Status.ERROR -> {
                     mMapBox?.visibility = View.GONE
@@ -74,9 +77,22 @@ class MapFragment : Fragment() {
 
             }
         })
+    }
 
+
+    private fun initMap() {
         mMapBox?.getMapAsync { map ->
-            map.setStyle(Style.LIGHT)
+            if (requireContext().isDarkThemeOn()) {
+                map.setStyle(Style.DARK)
+            } else {
+                map.setStyle(Style.LIGHT)
+            }
+
+            map.getStyle {
+                val mapText: Layer = it.getLayer("country-label")!!
+                mapText.setProperties(textField("{name_${requireContext().getString(R.string.app_locale)}}"));
+            }
+
             mViewModel.mFilteredData.observe(viewLifecycleOwner, Observer { list ->
                 countriesList.clear()
                 countriesList.addAll(list)
@@ -89,7 +105,7 @@ class MapFragment : Fragment() {
                                     country.countryInfo.long!!.toDouble()
                                 )
                             )
-                            .title(country.country).snippet("This country have corona")
+                            .title(country.country)
                     )
 
                 }
@@ -118,9 +134,7 @@ class MapFragment : Fragment() {
             }
         }
 
-
     }
-
 
     override fun onStart() {
         super.onStart()

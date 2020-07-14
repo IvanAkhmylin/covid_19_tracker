@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/light_gray"
+    android:background="@color/background"
     android:fitsSystemWindows="false"
     android:gravity="center"
     android:orientation="vertical">
@@ -43,7 +43,7 @@
             android:scrollbarSize="5dp"
             android:scrollbarThumbVertical="@color/colorPrimary"
             android:scrollbars="vertical"
-            tools:listitem="@layout/search_item_layout" />
+            tools:listitem="@layout/country_item_layout" />
     </LinearLayout>
 
 

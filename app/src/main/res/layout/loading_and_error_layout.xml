@@ -23,7 +23,7 @@
             style="@style/TitleTextStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Nothing to be found"
+            android:text="@string/nothing_found"
             android:textAlignment="center" />
 
 
@@ -50,7 +50,7 @@
             style="@style/TitleTextStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Something went wrong"
+            android:text="@string/something_wrong"
             android:textAlignment="center" />
 
         <TextView
@@ -58,21 +58,21 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
-            android:text="please check your internet connection"
+            android:text="@string/check_internet_connection"
             android:textAlignment="center" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/try_again"
+            android:textColor="@color/white"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Try again" />
+            android:text="@string/try_again" />
     </LinearLayout>
 
     <ProgressBar
-        android:visibility="gone"
         android:id="@+id/progress"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_gravity="center" />
 
 </FrameLayout>

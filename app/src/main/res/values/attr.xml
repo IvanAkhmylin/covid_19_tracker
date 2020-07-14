@@ -4,5 +4,6 @@
         <attr name="ChipStyle" format="reference" />
     </declare-styleable>
 
-    <integer name="Duration">300</integer>
+    <integer name="primary_duration">300</integer>
+    <integer name="secondary_duration">250</integer>
 </resources>

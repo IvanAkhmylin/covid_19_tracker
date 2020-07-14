@@ -35,6 +35,7 @@ class CountriesFragment : Fragment() {
     private lateinit var mSortItem: MenuItem
     private lateinit var mFab: FloatingActionButton
     private var mRecycler: RecyclerView? = null
+    private var mRecyclerAdapter: CountriesAdapter? = null
     private var mQuery = ""
     private var mState: Bundle? = null
 
@@ -56,6 +57,26 @@ class CountriesFragment : Fragment() {
         mRecycler = v.findViewById(R.id.search_recycler)
         mRecycler?.layoutManager =
             LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
+        mRecyclerAdapter = CountriesAdapter {
+            val countyHistoric = mViewModel.getHistoric(it.country)
+            if (countyHistoric != null) {
+                Navigation.findNavController(requireActivity(), R.id.nav_host)
+                    .navigate(
+                        R.id.action_countries_to_detailCountryFragment,
+                        bundleOf(
+                            Constants.COUNTRIES_NAME to it.country,
+                            Constants.HISTORIC_OF_COUNTRIES to countyHistoric
+                        )
+                    )
+            } else {
+                Toast.makeText(
+                    requireContext(),
+                    requireContext().getString(R.string.error_getting_historic_data),
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+        }
+        mRecycler?.adapter = mRecyclerAdapter
         mFab = v.findViewById(R.id.search_fab)
 
         v.findViewById<MaterialButton>(R.id.try_again).setOnClickListener {
@@ -102,26 +123,8 @@ class CountriesFragment : Fragment() {
 
         mViewModel.mFilteredData.observe(viewLifecycleOwner, Observer { list ->
             list?.let {
-                mRecycler?.adapter = CountriesAdapter(list) {
-                    val countyHistoric = mViewModel.getHistoric(it.country)
-                    if (countyHistoric != null) {
-                        Navigation.findNavController(requireActivity(), R.id.nav_host)
-                            .navigate(
-                                R.id.action_countries_to_detailCountryFragment,
-                                bundleOf(
-                                    Constants.COUNTRIES_TITLE to it.country,
-                                    Constants.HISTORIC_OF_COUNTRIES to countyHistoric
-                                )
-                            )
-                    } else {
-                        Toast.makeText(
-                            requireContext(),
-                            "Cannot get historic date of this region",
-                            Toast.LENGTH_LONG
-                        ).show()
-                    }
-
-                }
+                mRecyclerAdapter?.updateRecyclerView(it)
+                mRecycler?.scrollToPosition(0)
                 resumeLayoutManager()
             }
         })
@@ -161,7 +164,10 @@ class CountriesFragment : Fragment() {
             val chip = Chip(mChipGroup.context, null, R.attr.ChipStyle).apply {
                 id = index
                 text = continent
-                chipBackgroundColor = requireContext().getColorStateList(R.color.chip_selector)
+                elevation = 1f
+                setTextColor(requireContext().getColorStateList(R.color.chip_selector_text_color))
+                chipBackgroundColor =
+                    requireContext().getColorStateList(R.color.chip_selector_background)
             }
             mChipGroup.addView(chip)
         }
@@ -238,7 +244,7 @@ class CountriesFragment : Fragment() {
 
             })
 
-            queryHint = "Country (EN)"
+            queryHint = requireContext().getString(R.string.countries_search_hint)
         }
     }
 
