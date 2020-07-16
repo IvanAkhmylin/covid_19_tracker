@@ -152,6 +152,7 @@ class NewsFragment() : Fragment() {
                     it.second,
                     it.first
                 )
+                mRecycler?.isNestedScrollingEnabled = false
                 mRecycler?.scheduleLayoutAnimation()
             }
         })

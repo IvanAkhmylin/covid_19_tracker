@@ -31,37 +31,44 @@
                 android:scaleType="centerCrop"
                 android:src="@drawable/ic_launcher_background" />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:layout_gravity="bottom"
-                android:background="@color/background" />
 
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_gravity="bottom"
+                android:background="@drawable/news_item_gradient"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/title"
+                    style="@style/TitleTextStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:textColor="@color/white"
+                    android:ellipsize="end"
+                    android:maxLines="2"
+                    android:textAlignment="center"
+                    android:text="" />
+
+                <TextView
+                    android:id="@+id/resource"
+                    style="@style/SecondaryTextStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:textColor="@color/white"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="adsadsasd"
+                    android:textAlignment="center" />
+            </LinearLayout>
         </FrameLayout>
 
-        <TextView
-            android:id="@+id/title"
-            style="@style/TitleTextStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="10dp"
-            android:ellipsize="end"
-            android:maxLines="2"
-            android:text=""
-            android:textAlignment="center" />
 
-        <TextView
-            android:id="@+id/resource"
-            style="@style/SecondaryTextStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="10dp"
-            android:text="adsadsasd"
-            android:textAlignment="center" />
 
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

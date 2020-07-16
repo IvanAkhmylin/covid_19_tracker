@@ -83,7 +83,6 @@ class NewsRecyclerAdapter(
             val resource = holder.itemView.findViewById<TextView>(R.id.resource)
             val image = holder.itemView.findViewById<SimpleDraweeView>(R.id.news_image)
 
-
             image.setImageURI(data[position].image)
             title.text = data[position].title
             resource.text = "${data[position].resource} • ${data[position].time}"

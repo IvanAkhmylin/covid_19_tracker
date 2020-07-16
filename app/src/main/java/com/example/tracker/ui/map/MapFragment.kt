@@ -1,16 +1,13 @@
 package com.example.tracker.ui.map
 
-import android.R.style
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.preference.PreferenceManager
 import com.example.tracker.Constants.Status
 import com.example.tracker.R
 import com.example.tracker.Utils.ExpansionUtils.decimalFormatter
@@ -20,6 +17,8 @@ import com.example.tracker.ui.MainActivity
 import com.example.tracker.ui.countries.CountriesViewModel
 import com.facebook.drawee.view.SimpleDraweeView
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.card.MaterialCardView
+import com.google.android.material.shape.TriangleEdgeTreatment
 import com.mapbox.mapboxsdk.Mapbox
 import com.mapbox.mapboxsdk.annotations.MarkerOptions
 import com.mapbox.mapboxsdk.camera.CameraPosition
@@ -116,7 +115,23 @@ class MapFragment : Fragment() {
                     data.country == it.title
                 }.firstOrNull()
 
+
                 val view = layoutInflater.inflate(R.layout.info_window_layout, null)
+                val size = resources.getDimension(R.dimen.triangle_size) //16dp
+//
+//                val triangleEdgeTreatment =
+//                    TriangleEdgeTreatment(size, false)
+//
+//                val cardView: MaterialCardView = view.findViewById(R.id.map_info_card)
+//                cardView.setShapeAppearanceModel(
+//                    cardView.getShapeAppearanceModel()
+//                        .toBuilder()
+//                        .setBottomEdge(triangleEdgeTreatment)
+//                        .build()
+//                )
+
+
+
                 view.findViewById<SimpleDraweeView>(R.id.flag).setImageURI(data?.countryInfo?.flag)
                 view.findViewById<TextView>(R.id.country).text = data?.country
                 view.findViewById<TextView>(R.id.cases).text = data?.cases?.decimalFormatter()

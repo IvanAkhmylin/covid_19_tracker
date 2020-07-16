@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<set android:duration="400"
+<set android:duration="300"
+    android:startOffset="150"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <translate
         android:fromYDelta="50%"
         android:toYDelta="0"
-        android:interpolator="@android:anim/decelerate_interpolator"
-        />
+        android:interpolator="@android:anim/decelerate_interpolator" />
 
     <alpha
         android:fromAlpha="0"
         android:toAlpha="1"
-        android:interpolator="@android:anim/decelerate_interpolator"
-        />
+        android:interpolator="@android:anim/decelerate_interpolator" />
 
     <scale
         android:fromXScale="120%"
@@ -21,8 +20,5 @@
         android:toYScale="100%"
         android:pivotX="40%"
         android:pivotY="40%"
-        android:interpolator="@android:anim/decelerate_interpolator"
-        />
-
-
+        android:interpolator="@android:anim/decelerate_interpolator" />
 </set>

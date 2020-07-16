@@ -61,15 +61,17 @@ class NewsRepository {
                             .select("time.WW6dff.uQIVzc.Sksgp")
                             .text()
 
-                        list.add(
-                            News(
-                                title,
-                                resource,
-                                time,
-                                link,
-                                image.replace("h100", "h500").replace("w100", "w500")
+                        if (link.trim().isNotEmpty()){
+                            list.add(
+                                News(
+                                    title,
+                                    resource,
+                                    time,
+                                    link,
+                                    image.replace("h100", "h500").replace("w100", "w500")
+                                )
                             )
-                        )
+                        }
                     }
 
                     linkAsync.await()
@@ -77,9 +79,7 @@ class NewsRepository {
                     if (index == elements.size - 1){
                         onResult(list , Status.SUCCESS)
                     }else{
-                        if (list.get(index).link.isNotEmpty()){
-                            onResult(list, Status.LOADING)
-                        }
+                        onResult(list, Status.LOADING)
                     }
                 }
 
