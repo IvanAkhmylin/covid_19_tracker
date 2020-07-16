@@ -117,20 +117,18 @@ class MapFragment : Fragment() {
 
 
                 val view = layoutInflater.inflate(R.layout.info_window_layout, null)
-                val size = resources.getDimension(R.dimen.triangle_size) //16dp
-//
-//                val triangleEdgeTreatment =
-//                    TriangleEdgeTreatment(size, false)
-//
-//                val cardView: MaterialCardView = view.findViewById(R.id.map_info_card)
-//                cardView.setShapeAppearanceModel(
-//                    cardView.getShapeAppearanceModel()
-//                        .toBuilder()
-//                        .setBottomEdge(triangleEdgeTreatment)
-//                        .build()
-//                )
 
+                val size = resources.getDimension(R.dimen.tooltip_size)
+                val triangleEdgeTreatment =
+                    TriangleEdgeTreatment(size, false)
 
+                val cardView: MaterialCardView = view.findViewById(R.id.map_info_card)
+                cardView.setShapeAppearanceModel(
+                    cardView.getShapeAppearanceModel()
+                        .toBuilder()
+                        .setBottomEdge(triangleEdgeTreatment)
+                        .build()
+                )
 
                 view.findViewById<SimpleDraweeView>(R.id.flag).setImageURI(data?.countryInfo?.flag)
                 view.findViewById<TextView>(R.id.country).text = data?.country

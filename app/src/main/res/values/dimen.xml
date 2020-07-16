@@ -16,4 +16,6 @@
 
     <dimen name="card_padding">10dp</dimen>
     <dimen name="anim_duration">300</dimen>
+    <dimen name="tooltip_size">16dp</dimen>
+
 </resources>
