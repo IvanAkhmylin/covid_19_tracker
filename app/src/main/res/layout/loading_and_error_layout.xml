@@ -54,7 +54,7 @@
             android:textAlignment="center" />
 
         <TextView
-            style="@style/SecondaryTextStyle"
+            style="@style/SmallTextStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"

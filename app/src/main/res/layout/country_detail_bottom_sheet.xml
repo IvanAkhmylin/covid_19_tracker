@@ -14,7 +14,7 @@
         android:orientation="horizontal">
 
         <LinearLayout
-            android:layout_width="120dp"
+            android:layout_width="100dp"
             android:layout_height="match_parent"
             android:gravity="center"
             android:orientation="vertical">
@@ -54,10 +54,10 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:paddingLeft="10dp">
+                android:paddingLeft="5dp">
 
                 <TextView
-                    style="@style/NewsTitleTextStyle"
+                    style="@style/MediumTextStyle"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -71,7 +71,7 @@
 
                     <TextView
                         android:id="@+id/cases"
-                        style="@style/PrimaryTextStyle"
+                        style="@style/MediumTextStyle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="11213123"
@@ -80,7 +80,7 @@
 
                     <TextView
                         android:id="@+id/cases_on_day"
-                        style="@style/SecondaryTextStyle"
+                        style="@style/SmallTextStyle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="+12002101"
@@ -105,10 +105,10 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:paddingLeft="10dp">
+                android:paddingLeft="5dp">
 
                 <TextView
-                    style="@style/NewsTitleTextStyle"
+                    style="@style/MediumTextStyle"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -123,7 +123,7 @@
 
                     <TextView
                         android:id="@+id/recovered"
-                        style="@style/PrimaryTextStyle"
+                        style="@style/MediumTextStyle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="11213123"
@@ -132,7 +132,7 @@
 
                     <TextView
                         android:id="@+id/recovered_on_today"
-                        style="@style/SecondaryTextStyle"
+                        style="@style/SmallTextStyle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
@@ -154,14 +154,14 @@
 
             <LinearLayout
                 android:layout_marginBottom="5dp"
-                android:paddingLeft="10dp"
+                android:paddingLeft="5dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
                 <TextView
-                    style="@style/NewsTitleTextStyle"
+                    style="@style/MediumTextStyle"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -175,7 +175,7 @@
 
                     <TextView
                         android:id="@+id/deaths"
-                        style="@style/PrimaryTextStyle"
+                        style="@style/MediumTextStyle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="11213123"
@@ -184,7 +184,7 @@
 
                     <TextView
                         android:id="@+id/deaths_on_today"
-                        style="@style/SecondaryTextStyle"
+                        style="@style/SmallTextStyle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"

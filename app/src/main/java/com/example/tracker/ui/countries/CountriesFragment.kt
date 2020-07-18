@@ -1,12 +1,15 @@
 package com.example.tracker.ui.countries
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Bundle
 import android.os.Parcelable
 import android.view.*
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
+import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
+import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -142,7 +145,7 @@ class CountriesFragment : Fragment() {
 
     private fun hideSearchView() {
         mFab.apply {
-            setImageDrawable(requireContext().getDrawable(R.drawable.ic_search))
+            setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.ic_search))
             hideKeyboard()
         }
         mSearchItem.isVisible = false
@@ -152,7 +155,7 @@ class CountriesFragment : Fragment() {
     }
 
     private fun showSearchView() {
-        mFab.setImageDrawable(requireContext().getDrawable(R.drawable.ic_close))
+        mFab.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.ic_close))
         mSearchItem.isVisible = true
         mSearchView!!.onActionViewExpanded()
 
@@ -164,10 +167,10 @@ class CountriesFragment : Fragment() {
             val chip = Chip(mChipGroup.context, null, R.attr.ChipStyle).apply {
                 id = index
                 text = continent
-                elevation = 1f
-                setTextColor(requireContext().getColorStateList(R.color.chip_selector_text_color))
+                ViewCompat.setElevation(this ,1f)
+                setTextColor(ContextCompat.getColorStateList(requireContext(),R.color.chip_selector_text_color))
                 chipBackgroundColor =
-                    requireContext().getColorStateList(R.color.chip_selector_background)
+                    ContextCompat.getColorStateList(requireContext(), R.color.chip_selector_background)
             }
             mChipGroup.addView(chip)
         }
@@ -226,6 +229,7 @@ class CountriesFragment : Fragment() {
 
     private fun initSearchView() {
         mSearchView?.apply {
+
             if (mQuery.isNotEmpty()) {
                 showSearchView()
                 setQuery(mQuery, true)
@@ -245,6 +249,7 @@ class CountriesFragment : Fragment() {
             })
 
             queryHint = requireContext().getString(R.string.countries_search_hint)
+
         }
     }
 

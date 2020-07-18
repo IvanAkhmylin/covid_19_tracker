@@ -11,8 +11,8 @@
        android:layout_height="wrap_content">
        <ImageButton
            android:id="@+id/icon_link"
-           android:layout_width="220dp"
-           android:layout_height="220dp"
+           android:layout_width="150dp"
+           android:layout_height="150dp"
            android:layout_gravity="center_horizontal"
            android:background="@drawable/virus_original" />
 
@@ -32,7 +32,7 @@
            android:textAlignment="center"
            android:layout_margin="10dp"
            android:text="@string/about_app_info"
-           android:theme="@style/NewsTitleTextStyle" />
+           android:theme="@style/MediumTextStyle" />
    </LinearLayout>
 
     <LinearLayout
@@ -47,8 +47,8 @@
             android:layout_width="match_parent"
             android:textAlignment="center"
             android:textColor="@color/primary_text"
-            android:textSize="@dimen/TitleCardTextSize"
-            android:theme="@style/SecondaryTextStyle"
+            android:textSize="@dimen/TitleCardSize"
+            android:theme="@style/SmallTextStyle"
             android:layout_height="wrap_content">
 
         </TextView>

@@ -19,7 +19,7 @@
             android:textColor="@color/colorAccent" />
 
         <Switch
-            style="@style/SecondaryTextStyle"
+            style="@style/SmallTextStyle"
             android:layout_below="@id/textView"
             android:textColor="@color/black"
             android:layout_width="match_parent"

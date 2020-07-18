@@ -1,0 +1,5 @@
+<resources>
+	<dimen name="TitleCardSize">20sp</dimen>
+	<dimen name="MediumTextSize">18sp</dimen>
+	<dimen name="SmallTextSize">16sp</dimen>
+</resources>

@@ -44,13 +44,13 @@
                         android:text="Data Updated: "
                         android:textAlignment="center"
                         android:textColor="@color/colorAccent"
-                        android:textSize="@dimen/BodySecondaryTextSize" />
+                        android:textSize="@dimen/SmallTextSize" />
                 </com.google.android.material.card.MaterialCardView>
 
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/chart_card"
                     android:layout_width="match_parent"
-                    android:layout_height="450dp"
+                    android:layout_height="400dp"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginRight="10dp"
@@ -137,7 +137,7 @@
 
                             <TextView
                                 android:id="@+id/cases"
-                                style="@style/PrimaryTextStyle"
+                                style="@style/MediumTextStyle"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="5dp"
@@ -145,7 +145,7 @@
 
                             <TextView
                                 android:id="@+id/cases_today"
-                                style="@style/SecondaryTextStyle"
+                                style="@style/SmallTextStyle"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="5dp"
@@ -178,7 +178,7 @@
 
                             <TextView
                                 android:id="@+id/deaths"
-                                style="@style/PrimaryTextStyle"
+                                style="@style/MediumTextStyle"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="5dp"
@@ -186,7 +186,7 @@
 
                             <TextView
                                 android:id="@+id/deaths_today"
-                                style="@style/SecondaryTextStyle"
+                                style="@style/SmallTextStyle"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="5dp"
@@ -219,7 +219,7 @@
 
                             <TextView
                                 android:id="@+id/recovered"
-                                style="@style/PrimaryTextStyle"
+                                style="@style/MediumTextStyle"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="5dp"
@@ -227,7 +227,7 @@
 
                             <TextView
                                 android:id="@+id/recovered_today"
-                                style="@style/SecondaryTextStyle"
+                                style="@style/SmallTextStyle"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="5dp"
@@ -260,14 +260,14 @@
 
                             <TextView
                                 android:id="@+id/active"
-                                style="@style/PrimaryTextStyle"
+                                style="@style/MediumTextStyle"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="5dp"
                                 android:textColor="@color/purple" />
 
                             <TextView
-                                style="@style/SecondaryTextStyle"
+                                style="@style/SmallTextStyle"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="5dp"
@@ -300,7 +300,7 @@
 
                             <TextView
                                 android:id="@+id/critical"
-                                style="@style/PrimaryTextStyle"
+                                style="@style/MediumTextStyle"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="5dp"
@@ -334,7 +334,7 @@
 
                             <TextView
                                 android:id="@+id/tests"
-                                style="@style/PrimaryTextStyle"
+                                style="@style/MediumTextStyle"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="5dp"
@@ -369,7 +369,7 @@
 
                             <TextView
                                 android:id="@+id/cases_per_million"
-                                style="@style/PrimaryTextStyle"
+                                style="@style/MediumTextStyle"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="5dp"
@@ -403,7 +403,7 @@
 
                             <TextView
                                 android:id="@+id/deaths_per_million"
-                                style="@style/PrimaryTextStyle"
+                                style="@style/MediumTextStyle"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="5dp"
@@ -438,7 +438,7 @@
 
                             <TextView
                                 android:id="@+id/tests_per_million"
-                                style="@style/PrimaryTextStyle"
+                                style="@style/MediumTextStyle"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="5dp"
@@ -472,7 +472,7 @@
 
                             <TextView
                                 android:id="@+id/affected_country"
-                                style="@style/PrimaryTextStyle"
+                                style="@style/MediumTextStyle"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="5dp"

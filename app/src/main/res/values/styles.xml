@@ -49,7 +49,7 @@
 
     <style name="ToolbarMenuItemsStyle" parent="@android:style/TextAppearance.Widget.IconMenu.Item">
         <item name="android:textColor">@color/primary_text</item>
-        <item name="android:textSize">@dimen/BodySecondaryTextSize</item>
+        <item name="android:textSize">@dimen/SmallTextSize</item>
     </style>
 
     <style name="toolbarStyle" parent="Theme.MaterialComponents.Light.DarkActionBar">
@@ -71,33 +71,22 @@
 
     <style name="TitleTextStyle">
         <item name="android:textStyle">bold</item>
-        <item name="android:textSize">@dimen/TitleCardTextSize</item>
+        <item name="android:textSize">@dimen/TitleCardSize</item>
         <item name="android:textColor">@color/primary_text</item>
     </style>
 
-    <style name="PrimaryTextStyle">
+    <style name="MediumTextStyle">
         <item name="android:textStyle">normal</item>
         <item name="android:textColor">@color/primary_text</item>
-        <item name="android:textSize">@dimen/BodyPrimaryTextSize</item>
+        <item name="android:textSize">@dimen/MediumTextSize</item>
     </style>
 
-    <style name="SecondaryTextStyle">
+    <style name="SmallTextStyle">
         <item name="android:textColor">@color/secondary_text</item>
         <item name="android:textStyle">normal</item>
-        <item name="android:textSize">@dimen/BodySecondaryTextSize</item>
+        <item name="android:textSize">@dimen/SmallTextSize</item>
     </style>
 
-    <style name="NewsSecondaryTextStyle">
-        <item name="android:textStyle">normal</item>
-        <item name="android:textColor">@color/secondary_text</item>
-        <item name="android:textSize">@dimen/NewsSecondaryTextSize</item>
-    </style>
-
-    <style name="NewsTitleTextStyle">
-        <item name="android:textStyle">bold</item>
-        <item name="android:textSize">@dimen/NewsTitleTextSize</item>
-        <item name="android:textColor">@color/primary_text</item>
-    </style>
 
     <style name="CircleMaterialButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
         <item name="cornerFamily">rounded</item>

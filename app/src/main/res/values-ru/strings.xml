@@ -13,9 +13,9 @@
     <string name="active">Активных</string>
     <string name="critical">Критических</string>
     <string name="tests">Тестов</string>
-    <string name="casesInMillion">Случаев на 1 М</string>
-    <string name="deathsInMillion">Смертей на 1 М</string>
-    <string name="testsInMillion">Тестов на 1 М</string>
+    <string name="casesInMillion">Случаев на 1М</string>
+    <string name="deathsInMillion">Смертей на 1М</string>
+    <string name="testsInMillion">Тестов на 1М</string>
     <string name="countries">Страны</string>
     <string name="choose">Выберите</string>
     <string name="settings">Настройки</string>
