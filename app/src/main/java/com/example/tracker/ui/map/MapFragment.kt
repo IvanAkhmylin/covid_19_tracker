@@ -5,9 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.Navigation
+import com.example.tracker.Constants.Constants
 import com.example.tracker.Constants.Status
 import com.example.tracker.R
 import com.example.tracker.Utils.ExpansionUtils.decimalFormatter
@@ -25,10 +29,15 @@ import com.mapbox.mapboxsdk.camera.CameraPosition
 import com.mapbox.mapboxsdk.camera.CameraUpdateFactory
 import com.mapbox.mapboxsdk.geometry.LatLng
 import com.mapbox.mapboxsdk.maps.MapboxMap
+import com.mapbox.mapboxsdk.maps.OnMapReadyCallback
 import com.mapbox.mapboxsdk.maps.Style
 import com.mapbox.mapboxsdk.style.layers.Layer
 import com.mapbox.mapboxsdk.style.layers.PropertyFactory.textField
 import kotlinx.android.synthetic.main.loading_and_error_layout.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 
 class MapFragment : Fragment() {
@@ -81,11 +90,13 @@ class MapFragment : Fragment() {
 
     private fun initMap() {
         mMapBox?.getMapAsync { map ->
-            if (requireContext().isDarkThemeOn()) {
-                map.setStyle(Style.DARK)
+            val style = if (requireContext().isDarkThemeOn()) {
+                Style.DARK
             } else {
-                map.setStyle(Style.LIGHT)
+                Style.DARK
             }
+
+            map.setStyle(style)
 
             map.getStyle {
                 val mapText: Layer = it.getLayer("country-label")!!
@@ -110,14 +121,33 @@ class MapFragment : Fragment() {
                 }
             })
 
-            map.infoWindowAdapter = MapboxMap.InfoWindowAdapter {
+            map.setOnInfoWindowClickListener { marker ->
+                val countyHistoric = mViewModel.getHistoric(marker.title)
+                if (countyHistoric != null) {
+                    Navigation.findNavController(requireActivity(), R.id.nav_host)
+                        .navigate(
+                            R.id.action_countries_to_detailCountryFragment,
+                            bundleOf(
+                                Constants.COUNTRIES_NAME to marker.title,
+                                Constants.HISTORIC_OF_COUNTRIES to countyHistoric
+                            )
+                        )
+                } else {
+                    Toast.makeText(
+                        requireContext(),
+                        requireContext().getString(R.string.error_getting_historic_data),
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+                true
+            }
+
+            map.infoWindowAdapter = MapboxMap.InfoWindowAdapter { marker ->
                 val data = countriesList.filter { data ->
-                    data.country == it.title
+                    data.country == marker.title
                 }.firstOrNull()
 
-
                 val view = layoutInflater.inflate(R.layout.info_window_layout, null)
-
                 val size = resources.getDimension(R.dimen.tooltip_size)
                 val triangleEdgeTreatment =
                     TriangleEdgeTreatment(size, false)
@@ -139,7 +169,7 @@ class MapFragment : Fragment() {
 
 
                 val moveCameraTo = CameraPosition.Builder()
-                    .target(LatLng(it.position.latitude, it.position.longitude))
+                    .target(LatLng(marker.position.latitude, marker.position.longitude))
                     .build()
                 map.animateCamera(CameraUpdateFactory.newCameraPosition(moveCameraTo), 200)
 

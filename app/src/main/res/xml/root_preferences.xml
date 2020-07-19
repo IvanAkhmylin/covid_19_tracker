@@ -19,7 +19,6 @@
         app:iconSpaceReserved="false"
         app:title="@string/lang">
         <ListPreference
-            app:defaultValue="English"
             app:dependency="change_lang"
             app:dialogTitle="@string/choose"
             app:entries="@array/app_lang_arrays"

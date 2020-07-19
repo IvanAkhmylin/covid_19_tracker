@@ -29,8 +29,8 @@
            android:textColor="@color/primary_text"
            android:layout_width="match_parent"
            android:layout_height="wrap_content"
-           android:textAlignment="center"
            android:layout_margin="10dp"
+           android:textAlignment="center"
            android:text="@string/about_app_info"
            android:theme="@style/MediumTextStyle" />
    </LinearLayout>

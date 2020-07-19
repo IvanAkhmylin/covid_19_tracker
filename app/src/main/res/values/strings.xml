@@ -46,8 +46,8 @@
     <string name="day_theme">Day Theme</string>
     <string name="system_theme">System theme</string>
 
-    <string name="about_app_info">Covid-19 Tracker - this project was created in order to conveniently familiarize yourself with the current state of affairs in the world, in connection with the Covid-19 pandemic, as well as to acquire skills in the development of mobile applications.</string>
-    <string name="developer_links">If you find a bug or error in the translation, you can write to me.</string>
+    <string name="about_app_info">This project was created in order to conveniently familiarize yourself with the current state of affairs in the world, in connection with the Covid-19 pandemic, as well as to acquire skills in the development of mobile applications.</string>
+    <string name="developer_links">If you find a bug or mistake in translation, you can write to me</string>
 
 
 </resources>

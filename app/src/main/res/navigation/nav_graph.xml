@@ -15,7 +15,16 @@
         android:id="@+id/map"
         android:name="com.example.tracker.ui.map.MapFragment"
         android:label="@string/map"
-        tools:layout="@layout/fragment_map_box" />
+        tools:layout="@layout/fragment_map_box">
+        <action
+            android:id="@+id/action_countries_to_detailCountryFragment"
+            app:destination="@id/detailCountryFragment"
+            app:enterAnim="@anim/enter_left"
+            app:exitAnim="@anim/exit_right"
+            app:launchSingleTop="false"
+            app:popEnterAnim="@anim/pop_enter_left"
+            app:popExitAnim="@anim/pop_exit_right" />
+    </fragment>
 
     <fragment
         android:id="@+id/news"

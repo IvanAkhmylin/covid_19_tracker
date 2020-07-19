@@ -46,6 +46,6 @@
     <string name="system_theme">システムテーマ</string>
     <string name="change_theme">"テーマを変更 "</string>
 
-    <string name="about_app_info">Covid-19 Tracker - このプロジェクトは、自分自身を使い慣れるために作成されました Covid-19パンデミックに関連して、世界の現状について         モバイルアプリケーションの開発スキルを習得するだけでなく、.</string>
-    <string name="developer_links">翻訳にバグやエラーを見つけたら、私に書いてください。</string>
+    <string name="about_app_info">このプロジェクトは、Covid-19パンデミックに関連して世界の現状を簡単に理解し、モバイルアプリケーションの開発スキルを習得するために作成されました。</string>
+    <string name="developer_links">翻訳のバグや間違いを見つけたら、私に書いてください</string>
 </resources>

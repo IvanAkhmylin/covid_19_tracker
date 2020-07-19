@@ -20,10 +20,9 @@ object SettingUtils {
             checkAppLang(prefs, context)
             checkAppTheme(prefs, context)
 
-            if(!prefs.getBoolean("first_start" , false)){
-                prefs.edit().putString("theme" , "-1").apply()
-                prefs.edit().putString("change_lang" , "English").apply()
-                prefs.edit().putBoolean("first_start" , true).apply()
+            if (!prefs.getBoolean("first_start", false)) {
+                prefs.edit().putString("theme", "-1").apply()
+                prefs.edit().putBoolean("first_start", true).apply()
             }
 
         } else {
@@ -37,11 +36,19 @@ object SettingUtils {
     }
 
     fun checkAppLang(prefs: SharedPreferences, activity: Context) {
-        val lang = prefs.getString("change_lang", "English")
+        var lang = prefs.getString("change_lang", "")
+
+        if (lang?.isEmpty()!!) {
+            lang = Locale.getDefault().displayLanguage
+            lang = lang.substring(0, 1).toUpperCase() + lang.substring(1)
+            prefs.edit().putString("change_lang", lang).apply()
+        }
+
         when (lang) {
             "English" -> changeAppLanguage("en", activity)
             "Русский" -> changeAppLanguage("ru", activity)
-            "日本" -> changeAppLanguage("ja", activity)
+            "日本語" -> changeAppLanguage("ja", activity)
+            else -> changeAppLanguage("en", activity)
         }
     }
 
