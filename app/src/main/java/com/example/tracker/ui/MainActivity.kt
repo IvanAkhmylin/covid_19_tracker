@@ -10,11 +10,14 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import androidx.preference.PreferenceManager
 import com.example.tracker.R
-import com.example.tracker.Utils.SettingUtils
+import com.example.tracker.base.BaseActivity
+import com.example.tracker.utils.SettingUtils
+import dagger.android.AndroidInjection
+import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
     private val mNavController by lazy {
         Navigation.findNavController(this, R.id.nav_host)
@@ -22,12 +25,12 @@ class MainActivity : AppCompatActivity() {
 
     private val sharedPreferencesListener =
         SharedPreferences.OnSharedPreferenceChangeListener { sharedPreferences, key ->
-            Log.d("TAG" , "$sharedPreferences --- $key")
             SettingUtils.checkSettings(sharedPreferences, this, key)
         }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme_NoActionBar)
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         init()

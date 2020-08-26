@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat.getColor
 import androidx.preference.PreferenceFragmentCompat
 import com.example.tracker.R
 
@@ -20,7 +21,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         savedInstanceState: Bundle?
     ): View? {
         val view: View? = super.onCreateView(inflater, container, savedInstanceState)
-        view?.setBackgroundColor(resources.getColor(R.color.background))
+        view?.setBackgroundColor(getColor(this.requireContext(), R.color.background))
         return view
     }
 }

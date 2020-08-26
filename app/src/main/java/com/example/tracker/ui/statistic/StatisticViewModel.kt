@@ -1,53 +1,75 @@
 package com.example.tracker.ui.statistic
 
-import android.app.Application
-import android.util.Log
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import com.example.tracker.Constants.Constants
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.tracker.Constants.Status
-import com.example.tracker.model.Statistic
-import com.example.tracker.model.TimeLine
-import com.mapbox.mapboxsdk.utils.Compare
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
+import com.example.tracker.data.local.entity.Statistic
+import com.example.tracker.data.local.entity.TimeLine
+import com.example.tracker.data.repository.StatisticRepository
+import com.example.tracker.utils.Result
 import kotlinx.coroutines.launch
+import timber.log.Timber
+import javax.inject.Inject
 
 
-class StatisticViewModel(application: Application) : AndroidViewModel(application) {
-    private val model = StatisticRepository()
-    var mNewsListStatus = MutableLiveData<String>()
-    val mStatistic = MutableLiveData<Statistic>()
-    lateinit var mHistoricList: TimeLine
-    val mHistoric = MutableLiveData<TimeLine>()
+class StatisticViewModel
+@Inject constructor(
+    private val model: StatisticRepository
+) : ViewModel() {
+
+    var mStatus = MutableLiveData<String>()
+
+    var mStatistic = MutableLiveData<Statistic>()
+    var mHistoric = MutableLiveData<TimeLine>()
 
     init {
-        getOverallData()
+        getOverallStatistic()
+        getOverallHistoric()
     }
 
+    fun getOverallStatistic() {
+        mStatus.postValue(Status.LOADING)
+        viewModelScope.launch {
+            val data = model.getOverallStatistic()
+            Timber.d("STATISTIC VIEW MODEL ---> REQUEST STATUS --> ${data.status.name}")
+            when (data.status) {
+                Result.Status.SUCCESS -> {
+                    mStatus.postValue(Status.SUCCESS)
+                    mStatistic.postValue(data.data!!)
+                }
 
-    fun getOverallData() {
-        mNewsListStatus.postValue(Status.LOADING)
-        model.getStatistic(getApplication(), {
-            mStatistic.postValue(it)
-            mNewsListStatus.postValue(Status.SUCCESS)
-        }, {
-            mNewsListStatus.postValue(Status.ERROR)
-        })
+                Result.Status.ERROR -> {
+                    mStatus.postValue(Status.ERROR)
+                }
 
-        mNewsListStatus.postValue(Status.LOADING)
-        model.getOverallHistoric(getApplication(), {
-            mHistoric.postValue(it)
-            mHistoricList = it
-        }, {
-            mNewsListStatus.postValue(Status.ERROR)
-        })
+                Result.Status.LOADING -> {
+                    mStatus.postValue(Status.LOADING)
+                }
+            }
+        }
     }
 
+    fun getOverallHistoric() {
+        mStatus.postValue(Status.LOADING)
+        viewModelScope.launch {
+            val data = model.getOverallHistoric()
+            when (data.status) {
+                Result.Status.SUCCESS -> {
+                    mStatus.postValue(Status.SUCCESS)
+                    mHistoric.postValue(data.data!!)
+                }
 
+                Result.Status.ERROR -> {
+                    mStatus.postValue(Status.ERROR)
+                }
 
-
+                Result.Status.LOADING -> {
+                    mStatus.postValue(Status.LOADING)
+                }
+            }
+        }
+    }
 
 }
 

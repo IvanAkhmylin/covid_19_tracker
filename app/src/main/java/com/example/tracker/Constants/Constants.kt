@@ -8,8 +8,6 @@ object Constants {
     const val CASES = "Cases:"
     const val DEATHS = "Deaths:"
     const val RECOVERED = "Recovered:"
-    const val NEWS_LINK = "News Link"
-    const val NEWS_TITLE = "News Title"
     const val COUNTRIES_NAME = "Countries Title"
     const val RECYCLER_STATE = "RECYCLER STATE"
 

@@ -1,12 +1,12 @@
-package com.example.tracker.Utils
+package com.example.tracker.utils
 
 import androidx.recyclerview.widget.DiffUtil
-import com.example.tracker.model.Country
+import com.example.tracker.data.local.entity.Country
 
 class CountriesDiffUtilCallback(var oldValues: List<Country>, var newValues: List<Country>) :
         DiffUtil.Callback() {
         override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-            return (oldValues[oldItemPosition].countryInfo._id == newValues[newItemPosition].countryInfo._id)
+            return (oldValues[oldItemPosition].countryInfo.id == newValues[newItemPosition].countryInfo.id)
         }
 
         override fun getOldListSize(): Int {

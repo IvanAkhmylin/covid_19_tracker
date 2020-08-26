@@ -8,7 +8,7 @@
     <string name="at">で</string>
     <string name="app_locale">ja</string>
     <string name="cases">ケース</string>
-    <string name="deaths">"死亡者（数 "</string>
+    <string name="deaths">死者数</string>
     <string name="recovered">"回復した "</string>
     <string name="active">アクティブ</string>
     <string name="critical">クリティカル</string>

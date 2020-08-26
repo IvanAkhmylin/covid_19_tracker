@@ -9,11 +9,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.tracker.Constants.Constants.DAY
 import com.example.tracker.Constants.Constants.MONTH
 import com.example.tracker.R
-import com.example.tracker.Utils.ExpansionUtils.decimalFormatter
-import com.example.tracker.Utils.ExpansionUtils.fromMillis
-import com.example.tracker.Utils.ExpansionUtils.toMillis
-import com.example.tracker.model.Historic
-import com.example.tracker.model.TimeLine
+import com.example.tracker.utils.ExpansionUtils.decimalFormatter
+import com.example.tracker.utils.ExpansionUtils.fromMillis
+import com.example.tracker.utils.ExpansionUtils.toMillis
+import com.example.tracker.data.local.entity.TimeLine
 import java.util.*
 
 class CountriesDaysAdapter(val timeLine: TimeLine) : RecyclerView.Adapter<CountriesDaysAdapter.ViewHolder>() {

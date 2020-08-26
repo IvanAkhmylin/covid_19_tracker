@@ -9,8 +9,7 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import androidx.fragment.app.Fragment
 import com.example.tracker.R
-import com.example.tracker.Utils.ExpansionUtils.isDarkThemeOn
-import kotlinx.android.synthetic.main.fragment_about.*
+import com.example.tracker.utils.ExpansionUtils.isDarkThemeOn
 
 
 class AboutFragment : Fragment() {

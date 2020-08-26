@@ -14,9 +14,10 @@ import androidx.navigation.Navigation
 import com.example.tracker.Constants.Constants
 import com.example.tracker.Constants.Status
 import com.example.tracker.R
-import com.example.tracker.Utils.ExpansionUtils.decimalFormatter
-import com.example.tracker.Utils.ExpansionUtils.isDarkThemeOn
-import com.example.tracker.model.Country
+import com.example.tracker.base.BaseFragment
+import com.example.tracker.utils.ExpansionUtils.decimalFormatter
+import com.example.tracker.utils.ExpansionUtils.isDarkThemeOn
+import com.example.tracker.data.local.entity.Country
 import com.example.tracker.ui.MainActivity
 import com.example.tracker.ui.countries.CountriesViewModel
 import com.facebook.drawee.view.SimpleDraweeView
@@ -28,22 +29,21 @@ import com.mapbox.mapboxsdk.annotations.MarkerOptions
 import com.mapbox.mapboxsdk.camera.CameraPosition
 import com.mapbox.mapboxsdk.camera.CameraUpdateFactory
 import com.mapbox.mapboxsdk.geometry.LatLng
+import com.mapbox.mapboxsdk.maps.MapView
 import com.mapbox.mapboxsdk.maps.MapboxMap
-import com.mapbox.mapboxsdk.maps.OnMapReadyCallback
+import com.mapbox.mapboxsdk.maps.MapboxMapOptions
 import com.mapbox.mapboxsdk.maps.Style
 import com.mapbox.mapboxsdk.style.layers.Layer
 import com.mapbox.mapboxsdk.style.layers.PropertyFactory.textField
 import kotlinx.android.synthetic.main.loading_and_error_layout.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 
 
-class MapFragment : Fragment() {
-    private var mMapBox: com.mapbox.mapboxsdk.maps.MapView? = null
-    private lateinit var mViewModel: CountriesViewModel
+class MapFragment : BaseFragment() {
+    private val mViewModel: CountriesViewModel by injectViewModel()
+
+    private var mMapBox: MapView? = null
     private var countriesList = ArrayList<Country>()
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -55,28 +55,28 @@ class MapFragment : Fragment() {
     }
 
     private fun init(v: View) {
-        mViewModel =
-            ViewModelProvider(requireActivity() as MainActivity).get(CountriesViewModel::class.java)
 
         mMapBox = v.findViewById(R.id.mapView)
         v.findViewById<MaterialButton>(R.id.try_again).setOnClickListener {
-            mViewModel.getCountriesStatistic()
+            mViewModel.getCountries()
         }
 
-        mViewModel.mCountriesStatus.observe(viewLifecycleOwner, Observer {
+        mViewModel.mStatus.observe(viewLifecycleOwner, Observer {
             when (it) {
                 Status.LOADING -> {
                     mMapBox?.visibility = View.GONE
                     failure_container.visibility = View.GONE
                     progress?.visibility = View.VISIBLE
                 }
+
                 Status.SUCCESS -> {
                     initMap()
+                    mMapBox?.visibility = View.VISIBLE
                     not_find_data.visibility = View.GONE
                     progress?.visibility = View.GONE
                     failure_container.visibility = View.GONE
-                    mMapBox?.visibility = View.VISIBLE
                 }
+
                 Status.ERROR -> {
                     mMapBox?.visibility = View.GONE
                     failure_container.visibility = View.VISIBLE
@@ -87,13 +87,12 @@ class MapFragment : Fragment() {
         })
     }
 
-
     private fun initMap() {
         mMapBox?.getMapAsync { map ->
             val style = if (requireContext().isDarkThemeOn()) {
                 Style.DARK
             } else {
-                Style.DARK
+                Style.LIGHT
             }
 
             map.setStyle(style)
@@ -103,7 +102,8 @@ class MapFragment : Fragment() {
                 mapText.setProperties(textField("{name_${requireContext().getString(R.string.app_locale)}}"));
             }
 
-            mViewModel.mFilteredData.observe(viewLifecycleOwner, Observer { list ->
+
+            mViewModel.mCountriesMap.observe(viewLifecycleOwner, Observer { list ->
                 countriesList.clear()
                 countriesList.addAll(list)
                 list.forEach { country ->
@@ -143,9 +143,9 @@ class MapFragment : Fragment() {
             }
 
             map.infoWindowAdapter = MapboxMap.InfoWindowAdapter { marker ->
-                val data = countriesList.filter { data ->
+                val data = countriesList.firstOrNull { data ->
                     data.country == marker.title
-                }.firstOrNull()
+                }
 
                 val view = layoutInflater.inflate(R.layout.info_window_layout, null)
                 val size = resources.getDimension(R.dimen.tooltip_size)

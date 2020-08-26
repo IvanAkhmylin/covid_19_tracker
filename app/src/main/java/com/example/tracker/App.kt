@@ -1,16 +1,29 @@
 package com.example.tracker
 
 import android.app.Application
-import android.content.res.Resources
-import androidx.preference.PreferenceManager
-import com.example.tracker.Utils.SettingUtils
+import com.example.tracker.di.DaggerAppComponent
 import com.facebook.drawee.backends.pipeline.Fresco
-import java.util.*
+import dagger.android.AndroidInjector
+import dagger.android.DaggerApplication
+import timber.log.Timber
 
-class App : Application() {
+class App : DaggerApplication()  {
+    private val appComponent = DaggerAppComponent.builder().application(this).build()
+
+
     override fun onCreate() {
         Fresco.initialize(this)
         super.onCreate()
+        initTimber()
     }
+
+    override fun applicationInjector() = appComponent
+
+    private fun initTimber() {
+        if (BuildConfig.DEBUG){
+            Timber.plant(Timber.DebugTree())
+        }
+    }
+
 
 }

@@ -1,7 +1,6 @@
 package com.example.tracker.ui.countries
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.os.Bundle
 import android.os.Parcelable
 import android.view.*
@@ -11,6 +10,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
@@ -20,18 +20,22 @@ import com.example.tracker.Constants.Constants
 import com.example.tracker.Constants.Constants.RECYCLER_STATE
 import com.example.tracker.Constants.Status
 import com.example.tracker.R
-import com.example.tracker.Utils.ExpansionUtils.hideKeyboard
+import com.example.tracker.base.BaseFragment
+import com.example.tracker.data.local.entity.Country
 import com.example.tracker.ui.MainActivity
+import com.example.tracker.utils.ExpansionUtils.hideKeyboard
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.android.synthetic.main.fragment_search.*
 import kotlinx.android.synthetic.main.loading_and_error_layout.*
+import timber.log.Timber
 
 
-class CountriesFragment : Fragment() {
-    private lateinit var mViewModel: CountriesViewModel
+class CountriesFragment : BaseFragment() {
+    private val mViewModel: CountriesViewModel by injectViewModel()
+
     private var mSearchView: SearchView? = null
     private lateinit var mChipGroup: ChipGroup
     private lateinit var mSearchItem: MenuItem
@@ -54,10 +58,9 @@ class CountriesFragment : Fragment() {
 
     @SuppressLint("SetTextI18n")
     private fun init(v: View) {
-        mViewModel =
-            ViewModelProvider(requireActivity() as MainActivity).get(CountriesViewModel::class.java)
         mChipGroup = v.findViewById(R.id.chip_group)
         mRecycler = v.findViewById(R.id.search_recycler)
+
         mRecycler?.layoutManager =
             LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
         mRecyclerAdapter = CountriesAdapter {
@@ -83,7 +86,7 @@ class CountriesFragment : Fragment() {
         mFab = v.findViewById(R.id.search_fab)
 
         v.findViewById<MaterialButton>(R.id.try_again).setOnClickListener {
-            mViewModel.getCountriesStatistic()
+            mViewModel.getCountries()
         }
 
         initChips()
@@ -92,7 +95,7 @@ class CountriesFragment : Fragment() {
     }
 
     private fun initObservers() {
-        mViewModel.mCountriesStatus.observe(viewLifecycleOwner, Observer {
+        mViewModel.mStatus.observe(viewLifecycleOwner, Observer {
             when (it) {
                 Status.LOADING -> {
                     mRecycler?.visibility = View.GONE
@@ -116,21 +119,27 @@ class CountriesFragment : Fragment() {
                     progress?.visibility = View.GONE
                     mRecycler?.visibility = View.GONE
                 }
-                Status.NOT_FOUND -> {
-                    not_find_data.visibility = View.VISIBLE
-                    failure_container.visibility = View.GONE
-                    mRecycler?.visibility = View.GONE
-                }
             }
         })
 
-        mViewModel.mFilteredData.observe(viewLifecycleOwner, Observer { list ->
-            list?.let {
-                mRecyclerAdapter?.updateRecyclerView(it)
-                mRecycler?.scrollToPosition(0)
-                resumeLayoutManager()
-            }
+        mViewModel.mCountries.observe(viewLifecycleOwner, Observer {
+            populateRecyclerView(it)
         })
+
+    }
+
+    private fun populateRecyclerView(list: List<Country>) {
+        if (list.isNotEmpty()) {
+            mRecycler?.visibility = View.VISIBLE
+
+            mRecyclerAdapter?.updateRecyclerView(list)
+            mRecycler?.scrollToPosition(0)
+            resumeLayoutManager()
+            not_find_data.visibility = View.GONE
+        } else {
+            mRecyclerAdapter?.updateRecyclerView(list)
+            not_find_data.visibility = View.VISIBLE
+        }
     }
 
     private fun initFab() {
@@ -148,9 +157,9 @@ class CountriesFragment : Fragment() {
             setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.ic_search))
             hideKeyboard()
         }
+
         mSearchItem.isVisible = false
         mSearchView!!.onActionViewCollapsed()
-
         mSortItem.isVisible = true
     }
 
@@ -167,16 +176,23 @@ class CountriesFragment : Fragment() {
             val chip = Chip(mChipGroup.context, null, R.attr.ChipStyle).apply {
                 id = index
                 text = continent
-                ViewCompat.setElevation(this ,1f)
-                setTextColor(ContextCompat.getColorStateList(requireContext(),R.color.chip_selector_text_color))
+                ViewCompat.setElevation(this, 1f)
+                setTextColor(
+                    ContextCompat.getColorStateList(
+                        requireContext(),
+                        R.color.chip_selector_text_color
+                    )
+                )
                 chipBackgroundColor =
-                    ContextCompat.getColorStateList(requireContext(), R.color.chip_selector_background)
+                    ContextCompat.getColorStateList(
+                        requireContext(),
+                        R.color.chip_selector_background
+                    )
             }
             mChipGroup.addView(chip)
         }
 
         mChipGroup.setOnCheckedChangeListener { group, checkedId ->
-
             if (checkedId != -1) {
                 val chip = group.getChildAt(checkedId) as Chip
                 if (chip.isPressed) {
@@ -247,7 +263,6 @@ class CountriesFragment : Fragment() {
                 }
 
             })
-
             queryHint = requireContext().getString(R.string.countries_search_hint)
 
         }
@@ -259,10 +274,6 @@ class CountriesFragment : Fragment() {
         pauseLayoutManager()
     }
 
-    override fun onDestroy() {
-        mViewModel.resetData()
-        super.onDestroy()
-    }
 
     override fun onResume() {
         super.onResume()

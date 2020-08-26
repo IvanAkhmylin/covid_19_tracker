@@ -1,6 +1,5 @@
 package com.example.tracker.ui.countries
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,9 +7,9 @@ import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tracker.R
-import com.example.tracker.Utils.CountriesDiffUtilCallback
-import com.example.tracker.Utils.ExpansionUtils.decimalFormatter
-import com.example.tracker.model.Country
+import com.example.tracker.utils.CountriesDiffUtilCallback
+import com.example.tracker.utils.ExpansionUtils.decimalFormatter
+import com.example.tracker.data.local.entity.Country
 import com.facebook.drawee.view.SimpleDraweeView
 import com.google.android.material.card.MaterialCardView
 
@@ -31,7 +30,6 @@ class CountriesAdapter(var onClick: (Country) -> Unit) :
     inner class ViewHolder(val v: View) : RecyclerView.ViewHolder(v)
 
     fun updateRecyclerView(newValues: List<Country>) {
-        Log.d("TAG", "UPDATE recycler view")
         val diffResult = DiffUtil.calculateDiff(CountriesDiffUtilCallback(items, newValues))
         items.clear()
         items.addAll(newValues)

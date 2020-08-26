@@ -1,6 +1,5 @@
 package com.example.tracker.ui.news
 
-import android.animation.AnimatorInflater
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -13,7 +12,7 @@ import com.example.tracker.Constants.Constants.STATE_LOADING
 import com.example.tracker.Constants.Constants.STATE_NORMAL
 import com.example.tracker.Constants.Status
 import com.example.tracker.R
-import com.example.tracker.model.News
+import com.example.tracker.data.local.entity.News
 import com.facebook.drawee.view.SimpleDraweeView
 
 class NewsRecyclerAdapter(

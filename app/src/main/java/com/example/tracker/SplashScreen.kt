@@ -1,13 +1,12 @@
 package com.example.tracker
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.preference.PreferenceManager
-import com.example.tracker.Utils.SettingUtils
-import java.util.*
+import com.example.tracker.ui.MainActivity
+import com.example.tracker.utils.SettingUtils
 
 class SplashScreen : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

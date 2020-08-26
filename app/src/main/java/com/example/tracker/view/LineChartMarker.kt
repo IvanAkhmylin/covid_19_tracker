@@ -9,7 +9,7 @@ import com.example.tracker.Constants.Constants.DAY_MONTH
 import com.example.tracker.Constants.Constants.DEATHS
 import com.example.tracker.Constants.Constants.RECOVERED
 import com.example.tracker.R
-import com.example.tracker.Utils.ExpansionUtils.fromMillis
+import com.example.tracker.utils.ExpansionUtils.fromMillis
 import com.github.mikephil.charting.components.MarkerView
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.highlight.Highlight

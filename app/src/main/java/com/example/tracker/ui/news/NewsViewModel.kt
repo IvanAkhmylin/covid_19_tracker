@@ -1,50 +1,49 @@
 package com.example.tracker.ui.news
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.*
 import com.example.tracker.Constants.Status
 import com.example.tracker.R
-import com.example.tracker.model.News
+import com.example.tracker.data.local.entity.News
+import com.example.tracker.data.repository.NewsRepository
+import com.example.tracker.utils.Result
 import kotlinx.coroutines.*
-import kotlin.collections.ArrayList
+import javax.inject.Inject
 
-class NewsViewModel(locale: String, query: String) : ViewModel() {
-    private val repository = NewsRepository()
-    var mNewsListStatus = MutableLiveData<String>()
-    val mNewsData = MutableLiveData<Pair<ArrayList<News>, String>>()
+class NewsViewModel @Inject constructor(val model: NewsRepository, val application: Application) :
+    ViewModel() {
+
+    var mStatus = MutableLiveData<String>()
+    var mErrorMessage = MutableLiveData<String>()
+    val mNewsList = MutableLiveData<List<News>>()
 
 
-    init {
-        getNewsData(query , locale)
-    }
-
-    fun getNewsData(string: String, locale: String) {
-        Log.d("TAG" , "$string - $locale")
+    fun refreshNewsData(string: String, locale: String) {
+        mStatus.postValue(Status.PRE_LOADING)
         viewModelScope.launch {
-            mNewsData.postValue(null)
-            repository.getNews(string,locale , { list, status ->
-                mNewsData.postValue(list to status)
-                mNewsListStatus.postValue(status)
-            }, {
-                mNewsListStatus.postValue(Status.ERROR)
-            })
+            model.refreshNews(string, locale) {
+                when (it.status.name) {
+                    Result.Status.SUCCESS.name -> {
+                        mStatus.postValue(Status.SUCCESS)
+                        mNewsList.postValue(it.data!!)
+                    }
+
+                    Result.Status.ERROR.name -> {
+                        mErrorMessage.postValue(it.message!!)
+                        mStatus.postValue(Status.ERROR)
+                    }
+
+                    Result.Status.LOADING.name -> {
+                        mStatus.postValue(Status.LOADING)
+                        it.let {
+                            mNewsList.postValue(it.data!!)
+                        }
+                    }
+                }
+            }
         }
 
+
     }
-
-
-
-
-//    fun getUrlWithOutRedirect(string: String) {
-//        mNewsListStatus.postValue(Status.LOADING)
-//        repository.getTrueLink(string , {
-//            mNewsListStatus.postValue(Status.SUCCESS)
-//            mTrueLink.postValue(it)
-//        }, {
-//            mNewsListStatus.postValue(Status.ERROR)
-//        })
-//    }
-
 
 }

@@ -1,20 +1,23 @@
-package com.example.tracker.Utils
+package com.example.tracker.utils
 
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Canvas
+import android.net.Uri
 import android.view.MotionEvent
 import android.view.View
 import androidx.appcompat.app.AlertDialog
+import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat
 import androidx.core.widget.NestedScrollView
 import com.example.tracker.Constants.Constants
 import com.example.tracker.R
-import com.example.tracker.Utils.ExpansionUtils.fromMillis
-import com.example.tracker.Utils.ExpansionUtils.toMillis
-import com.example.tracker.model.TimeLine
+import com.example.tracker.utils.ExpansionUtils.fromMillis
+import com.example.tracker.utils.ExpansionUtils.toMillis
+import com.example.tracker.data.local.entity.TimeLine
+import com.example.tracker.utils.ExpansionUtils.isDarkThemeOn
 import com.example.tracker.view.LineChartMarker
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.charts.PieChart
@@ -22,6 +25,9 @@ import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.*
 import com.github.mikephil.charting.formatter.LargeValueFormatter
 import com.github.mikephil.charting.formatter.ValueFormatter
+import kotlinx.coroutines.*
+import org.jsoup.Jsoup
+import java.io.IOException
 import java.util.*
 
 
@@ -98,7 +104,12 @@ object Utils {
                         data
                     )
                 )
-                xAxisLabel.add(key.toMillis().fromMillis(Constants.DAY_MONTH,  Locale(context.resources.getString(R.string.app_locale))))
+                xAxisLabel.add(
+                    key.toMillis().fromMillis(
+                        Constants.DAY_MONTH,
+                        Locale(context.resources.getString(R.string.app_locale))
+                    )
+                )
             }
         }
 
@@ -125,7 +136,12 @@ object Utils {
                         data
                     )
                 )
-                xAxisLabel.add(key.toMillis().fromMillis(Constants.DAY_MONTH , Locale(context.resources.getString(R.string.app_locale))))
+                xAxisLabel.add(
+                    key.toMillis().fromMillis(
+                        Constants.DAY_MONTH,
+                        Locale(context.resources.getString(R.string.app_locale))
+                    )
+                )
             }
         }
 
@@ -151,10 +167,14 @@ object Utils {
                         data
                     )
                 )
-                xAxisLabel.add(key.toMillis().fromMillis(Constants.DAY_MONTH,  Locale(context.resources.getString(R.string.app_locale))))
+                xAxisLabel.add(
+                    key.toMillis().fromMillis(
+                        Constants.DAY_MONTH,
+                        Locale(context.resources.getString(R.string.app_locale))
+                    )
+                )
             }
         }
-
 
 
         val casesDataSet = LineDataSet(cases, null).apply {
@@ -209,7 +229,10 @@ object Utils {
                 position = XAxis.XAxisPosition.BOTTOM
                 valueFormatter = object : ValueFormatter() {
                     override fun getFormattedValue(value: Float): String {
-                        return value.toLong().fromMillis(Constants.DAY_MONTH ,  Locale(context.resources.getString(R.string.app_locale)))
+                        return value.toLong().fromMillis(
+                            Constants.DAY_MONTH,
+                            Locale(context.resources.getString(R.string.app_locale))
+                        )
                     }
                 }
             }
@@ -239,7 +262,7 @@ object Utils {
         }
 
         mScrollView?.let {
-            mLineChart.setOnTouchListener { v, event ->
+            mLineChart.setOnTouchListener { _, event ->
                 when (event.action) {
                     MotionEvent.ACTION_DOWN -> {
                         mScrollView.requestDisallowInterceptTouchEvent(true)
@@ -255,7 +278,7 @@ object Utils {
     }
 
 
-     fun initializePieChart(
+    fun initializePieChart(
         mChart: PieChart,
         cases: Float,
         deaths: Float,
@@ -294,8 +317,72 @@ object Utils {
             this.setEntryLabelTextSize(20f)
             this.animateXY(0, 0)
         }
-
     }
 
+    suspend fun translateCountryNames(
+        appLang: String,
+        it: List<String>?,
+        onResult: (ArrayList<String>) -> Unit
+    ) {
+        val names = ArrayList<String>()
 
+        val translation = GlobalScope.async {
+            withContext(Dispatchers.Default) {
+                it?.let {
+                    if (appLang != "en") {
+                        it.forEachIndexed { _, country ->
+                            val inLocale: Locale = Locale.forLanguageTag("en-EN")
+                            val outLocale: Locale = Locale.forLanguageTag(appLang)
+                            for (l in Locale.getAvailableLocales()) {
+                                if (l.getDisplayCountry(inLocale).equals(country)) {
+                                    names.add(l.getDisplayCountry(outLocale))
+                                    break
+                                }
+                            }
+                        }
+                    } else {
+                        it.forEachIndexed { index, country ->
+                            names.add(country)
+                        }
+                    }
+
+                    return@withContext names
+                }
+            }
+
+        }
+        translation.await()
+        onResult(names)
+    }
+
+    fun getTrueLink(s: String): String {
+        var link = ""
+        try {
+            val document = Jsoup.connect(s).get()
+            link = document.select("div.m2L3rb > a")
+                .attr("href")
+
+        } catch (e: IOException) {
+
+        }
+
+        return link
+    }
+
+     fun showWebPage(context: Context, link: String) {
+        val builder = CustomTabsIntent.Builder()
+        if (context.isDarkThemeOn()) {
+            builder.setColorScheme(CustomTabsIntent.COLOR_SCHEME_DARK)
+        } else {
+            builder.setColorScheme(CustomTabsIntent.COLOR_SCHEME_LIGHT)
+        }
+        builder.addDefaultShareMenuItem()
+        builder.setToolbarColor(ContextCompat.getColor(context, R.color.colorPrimary))
+        val customTabsIntent = builder.build()
+        customTabsIntent.launchUrl(context, Uri.parse(link))
+    }
 }
+
+
+
+

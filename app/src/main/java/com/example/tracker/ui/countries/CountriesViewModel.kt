@@ -1,203 +1,168 @@
 package com.example.tracker.ui.countries
 
-import android.app.Application
-import android.util.Log
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.example.tracker.Constants.Constants
 import com.example.tracker.Constants.Status
-import com.example.tracker.model.Country
-import com.example.tracker.model.Historic
-import kotlinx.coroutines.*
-import java.util.*
+import com.example.tracker.data.local.entity.Country
+import com.example.tracker.data.local.entity.Historic
+import com.example.tracker.data.repository.CountriesRepository
+import com.example.tracker.utils.Result
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
+import timber.log.Timber
+import javax.inject.Inject
 import kotlin.collections.ArrayList
 
-class CountriesViewModel(application: Application) : AndroidViewModel(application) {
-    val model = CountriesRepository()
 
-    private var mSearchRequest = ""
-    var mAppLang = "en"
-    private val mCountriesList = ArrayList<Country>()
-    private val mSearchedList = ArrayList<Country>()
-    private val mFilteredList = ArrayList<Country>()
+class CountriesViewModel @Inject constructor(val model: CountriesRepository) : ViewModel() {
 
-    val mCountryHistoric = MutableLiveData<List<Historic>>()
-    val mCountriesStatus = MutableLiveData<String>()
-    val mFilteredData = MutableLiveData<List<Country>>()
-    val mCountriesNameList = MutableLiveData<List<String>>()
+    lateinit var mSearchQuery: String
+    lateinit var mCountryImmutable: List<Country>
+
+    var mStatus = MutableLiveData<String>()
+
+    var mCountries = MutableLiveData<List<Country>>()
+    var mCountriesMap = MutableLiveData<List<Country>>()
+
+    var mCountriesNames = MutableLiveData<List<String>>()
+    var mFilteredCountries = ArrayList<Country>()
+    var mCountriesHistoric = MutableLiveData<List<Historic>>()
 
     init {
-        Log.d("TAG" , "RE CALL ")
-        getCountriesStatistic()
+        getCountries()
     }
 
-    fun getCountriesStatistic() {
+    fun getCountries() {
+        mStatus.postValue(Status.LOADING)
         viewModelScope.launch {
-            mCountriesStatus.postValue(Status.LOADING)
-            model.getCountries(getApplication(), {
-                mCountriesList.addAll(it)
-                mFilteredList.addAll(it)
-                mFilteredData.postValue(it)
-                getCountriesArray(it)
-                getCountriesHistoric()
-            }, {
-                mCountriesStatus.postValue(it)
-            })
+            val data = model.getCountries()
+
+            Timber.d("STATUS  GETTING COUNTRIES=== ${data.status}")
+
+            when (data.status) {
+                Result.Status.SUCCESS -> {
+                    getCountriesHistoric()
+
+                    mStatus.postValue(Status.SUCCESS)
+                    mCountries.postValue(data.data!!)
+                    mCountriesMap.postValue(data.data!!)
+                    mFilteredCountries = data.data as ArrayList<Country>
+                    mCountryImmutable = data.data
+                }
+
+                Result.Status.ERROR -> {
+                    mStatus.postValue(Status.ERROR)
+                }
+
+                Result.Status.LOADING -> {
+                    mStatus.postValue(Status.LOADING)
+                }
+            }
         }
     }
 
-    private fun getCountriesHistoric() {
-        GlobalScope.launch(Dispatchers.Main) {
-            val countries = withContext(Dispatchers.Default) {
-                getCountriesNames()
-            }
+    fun getCountriesHistoric() {
+        val countryNames = viewModelScope.async {
+            model.getCountriesNames()
+        }
 
-            model.getCountriesHistoric(getApplication(), countries, {
-                mCountryHistoric.postValue(it)
-                mCountriesStatus.postValue(Status.SUCCESS)
-            }, {
-                mCountriesStatus.postValue(Status.ERROR)
-            })
+        viewModelScope.launch {
+            val names = countryNames.await()
+            if (names.isNotEmpty()){
+                mCountriesNames.postValue(names)
+
+                var namesString = names.toString()
+                namesString = namesString.substring(1, namesString.length - 1)
+
+                val data = model.getCountriesHistoric(namesString)
+                Timber.d("STATUS GETTING HISTORICDATA === ${data.status}")
+
+                when (data.status) {
+                    Result.Status.SUCCESS -> {
+                        mStatus.postValue(Status.SUCCESS)
+                        mCountriesHistoric.postValue(data.data!!)
+                    }
+
+                    Result.Status.ERROR -> {
+                        mStatus.postValue(Status.ERROR)
+                    }
+
+                    Result.Status.LOADING -> {
+                        mStatus.postValue(Status.LOADING)
+                    }
+                }
+            }
+        }
+
+        viewModelScope.launch {
+
         }
     }
 
     fun getCountriesByContinent(checkedId: Int) {
-        GlobalScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             if (checkedId == -1) {
-                Log.d("TAG" , "-1")
-                mFilteredList.clear()
-                mFilteredList.addAll(mCountriesList)
-
-                if (mSearchRequest.isNotEmpty()) {
-                    searchByFilteredData(mSearchRequest)
-                } else {
-                    mFilteredData.postValue(mCountriesList)
-                }
-
+                mFilteredCountries = mCountryImmutable as ArrayList<Country>
             } else {
-                Log.d("TAG" , "$checkedId")
-                mFilteredList.clear()
-                val continent = Constants.CONTINENTS[checkedId]
-                mCountriesList.forEach() {
-                    if (it.continent == continent) {
-                        mFilteredList.add(it)
-                    }
-                }
-                GlobalScope.launch(Dispatchers.Main) {
-                    if (mSearchRequest.isNotEmpty()) {
-                        searchByFilteredData(mSearchRequest)
-                        mCountriesStatus.postValue(Status.SUCCESS)
-                    } else {
-                        mFilteredData.postValue(mFilteredList)
-                    }
-                }
+                mFilteredCountries =
+                    model.sortByContinent(Constants.CONTINENTS[checkedId]) as ArrayList<Country>
+            }
+
+            viewModelScope.launch {
+                if (::mSearchQuery.isInitialized && mSearchQuery.isNotEmpty())
+                    searchByFilteredData(mSearchQuery)
+                else
+                    mCountries.postValue(mFilteredCountries)
             }
         }
+
     }
 
-    fun searchByFilteredData(newText: String?) {
-        mSearchRequest = newText!!
-        GlobalScope.launch {
-            if (newText.isNotEmpty()) {
-                mSearchedList.clear()
-                mFilteredList.forEach() {
-                    if (it.country?.toLowerCase()?.contains(newText.toLowerCase())!!) {
-                        mSearchedList.add(it)
-                    }
-                }
-                GlobalScope.launch(Dispatchers.Main) {
-                    if (mSearchedList.isNotEmpty()) {
-                        mFilteredData.postValue(mSearchedList)
-                        mCountriesStatus.postValue(Status.SUCCESS)
-                    } else {
-                        mCountriesStatus.postValue(Status.NOT_FOUND)
-                    }
-                }
-            } else {
-                mFilteredData.postValue(mFilteredList)
-                mCountriesStatus.postValue(Status.SUCCESS)
-            }
-        }
-    }
-
-    suspend fun getCountriesNames(): String {
-        var countryNamesForHistoricRequest = ""
-        val countries = CoroutineScope(Dispatchers.IO).async {
-            mCountriesList.forEachIndexed { index, country ->
-                if (index == 0) countryNamesForHistoricRequest += "${country.country}"
-                countryNamesForHistoricRequest += ",${country.country}"
-            }
-            return@async
-        }
-        countries.await()
-        return countryNamesForHistoricRequest
-    }
-
-    fun getCountriesArray(it: List<Country>) {
-        val names = ArrayList<String>()
-        Log.d("TAG", "INIT SHIT ")
-        if (mAppLang != "en") {
-            it.forEachIndexed { index, country ->
-                val inLocale: Locale = Locale.forLanguageTag("en-EN")
-                val outLocale: Locale = Locale.forLanguageTag(mAppLang)
-                for (l in Locale.getAvailableLocales()) {
-                    if (l.getDisplayCountry(inLocale).equals(country.country)) {
-                        names.add(l.getDisplayCountry(outLocale))
-                        break
-                    }
+    fun searchByFilteredData(query: String) {
+        val searchResult = ArrayList<Country>()
+        mSearchQuery = query
+        if (query.isNotEmpty()) {
+            mFilteredCountries.forEach {
+                if (it.country.toLowerCase().contains(query.toLowerCase())) {
+                    searchResult.add(it)
                 }
             }
+            mCountries.postValue(searchResult)
         } else {
-            it.forEachIndexed { index, country ->
-                names.add(country.country!!)
-            }
+            mCountries.postValue(mFilteredCountries)
         }
-        Log.d("TAG", "GETTING SHIT  ${names.size}")
-
-        mCountriesNameList.postValue(names)
-
-    }
-
-    fun resetData() {
-        mSearchRequest = ""
-        mFilteredData.postValue(mCountriesList)
     }
 
     fun getHistoric(country: String?): Historic? {
-        return mCountryHistoric.value!!.firstOrNull {
+        return mCountriesHistoric.value?.firstOrNull {
             it.country == country
         }
-
     }
+
+
 
     fun sortBy(type: String) {
         when (type) {
-            Constants.CASES -> {
-                mFilteredList.sortByDescending {
-                    it.cases
-                }
 
-                mFilteredData.postValue(mFilteredList)
+            Constants.CASES -> {
+                mCountries.value?.sortedByDescending { s -> s.cases }?.let {
+                    mCountries.postValue(it)
+                }
             }
 
             Constants.RECOVERED -> {
-                mFilteredList.sortByDescending {
-                    it.recovered
+                mCountries.value?.sortedByDescending { s -> s.recovered }?.let {
+                    mCountries.postValue(it)
                 }
-
-                mFilteredData.postValue(mFilteredList)
             }
 
             Constants.DEATHS -> {
-                mFilteredList.sortByDescending {
-                    it.deaths
+                mCountries.value?.sortedByDescending { s -> s.deaths }?.let {
+                    mCountries.postValue(it)
                 }
-
-                mFilteredData.postValue(mFilteredList)
             }
+
         }
     }
-
-
 }

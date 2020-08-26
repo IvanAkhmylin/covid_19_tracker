@@ -1,4 +1,4 @@
-package com.example.tracker.Utils
+package com.example.tracker.utils
 
 import android.annotation.SuppressLint
 import android.content.Context

@@ -41,7 +41,6 @@
                         style="@style/TitleTextStyle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Data Updated: "
                         android:textAlignment="center"
                         android:textColor="@color/colorAccent"
                         android:textSize="@dimen/SmallTextSize" />

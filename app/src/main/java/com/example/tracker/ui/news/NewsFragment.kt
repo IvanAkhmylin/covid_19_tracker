@@ -1,20 +1,12 @@
 package com.example.tracker.ui.news
 
-import android.app.PendingIntent
-import android.content.Intent
-import android.graphics.Color
-import android.net.Uri
 import android.os.Bundle
 import android.os.Parcelable
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.*
-import androidx.browser.customtabs.CustomTabsIntent
-import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -23,22 +15,28 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.tracker.Constants.Constants.RECYCLER_STATE
 import com.example.tracker.Constants.Status
 import com.example.tracker.R
-import com.example.tracker.Utils.ExpansionUtils.hideKeyboard
-import com.example.tracker.Utils.ExpansionUtils.isDarkThemeOn
-import com.example.tracker.Utils.Utils
+import com.example.tracker.base.BaseFragment
+import com.example.tracker.data.local.entity.News
+import com.example.tracker.utils.ExpansionUtils.hideKeyboard
+import com.example.tracker.utils.Utils
 import com.example.tracker.ui.MainActivity
 import com.example.tracker.ui.countries.CountriesViewModel
 import com.google.android.material.button.MaterialButton
 import kotlinx.android.synthetic.main.fragment_list_news.*
 import kotlinx.android.synthetic.main.loading_and_error_layout.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 
-class NewsFragment() : Fragment() {
+class NewsFragment() : BaseFragment() {
+    private val mViewModel: NewsViewModel by injectViewModel()
+    private val mCountryViewModel: CountriesViewModel by injectViewModel()
+
     private var mRecycler: RecyclerView? = null
     private var mState: Bundle? = null
     private var mSpinner: AutoCompleteTextView? = null
-    private lateinit var mViewModel: NewsViewModel
-    private lateinit var mCountryViewModel: CountriesViewModel
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -50,137 +48,141 @@ class NewsFragment() : Fragment() {
     }
 
     private fun init(v: View) {
-        mViewModel = ViewModelProvider(
-            (requireActivity() as MainActivity),
-            NewsViewModelFactory(
-                requireContext().getString(R.string.app_locale),
-                requireContext().getString(R.string.by_world)
-            )
+        Toast.makeText(
+            requireContext(), "${requireContext().getString(R.string.app_locale)} --- " +
+                    "${requireContext().getString(R.string.by_world)}", Toast.LENGTH_SHORT
+        ).show()
+
+        mViewModel.refreshNewsData(
+            requireContext().getString(R.string.by_world),
+            requireContext().getString(R.string.app_locale)
         )
-            .get(NewsViewModel::class.java)
 
-        mCountryViewModel = ViewModelProvider((requireActivity() as MainActivity))
-            .get(CountriesViewModel::class.java)
-        mCountryViewModel.mAppLang = requireContext().getString(R.string.app_locale)
+        initViews(v)
+        observers()
+    }
 
+    private fun initViews(v: View) {
         mRecycler = v.findViewById(R.id.news_recycler)
         mRecycler?.apply {
             setItemViewCacheSize(30)
             layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
             adapter = NewsRecyclerAdapter(
                 { news ->
-                    openLink(news.link)
+                    Utils.showWebPage(requireContext(), news.link)
                 }, {
                     Utils.shareNews(it, requireContext())
                 })
             mRecycler?.scheduleLayoutAnimation()
             setHasFixedSize(true)
         }
+
         mSpinner = v.findViewById(R.id.spinner)
         v.findViewById<MaterialButton>(R.id.try_again).setOnClickListener {
-            mViewModel.getNewsData(
+            mViewModel.refreshNewsData(
                 requireContext().getString(R.string.by_world),
                 requireContext().getString(R.string.app_locale)
             )
 
-            mCountryViewModel.getCountriesStatistic()
+            mCountryViewModel.getCountries()
         }
-        observers()
-    }
-
-    private fun openLink(link: String) {
-        val builder = CustomTabsIntent.Builder()
-        if (requireContext().isDarkThemeOn()) {
-            builder.setColorScheme(CustomTabsIntent.COLOR_SCHEME_DARK)
-        } else {
-            builder.setColorScheme(CustomTabsIntent.COLOR_SCHEME_LIGHT)
-        }
-        builder.addDefaultShareMenuItem()
-        builder.setToolbarColor(requireContext().getColor(R.color.colorPrimary))
-        val customTabsIntent = builder.build()
-        customTabsIntent.launchUrl(requireContext(), Uri.parse(link))
     }
 
     private fun observers() {
-        mCountryViewModel.mCountriesNameList.observe(viewLifecycleOwner, Observer {
-            ArrayAdapter(
-                requireContext(),
-                android.R.layout.simple_spinner_dropdown_item,
-                it
-            ).apply {
-                mSpinner?.setAdapter(this)
-            }
 
-            spinner_container?.animate()?.translationY(0f)?.setDuration(
-                requireContext().resources.getInteger(R.integer.secondary_duration).toLong()
-            )
-            val margins = (mRecycler?.layoutParams as RelativeLayout.LayoutParams).apply {
-                topMargin = 0
-            }
-
-            mRecycler?.layoutParams = margins
-
-            mSpinner?.setOnItemClickListener { parent, view, position, id ->
-                (view as TextView).apply {
-                    mViewModel.getNewsData(
-                        text.toString(),
-                        requireContext().getString(R.string.app_locale)
-                    )
-
-                    mSpinner?.hideKeyboard()
-                    setOnEditorActionListener { v, actionId, event ->
-                        if (actionId == EditorInfo.IME_ACTION_DONE) {
-                            hideKeyboard()
-                        }
-                        true
+        mCountryViewModel.mCountriesNames.observe(viewLifecycleOwner, Observer { countryNames ->
+            GlobalScope.launch(Dispatchers.Main) {
+                Utils.translateCountryNames(
+                    requireContext().getString(R.string.app_locale),
+                    countryNames
+                ) {
+                    ArrayAdapter(
+                        requireContext(),
+                        android.R.layout.simple_spinner_dropdown_item,
+                        it
+                    ).apply {
+                        mSpinner?.setAdapter(this)
                     }
-                }
-                progress?.visibility = View.VISIBLE
 
-                mRecycler?.apply {
-                    visibility = View.GONE
-                    (mRecycler?.adapter as NewsRecyclerAdapter).clearAdapterData()
+                    spinner_container?.animate()?.translationY(0f)?.setDuration(
+                        requireContext().resources.getInteger(R.integer.secondary_duration).toLong()
+                    )
+                    val margins = (mRecycler?.layoutParams as RelativeLayout.LayoutParams).apply {
+                        topMargin = 0
+                    }
+
+                    mRecycler?.layoutParams = margins
+
+                    mSpinner?.setOnItemClickListener { parent, view, position, id ->
+                        (view as TextView).apply {
+                            mViewModel.refreshNewsData(
+                                text.toString(),
+                                requireContext().getString(R.string.app_locale)
+                            )
+                            progress?.visibility = View.VISIBLE
+                            mSpinner?.hideKeyboard()
+                            setOnEditorActionListener { v, actionId, _ ->
+                                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                                    hideKeyboard()
+                                }
+                                true
+                            }
+                        }
+
+                        mRecycler?.apply {
+                            visibility = View.GONE
+                            (mRecycler?.adapter as NewsRecyclerAdapter).clearAdapterData()
+                        }
+                    }
                 }
             }
         })
 
 
-        mViewModel.mNewsData.observe(viewLifecycleOwner, Observer { item ->
-            item?.let {
+        mViewModel.mNewsList.observe(viewLifecycleOwner, Observer { item ->
+            if (item.isNotEmpty()) {
+
                 mRecycler?.layoutManager!!.onRestoreInstanceState(mRecycler?.layoutManager?.onSaveInstanceState())
                 (mRecycler?.adapter as NewsRecyclerAdapter).updateRecyclerAdapter(
-                    it.second,
-                    it.first
+                    item.last().loadStatus,
+                    item as ArrayList<News>
                 )
                 mRecycler?.isNestedScrollingEnabled = false
                 mRecycler?.scheduleLayoutAnimation()
             }
         })
 
-        mViewModel.mNewsListStatus.observe(viewLifecycleOwner, Observer {
+        mViewModel.mStatus.observe(viewLifecycleOwner, Observer {
             when (it) {
                 Status.LOADING -> {
-                    progress?.visibility = View.GONE
                     failure_container.visibility = View.GONE
+                    progress?.visibility = View.GONE
                     mRecycler?.visibility = View.VISIBLE
                 }
+
                 Status.SUCCESS -> {
                     Toast.makeText(
                         requireContext(),
                         requireContext().getString(R.string.all_news_loaded),
                         Toast.LENGTH_SHORT
                     ).show()
-                    failure_container.visibility = View.GONE
                     progress?.visibility = View.GONE
+                    failure_container.visibility = View.GONE
                     mRecycler?.visibility = View.VISIBLE
                 }
+
                 Status.ERROR -> {
                     mRecycler?.visibility = View.GONE
                     failure_container.visibility = View.VISIBLE
                     progress?.visibility = View.GONE
                 }
-                else -> Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
 
+                Status.PRE_LOADING -> {
+                    failure_container.visibility = View.GONE
+                    progress?.visibility = View.VISIBLE
+                }
+
+                else -> Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
             }
 
         })
