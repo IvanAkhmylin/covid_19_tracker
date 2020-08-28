@@ -3,9 +3,9 @@
 # Screenshots
 
 <p float="left">
-     <img src="git_media/screenshot1.jng" width="200"/>
-     <img src="git_media/screenshot2.jng" width="200"/>
-     <img src="git_media/screenshot3.jng" width="200"/>
-     <img src="git_media/screenshot4.jng" width="200"/>
-     <img src="git_media/screenshot5.jng" width="200"/>  
+     <img src="git_media/Screenshot1.jng" width="200"/>
+     <img src="git_media/Screenshot2.jng" width="200"/>
+     <img src="git_media/Screenshot3.jng" width="200"/>
+     <img src="git_media/Screenshot4.jng" width="200"/>
+     <img src="git_media/Screenshot5.jng" width="200"/>  
 </p>
