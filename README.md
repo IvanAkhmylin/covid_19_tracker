@@ -1,6 +1,8 @@
 # COVID-19 Tracker
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![CircleCI](https://circleci.com/gh/minibugdev/DrawableBadge.svg?style=shield)](https://circleci.com/gh/vanganistan/covid_19_tracker)
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/vanganistan/covid_19_tracker/master/LICENSE)
+
 
 # Description 
 This project was created in order to conveniently familiarize yourself with the current state of affairs in the world, in connection with the Covid-19 pandemic, as well as to acquire skills in the development of mobile applications.
