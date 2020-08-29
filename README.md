@@ -1,7 +1,6 @@
 # COVID-19 Tracker
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Package Control total downloads](https://img.shields.io/packagecontrol/dt/SwitchDictionary.svg)](https://packagecontrol.io/packages/SwitchDictionary)
 
 # Description 
 This project was created in order to conveniently familiarize yourself with the current state of affairs in the world, in connection with the Covid-19 pandemic, as well as to acquire skills in the development of mobile applications.
