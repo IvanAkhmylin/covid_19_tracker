@@ -1,6 +1,5 @@
 # COVID-19 Tracker
 
-[![CircleCI](https://circleci.com/gh/minibugdev/DrawableBadge.svg?style=shield)](https://circleci.com/gh/vanganistan/covid_19_tracker)
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/vanganistan/covid_19_tracker/master/LICENSE)
 
 
