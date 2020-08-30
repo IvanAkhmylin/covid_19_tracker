@@ -7,9 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.*
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tracker.Constants.Constants.RECYCLER_STATE
@@ -17,12 +15,13 @@ import com.example.tracker.Constants.Status
 import com.example.tracker.R
 import com.example.tracker.base.BaseFragment
 import com.example.tracker.data.local.entity.News
+import com.example.tracker.databinding.FragmentNewsBinding
+import com.example.tracker.databinding.NewsItemBinding
 import com.example.tracker.utils.ExpansionUtils.hideKeyboard
 import com.example.tracker.utils.Utils
-import com.example.tracker.ui.MainActivity
 import com.example.tracker.ui.countries.CountriesViewModel
 import com.google.android.material.button.MaterialButton
-import kotlinx.android.synthetic.main.fragment_list_news.*
+import kotlinx.android.synthetic.main.fragment_news.*
 import kotlinx.android.synthetic.main.loading_and_error_layout.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -33,26 +32,28 @@ class NewsFragment() : BaseFragment() {
     private val mViewModel: NewsViewModel by injectViewModel()
     private val mCountryViewModel: CountriesViewModel by injectViewModel()
 
-    private var mRecycler: RecyclerView? = null
+    private var _binding: FragmentNewsBinding? = null
+    private val binding get() = _binding
+
     private var mState: Bundle? = null
-    private var mSpinner: AutoCompleteTextView? = null
 
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val v = inflater.inflate(R.layout.fragment_list_news, container, false)
+        _binding = FragmentNewsBinding.inflate(inflater, container, false)
+        val v = binding!!.root
         init(v)
         return v
     }
 
-    private fun init(v: View) {
-        Toast.makeText(
-            requireContext(), "${requireContext().getString(R.string.app_locale)} --- " +
-                    "${requireContext().getString(R.string.by_world)}", Toast.LENGTH_SHORT
-        ).show()
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 
+    private fun init(v: View) {
         mViewModel.refreshNewsData(
             requireContext().getString(R.string.by_world),
             requireContext().getString(R.string.app_locale)
@@ -63,8 +64,7 @@ class NewsFragment() : BaseFragment() {
     }
 
     private fun initViews(v: View) {
-        mRecycler = v.findViewById(R.id.news_recycler)
-        mRecycler?.apply {
+        binding?.newsRecycler?.apply {
             setItemViewCacheSize(30)
             layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
             adapter = NewsRecyclerAdapter(
@@ -73,23 +73,21 @@ class NewsFragment() : BaseFragment() {
                 }, {
                     Utils.shareNews(it, requireContext())
                 })
-            mRecycler?.scheduleLayoutAnimation()
+            binding?.newsRecycler?.scheduleLayoutAnimation()
             setHasFixedSize(true)
         }
 
-        mSpinner = v.findViewById(R.id.spinner)
+
         v.findViewById<MaterialButton>(R.id.try_again).setOnClickListener {
             mViewModel.refreshNewsData(
                 requireContext().getString(R.string.by_world),
                 requireContext().getString(R.string.app_locale)
             )
-
             mCountryViewModel.getCountries()
         }
     }
 
     private fun observers() {
-
         mCountryViewModel.mCountriesNames.observe(viewLifecycleOwner, Observer { countryNames ->
             GlobalScope.launch(Dispatchers.Main) {
                 Utils.translateCountryNames(
@@ -101,27 +99,27 @@ class NewsFragment() : BaseFragment() {
                         android.R.layout.simple_spinner_dropdown_item,
                         it
                     ).apply {
-                        mSpinner?.setAdapter(this)
+                        binding?.spinner?.setAdapter(this)
                     }
 
                     spinner_container?.animate()?.translationY(0f)?.setDuration(
                         requireContext().resources.getInteger(R.integer.secondary_duration).toLong()
                     )
-                    val margins = (mRecycler?.layoutParams as RelativeLayout.LayoutParams).apply {
+                    val margins = (binding?.newsRecycler?.layoutParams as RelativeLayout.LayoutParams).apply {
                         topMargin = 0
                     }
 
-                    mRecycler?.layoutParams = margins
+                    binding?.newsRecycler?.layoutParams = margins
 
-                    mSpinner?.setOnItemClickListener { parent, view, position, id ->
+                    binding?.spinner?.setOnItemClickListener { _, view, _, _ ->
                         (view as TextView).apply {
                             mViewModel.refreshNewsData(
                                 text.toString(),
                                 requireContext().getString(R.string.app_locale)
                             )
                             progress?.visibility = View.VISIBLE
-                            mSpinner?.hideKeyboard()
-                            setOnEditorActionListener { v, actionId, _ ->
+                            binding?.spinner?.hideKeyboard()
+                            setOnEditorActionListener { _, actionId, _ ->
                                 if (actionId == EditorInfo.IME_ACTION_DONE) {
                                     hideKeyboard()
                                 }
@@ -129,9 +127,9 @@ class NewsFragment() : BaseFragment() {
                             }
                         }
 
-                        mRecycler?.apply {
+                        binding?.newsRecycler?.apply {
                             visibility = View.GONE
-                            (mRecycler?.adapter as NewsRecyclerAdapter).clearAdapterData()
+                            (binding?.newsRecycler?.adapter as NewsRecyclerAdapter).clearAdapterData()
                         }
                     }
                 }
@@ -142,13 +140,14 @@ class NewsFragment() : BaseFragment() {
         mViewModel.mNewsList.observe(viewLifecycleOwner, Observer { item ->
             if (item.isNotEmpty()) {
 
-                mRecycler?.layoutManager!!.onRestoreInstanceState(mRecycler?.layoutManager?.onSaveInstanceState())
-                (mRecycler?.adapter as NewsRecyclerAdapter).updateRecyclerAdapter(
+                binding?.newsRecycler?.layoutManager!!.onRestoreInstanceState(binding?.newsRecycler?.layoutManager?.onSaveInstanceState())
+                (binding?.newsRecycler?.adapter as NewsRecyclerAdapter).updateRecyclerAdapter(
                     item.last().loadStatus,
                     item as ArrayList<News>
                 )
-                mRecycler?.isNestedScrollingEnabled = false
-                mRecycler?.scheduleLayoutAnimation()
+
+                binding?.newsRecycler?.isNestedScrollingEnabled = false
+                binding?.newsRecycler?.scheduleLayoutAnimation()
             }
         })
 
@@ -157,7 +156,7 @@ class NewsFragment() : BaseFragment() {
                 Status.LOADING -> {
                     failure_container.visibility = View.GONE
                     progress?.visibility = View.GONE
-                    mRecycler?.visibility = View.VISIBLE
+                    binding?.newsRecycler?.visibility = View.VISIBLE
                 }
 
                 Status.SUCCESS -> {
@@ -168,11 +167,11 @@ class NewsFragment() : BaseFragment() {
                     ).show()
                     progress?.visibility = View.GONE
                     failure_container.visibility = View.GONE
-                    mRecycler?.visibility = View.VISIBLE
+                    binding?.newsRecycler?.visibility = View.VISIBLE
                 }
 
                 Status.ERROR -> {
-                    mRecycler?.visibility = View.GONE
+                    binding?.newsRecycler?.visibility = View.GONE
                     failure_container.visibility = View.VISIBLE
                     progress?.visibility = View.GONE
                 }
@@ -180,6 +179,7 @@ class NewsFragment() : BaseFragment() {
                 Status.PRE_LOADING -> {
                     failure_container.visibility = View.GONE
                     progress?.visibility = View.VISIBLE
+                    binding?.newsRecycler?.visibility = View.GONE
                 }
 
                 else -> Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
@@ -192,18 +192,18 @@ class NewsFragment() : BaseFragment() {
     override fun onPause() {
         super.onPause()
         mState = Bundle()
-        val state = mRecycler?.layoutManager?.onSaveInstanceState()
+        val state = binding?.newsRecycler?.layoutManager?.onSaveInstanceState()
         mState?.putParcelable(RECYCLER_STATE, state)
 
-        mSpinner?.hideKeyboard()
-        mSpinner?.clearFocus()
+        binding?.spinner?.hideKeyboard()
+        binding?.spinner?.clearFocus()
     }
 
     override fun onResume() {
         super.onResume()
         mState?.let {
             val state: Parcelable? = mState!!.getParcelable(RECYCLER_STATE)
-            mRecycler?.layoutManager?.onRestoreInstanceState(state)
+            binding?.newsRecycler?.layoutManager?.onRestoreInstanceState(state)
         }
 
     }

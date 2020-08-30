@@ -7,6 +7,7 @@
     android:background="@color/background"
     android:fitsSystemWindows="false"
     android:gravity="center"
+    android:windowSoftInputMode="adjustPan|adjustResize"
     android:orientation="vertical">
 
     <include layout="@layout/loading_and_error_layout" />

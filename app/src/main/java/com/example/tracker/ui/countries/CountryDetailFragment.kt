@@ -10,36 +10,33 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tracker.Constants.Constants
 import com.example.tracker.R
+import com.example.tracker.base.BaseFragment
 import com.example.tracker.utils.Utils
 import com.example.tracker.data.local.entity.Historic
+import com.example.tracker.databinding.FragmentCountriesBinding
+import com.example.tracker.databinding.FragmentDetailCountryBinding
+import com.example.tracker.databinding.FragmentNewsBinding
 import com.example.tracker.ui.MainActivity
 import com.github.mikephil.charting.charts.LineChart
 import kotlinx.android.synthetic.main.activity_main.*
 
 
-class CountryDetailFragment : Fragment() {
-    private lateinit var mViewModel: CountriesViewModel
-    private lateinit var mLineChart: LineChart
-    private lateinit var mRecyclerView: RecyclerView
+class CountryDetailFragment : BaseFragment() {
+    private var _binding: FragmentDetailCountryBinding? = null
+    private val binding get() = _binding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val v = inflater.inflate(R.layout.fragment_detail_country, container, false)
-        init(v)
+        _binding = FragmentDetailCountryBinding.inflate(inflater, container, false)
+        val v = binding!!.root
         return v
     }
 
-    fun init(v: View) {
-        mViewModel =
-            ViewModelProvider(requireActivity() as MainActivity).get(CountriesViewModel::class.java)
-        mRecyclerView = v.findViewById(R.id.statistic_days)
-
-        mRecyclerView.layoutManager =
-            LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
-
-        mLineChart = v.findViewById(R.id.line_chart)
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -51,9 +48,11 @@ class CountryDetailFragment : Fragment() {
             (requireContext() as MainActivity).toolbar.title = countryName
 
             history.let {
-                Utils.initializeLineChart(mLineChart , null, requireContext(), it.timeLine!!) // init LineChart
-                mRecyclerView.adapter = CountriesDaysAdapter(it.timeLine!!)
-                mRecyclerView.adapter!!.notifyDataSetChanged()
+                Utils.initializeLineChart(binding?.lineChart!! , null, requireContext(), it.timeLine!!) // init LineChart
+                binding?.statisticDays?.layoutManager =
+                    LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
+                binding?.statisticDays?.adapter = CountriesDaysAdapter(it.timeLine!!)
+                binding?.statisticDays?.adapter!!.notifyDataSetChanged()
             }
 
         }

@@ -4,6 +4,7 @@ import com.example.tracker.di.scopes.ActivityScope
 import com.example.tracker.di.scopes.FragmentScope
 import com.example.tracker.ui.MainActivity
 import com.example.tracker.ui.countries.CountriesFragment
+import com.example.tracker.ui.countries.CountryDetailFragment
 import com.example.tracker.ui.map.MapFragment
 import com.example.tracker.ui.news.NewsFragment
 import com.example.tracker.ui.statistic.StatisticFragment
@@ -29,4 +30,7 @@ abstract class FragmentsModule {
     @ContributesAndroidInjector
     abstract fun contributeMapFragment() : MapFragment
 
+    @FragmentScope
+    @ContributesAndroidInjector
+    abstract fun contributeCountryDetailFragment() : CountryDetailFragment
 }

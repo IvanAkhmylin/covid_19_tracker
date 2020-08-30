@@ -24,8 +24,6 @@ class NewsRepository @Inject constructor(
         locale: String,
         onResult: (Result<List<News>>) -> Unit
     ) = withContext(Dispatchers.IO) {
-        Timber.d("LOCALE OF APP ___ ")
-
         if (connectionManager.isInternetConnectionExist) {
             mRemoteDataSource.getNews(query, locale) {
                 GlobalScope.launch(Dispatchers.IO) {

@@ -33,30 +33,6 @@ import java.util.*
 
 object Utils {
 
-
-    fun createDialog(context: Context): AlertDialog {
-        val builder = AlertDialog.Builder(context)
-//        builder.setView(R.layout.waiting_dialog)
-        builder.setCancelable(false)
-        val dialog = builder.create()
-        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
-
-        return dialog
-    }
-
-
-    fun getBitmapFromVectorDrawable(context: Context?, drawableId: Int): Bitmap? {
-        val drawable = ContextCompat.getDrawable(context!!, drawableId)
-        val bitmap = Bitmap.createBitmap(
-            drawable!!.intrinsicWidth,
-            drawable.intrinsicHeight, Bitmap.Config.ARGB_8888
-        )
-        val canvas = Canvas(bitmap)
-        drawable.setBounds(0, 0, canvas.width, canvas.height)
-        drawable.draw(canvas)
-        return bitmap
-    }
-
     fun shareNews(it: String, context: Context) {
         val shareIntent = Intent().apply {
             action = Intent.ACTION_SEND
@@ -341,7 +317,7 @@ object Utils {
                             }
                         }
                     } else {
-                        it.forEachIndexed { index, country ->
+                        it.forEachIndexed { _, country ->
                             names.add(country)
                         }
                     }

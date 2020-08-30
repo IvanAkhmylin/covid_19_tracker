@@ -40,7 +40,7 @@ class CountriesRepository @Inject constructor(
                 if (data?.isNotEmpty()!!){
                     Result.success(data)
                 }else{
-                    Result.error("data")
+                    Result.error("ERROR")
                 }
             }
         }

@@ -10,10 +10,10 @@ import timber.log.Timber
 class App : DaggerApplication()  {
     private val appComponent = DaggerAppComponent.builder().application(this).build()
 
-
     override fun onCreate() {
         Fresco.initialize(this)
         super.onCreate()
+        mApplication = this
         initTimber()
     }
 
@@ -25,5 +25,13 @@ class App : DaggerApplication()  {
         }
     }
 
+    companion object{
+        lateinit var mApplication: Application
+
+
+        fun getApplication() : Application{
+            return mApplication
+        }
+    }
 
 }

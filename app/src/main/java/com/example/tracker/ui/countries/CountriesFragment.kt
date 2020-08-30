@@ -9,10 +9,7 @@ import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.ViewCompat
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -22,26 +19,25 @@ import com.example.tracker.Constants.Status
 import com.example.tracker.R
 import com.example.tracker.base.BaseFragment
 import com.example.tracker.data.local.entity.Country
-import com.example.tracker.ui.MainActivity
+import com.example.tracker.databinding.FragmentCountriesBinding
 import com.example.tracker.utils.ExpansionUtils.hideKeyboard
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import kotlinx.android.synthetic.main.fragment_search.*
+import kotlinx.android.synthetic.main.fragment_countries.*
 import kotlinx.android.synthetic.main.loading_and_error_layout.*
-import timber.log.Timber
 
 
 class CountriesFragment : BaseFragment() {
     private val mViewModel: CountriesViewModel by injectViewModel()
+    private var _binding: FragmentCountriesBinding? = null
+    private val binding get() = _binding
 
     private var mSearchView: SearchView? = null
-    private lateinit var mChipGroup: ChipGroup
     private lateinit var mSearchItem: MenuItem
     private lateinit var mSortItem: MenuItem
-    private lateinit var mFab: FloatingActionButton
-    private var mRecycler: RecyclerView? = null
+
     private var mRecyclerAdapter: CountriesAdapter? = null
     private var mQuery = ""
     private var mState: Bundle? = null
@@ -50,18 +46,27 @@ class CountriesFragment : BaseFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val v = inflater.inflate(R.layout.fragment_search, container, false)
+        _binding = FragmentCountriesBinding.inflate(inflater, container, false)
+        val v = _binding!!.root
         setHasOptionsMenu(true)
         init(v)
         return v
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        mViewModel.resetData()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
     @SuppressLint("SetTextI18n")
     private fun init(v: View) {
-        mChipGroup = v.findViewById(R.id.chip_group)
-        mRecycler = v.findViewById(R.id.search_recycler)
 
-        mRecycler?.layoutManager =
+        binding?.searchRecycler?.layoutManager =
             LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
         mRecyclerAdapter = CountriesAdapter {
             val countyHistoric = mViewModel.getHistoric(it.country)
@@ -82,8 +87,8 @@ class CountriesFragment : BaseFragment() {
                 ).show()
             }
         }
-        mRecycler?.adapter = mRecyclerAdapter
-        mFab = v.findViewById(R.id.search_fab)
+        mRecyclerAdapter?.stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.ALLOW
+        binding?.searchRecycler?.adapter = mRecyclerAdapter
 
         v.findViewById<MaterialButton>(R.id.try_again).setOnClickListener {
             mViewModel.getCountries()
@@ -98,26 +103,26 @@ class CountriesFragment : BaseFragment() {
         mViewModel.mStatus.observe(viewLifecycleOwner, Observer {
             when (it) {
                 Status.LOADING -> {
-                    mRecycler?.visibility = View.GONE
-                    mFab.visibility = View.GONE
-                    mChipGroup.visibility = View.GONE
+                    binding?.searchRecycler?.visibility = View.GONE
+                    binding?.searchFab?.visibility = View.GONE
+                    binding?.chipGroup?.visibility = View.GONE
                     failure_container.visibility = View.GONE
                     progress?.visibility = View.VISIBLE
                 }
                 Status.SUCCESS -> {
                     not_find_data.visibility = View.GONE
-                    mFab.visibility = View.VISIBLE
-                    mChipGroup.visibility = View.VISIBLE
+                    binding?.searchFab?.visibility = View.VISIBLE
+                    binding?.chipGroup?.visibility = View.VISIBLE
                     progress?.visibility = View.GONE
                     failure_container.visibility = View.GONE
-                    mRecycler?.visibility = View.VISIBLE
+                    binding?.searchRecycler?.visibility = View.VISIBLE
                 }
                 Status.ERROR -> {
                     failure_container.visibility = View.VISIBLE
-                    mFab.visibility = View.GONE
-                    mChipGroup.visibility = View.GONE
+                    binding?.searchFab?.visibility = View.GONE
+                    binding?.chipGroup?.visibility = View.GONE
                     progress?.visibility = View.GONE
-                    mRecycler?.visibility = View.GONE
+                    binding?.searchRecycler?.visibility = View.GONE
                 }
             }
         })
@@ -130,20 +135,19 @@ class CountriesFragment : BaseFragment() {
 
     private fun populateRecyclerView(list: List<Country>) {
         if (list.isNotEmpty()) {
-            mRecycler?.visibility = View.VISIBLE
-
             mRecyclerAdapter?.updateRecyclerView(list)
-            mRecycler?.scrollToPosition(0)
-            resumeLayoutManager()
             not_find_data.visibility = View.GONE
+            restoreRecyclerViewPosition()
         } else {
             mRecyclerAdapter?.updateRecyclerView(list)
             not_find_data.visibility = View.VISIBLE
         }
     }
 
+
+
     private fun initFab() {
-        mFab.setOnClickListener {
+        binding?.searchFab?.setOnClickListener {
             if (mSearchView!!.isIconified) {
                 showSearchView()
             } else {
@@ -153,7 +157,7 @@ class CountriesFragment : BaseFragment() {
     }
 
     private fun hideSearchView() {
-        mFab.apply {
+        binding?.searchFab?.apply {
             setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.ic_search))
             hideKeyboard()
         }
@@ -164,7 +168,12 @@ class CountriesFragment : BaseFragment() {
     }
 
     private fun showSearchView() {
-        mFab.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.ic_close))
+        binding?.searchFab?.setImageDrawable(
+            ContextCompat.getDrawable(
+                requireContext(),
+                R.drawable.ic_close
+            )
+        )
         mSearchItem.isVisible = true
         mSearchView!!.onActionViewExpanded()
 
@@ -173,7 +182,7 @@ class CountriesFragment : BaseFragment() {
 
     private fun initChips() {
         Constants.CONTINENTS.forEachIndexed { index, continent ->
-            val chip = Chip(mChipGroup.context, null, R.attr.ChipStyle).apply {
+            val chip = Chip(binding?.chipGroup?.context, null, R.attr.ChipStyle).apply {
                 id = index
                 text = continent
                 ViewCompat.setElevation(this, 1f)
@@ -189,10 +198,10 @@ class CountriesFragment : BaseFragment() {
                         R.color.chip_selector_background
                     )
             }
-            mChipGroup.addView(chip)
+            binding?.chipGroup?.addView(chip)
         }
 
-        mChipGroup.setOnCheckedChangeListener { group, checkedId ->
+        binding?.chipGroup?.setOnCheckedChangeListener { group, checkedId ->
             if (checkedId != -1) {
                 val chip = group.getChildAt(checkedId) as Chip
                 if (chip.isPressed) {
@@ -271,27 +280,25 @@ class CountriesFragment : BaseFragment() {
 
     override fun onPause() {
         super.onPause()
-        pauseLayoutManager()
+        saveRecyclerViewPosition()
     }
 
-
-    override fun onResume() {
-        super.onResume()
-        resumeLayoutManager()
-    }
-
-    private fun pauseLayoutManager() {
+    private fun saveRecyclerViewPosition(){
         mState = Bundle()
-        mSearchView?.hideKeyboard()
-        val state = mRecycler?.layoutManager?.onSaveInstanceState()
+        val state = binding?.searchRecycler?.layoutManager?.onSaveInstanceState()
         mState?.putParcelable(RECYCLER_STATE, state)
+
+        mSearchView?.hideKeyboard()
+        mSearchView?.clearFocus()
     }
 
-    private fun resumeLayoutManager() {
-        mState?.let {
+    private fun restoreRecyclerViewPosition() {
+        if (mState != null){
             val state: Parcelable? = mState!!.getParcelable(RECYCLER_STATE)
-            mRecycler?.layoutManager?.onRestoreInstanceState(state)
+            binding?.searchRecycler?.layoutManager?.onRestoreInstanceState(state)
             mState = null
+        }else{
+            binding?.searchRecycler?.scrollToPosition(0)
         }
     }
 

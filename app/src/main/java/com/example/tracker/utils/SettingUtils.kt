@@ -32,8 +32,8 @@ object SettingUtils {
                 "theme" -> checkAppTheme(prefs, context)
             }
         }
-        (context as AppCompatActivity).finish()
         context.startActivity(Intent(context, MainActivity::class.java))
+        (context as AppCompatActivity).finish()
     }
 
     fun checkAppLang(prefs: SharedPreferences, activity: Context) {

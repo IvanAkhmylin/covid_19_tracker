@@ -2,16 +2,17 @@ package com.example.tracker.ui.news
 
 import android.app.Application
 import androidx.lifecycle.*
+import com.example.tracker.App
 import com.example.tracker.Constants.Status
 import com.example.tracker.R
 import com.example.tracker.data.local.entity.News
 import com.example.tracker.data.repository.NewsRepository
 import com.example.tracker.utils.Result
 import kotlinx.coroutines.*
+import timber.log.Timber
 import javax.inject.Inject
 
-class NewsViewModel @Inject constructor(val model: NewsRepository, val application: Application) :
-    ViewModel() {
+class NewsViewModel @Inject constructor(val model: NewsRepository) : ViewModel(){
 
     var mStatus = MutableLiveData<String>()
     var mErrorMessage = MutableLiveData<String>()
@@ -20,6 +21,7 @@ class NewsViewModel @Inject constructor(val model: NewsRepository, val applicati
 
     fun refreshNewsData(string: String, locale: String) {
         mStatus.postValue(Status.PRE_LOADING)
+
         viewModelScope.launch {
             model.refreshNews(string, locale) {
                 when (it.status.name) {

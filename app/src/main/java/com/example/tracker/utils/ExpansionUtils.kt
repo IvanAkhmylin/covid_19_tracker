@@ -77,11 +77,6 @@ object ExpansionUtils {
         return format.format(this).replace(("\\s+").toRegex(), ",")
     }
 
-    fun View.showKeyboard() {
-        val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY)
-    }
-
     fun Context.isDarkThemeOn(): Boolean{
         return resources.configuration.uiMode and
                 Configuration.UI_MODE_NIGHT_MASK == UI_MODE_NIGHT_YES

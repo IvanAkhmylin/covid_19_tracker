@@ -10,7 +10,6 @@ import com.example.tracker.utils.Result
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 import kotlin.collections.ArrayList
 
@@ -23,10 +22,10 @@ class CountriesViewModel @Inject constructor(val model: CountriesRepository) : V
     var mStatus = MutableLiveData<String>()
 
     var mCountries = MutableLiveData<List<Country>>()
-    var mCountriesMap = MutableLiveData<List<Country>>()
 
     var mCountriesNames = MutableLiveData<List<String>>()
     var mFilteredCountries = ArrayList<Country>()
+
     var mCountriesHistoric = MutableLiveData<List<Historic>>()
 
     init {
@@ -37,16 +36,10 @@ class CountriesViewModel @Inject constructor(val model: CountriesRepository) : V
         mStatus.postValue(Status.LOADING)
         viewModelScope.launch {
             val data = model.getCountries()
-
-            Timber.d("STATUS  GETTING COUNTRIES=== ${data.status}")
-
             when (data.status) {
                 Result.Status.SUCCESS -> {
                     getCountriesHistoric()
-
-                    mStatus.postValue(Status.SUCCESS)
                     mCountries.postValue(data.data!!)
-                    mCountriesMap.postValue(data.data!!)
                     mFilteredCountries = data.data as ArrayList<Country>
                     mCountryImmutable = data.data
                 }
@@ -76,8 +69,6 @@ class CountriesViewModel @Inject constructor(val model: CountriesRepository) : V
                 namesString = namesString.substring(1, namesString.length - 1)
 
                 val data = model.getCountriesHistoric(namesString)
-                Timber.d("STATUS GETTING HISTORICDATA === ${data.status}")
-
                 when (data.status) {
                     Result.Status.SUCCESS -> {
                         mStatus.postValue(Status.SUCCESS)
@@ -95,9 +86,6 @@ class CountriesViewModel @Inject constructor(val model: CountriesRepository) : V
             }
         }
 
-        viewModelScope.launch {
-
-        }
     }
 
     fun getCountriesByContinent(checkedId: Int) {
@@ -140,7 +128,11 @@ class CountriesViewModel @Inject constructor(val model: CountriesRepository) : V
         }
     }
 
-
+    fun resetData(){
+        mSearchQuery = ""
+        mFilteredCountries = mCountryImmutable as ArrayList<Country>
+        mCountries.postValue(mCountryImmutable)
+    }
 
     fun sortBy(type: String) {
         when (type) {

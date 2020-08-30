@@ -77,14 +77,16 @@ class RemoteDataSourceImpl @Inject constructor(
         onResult: (Result<ArrayList<News>>) -> Unit
     ) {
 
-        if (newsCoroutine.isActive){
+        if (newsCoroutine.isActive) {
             newsCoroutine.cancel()
         }
 
         newsCoroutine = GlobalScope.launch(Dispatchers.Default) {
-        try {
+            try {
                 val list = ArrayList<News>()
-                val document = Jsoup.connect("https://news.google.com/search?q=$query%20COVID-19&hl=$locale-GB&gl=${locale.toUpperCase()}&ceid=${locale.toUpperCase()}%3A$locale").get()
+                val document =
+                    Jsoup.connect("https://news.google.com/search?q=$query%20COVID-19&hl=$locale-GB&gl=${locale.toUpperCase()}&ceid=${locale.toUpperCase()}%3A$locale")
+                        .get()
                 val elements = document.select("div.NiLAwe.y6IFtc.R7GTQ.keNKEd.j7vNaf.nID9nc")
 
                 elements.forEachIndexed { index, it ->

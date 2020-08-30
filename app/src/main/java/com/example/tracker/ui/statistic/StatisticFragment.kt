@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.core.widget.NestedScrollView
@@ -22,6 +21,7 @@ import com.example.tracker.utils.ExpansionUtils.timestampToDate
 import com.example.tracker.utils.Utils
 import com.example.tracker.data.local.entity.Statistic
 import com.example.tracker.data.local.entity.TimeLine
+import com.example.tracker.databinding.StatisticLayoutBinding
 import com.example.tracker.ui.countries.CountriesDaysAdapter
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.charts.PieChart
@@ -38,32 +38,27 @@ import kotlinx.android.synthetic.main.statistic_layout.*
 class StatisticFragment : BaseFragment() {
     private val mViewModel: StatisticViewModel by injectViewModel()
 
-    private var mNestedScroll: NestedScrollView? = null
-    private var mRecyclerView: RecyclerView? = null
-    private var mLineChart: LineChart? = null
-    private var mPieChart: PieChart? = null
-    private var mBehaviorCard: MaterialCardView? = null
+    private var _binding: StatisticLayoutBinding? = null
+    private val binding get() = _binding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val v = inflater.inflate(R.layout.statistic_layout, container, false)
+        _binding = StatisticLayoutBinding.inflate(inflater, container, false)
+        val v = binding!!.root
         init(v)
         return v
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     @SuppressLint("ClickableViewAccessibility")
     private fun init(v: View) {
         setHasOptionsMenu(true)
-
-        mRecyclerView = v.findViewById(R.id.statistic_days)
-        mNestedScroll = v.findViewById(R.id.nested_scroll)
-        mBehaviorCard = v.findViewById(R.id.behavior_card)
-        mLineChart = v.findViewById(R.id.line_chart)
-        mPieChart = v.findViewById(R.id.pie_chart)
-
-
         initBottomSheet(v)
 
         v.findViewById<MaterialButton>(R.id.try_again).setOnClickListener {
@@ -71,20 +66,28 @@ class StatisticFragment : BaseFragment() {
             mViewModel.getOverallHistoric()
         }
 
+        initChangeChartButton(v)
 
+    }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initObservers()
+    }
+
+    private fun initChangeChartButton(v: View) {
         v.findViewById<MaterialButton>(R.id.change_chart).setOnClickListener {
 
-            if (mLineChart!!.isVisible) {
-                mLineChart!!.animate().apply {
+            if (binding?.lineChart!!.isVisible) {
+                binding?.lineChart!!.animate().apply {
                     alpha(0f)
-                    translationY(-mLineChart!!.height.toFloat())
+                    translationY(-binding?.lineChart!!.height.toFloat())
                     duration = resources.getInteger(R.integer.primary_duration).toLong()
                     setListener(object : Animator.AnimatorListener {
                         override fun onAnimationRepeat(animation: Animator?) {}
 
                         override fun onAnimationEnd(animation: Animator?) {
-                            mLineChart!!.visibility = View.GONE
+                            binding?.lineChart!!.visibility = View.GONE
                         }
 
                         override fun onAnimationCancel(animation: Animator?) {}
@@ -93,7 +96,7 @@ class StatisticFragment : BaseFragment() {
                     })
                 }
 
-                mPieChart!!.animate().apply {
+                binding?.pieChart!!.animate().apply {
                     alpha(1f)
                     duration = resources.getInteger(R.integer.primary_duration).toLong()
                     translationY(0f)
@@ -106,7 +109,7 @@ class StatisticFragment : BaseFragment() {
                         override fun onAnimationCancel(animation: Animator?) {}
 
                         override fun onAnimationStart(animation: Animator?) {
-                            mPieChart!!.visibility = View.VISIBLE
+                            binding?.pieChart!!.visibility = View.VISIBLE
                         }
                     })
                 }
@@ -115,9 +118,9 @@ class StatisticFragment : BaseFragment() {
                 (it as MaterialButton).icon =
                     ContextCompat.getDrawable(requireContext(), R.drawable.ic_line_chart)
             } else {
-                mPieChart!!.animate().apply {
+                binding?.pieChart!!.animate().apply {
                     alpha(0f)
-                    translationY(mPieChart!!.height.toFloat())
+                    translationY(binding?.pieChart!!.height.toFloat())
                     duration = resources.getInteger(R.integer.primary_duration).toLong()
                     setListener(object : Animator.AnimatorListener {
                         override fun onAnimationRepeat(animation: Animator?) {}
@@ -127,11 +130,11 @@ class StatisticFragment : BaseFragment() {
                         override fun onAnimationCancel(animation: Animator?) {}
 
                         override fun onAnimationStart(animation: Animator?) {
-                            mLineChart!!.visibility = View.VISIBLE
+                            binding?.lineChart!!.visibility = View.VISIBLE
                         }
                     })
                 }
-                mLineChart!!.animate().apply {
+                binding?.lineChart!!.animate().apply {
                     alpha(1f)
                     translationY(0f)
                     duration = resources.getInteger(R.integer.primary_duration).toLong()
@@ -139,7 +142,7 @@ class StatisticFragment : BaseFragment() {
                         override fun onAnimationRepeat(animation: Animator?) {}
 
                         override fun onAnimationEnd(animation: Animator?) {
-                            mPieChart!!.visibility = View.GONE
+                            binding?.pieChart!!.visibility = View.GONE
                         }
 
                         override fun onAnimationCancel(animation: Animator?) {}
@@ -154,13 +157,11 @@ class StatisticFragment : BaseFragment() {
                     ContextCompat.getDrawable(requireContext(), R.drawable.ic_pie_chart)
             }
         }
+
     }
 
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        initObservers()
-    }
+
 
     private fun initObservers() {
         mViewModel.mStatus.observe(viewLifecycleOwner, Observer {
@@ -188,7 +189,7 @@ class StatisticFragment : BaseFragment() {
 
         mViewModel.mHistoric.observe(viewLifecycleOwner, Observer {
             it?.let { timeLine ->
-                Utils.initializeLineChart(mLineChart!!, mNestedScroll!!, requireContext(), timeLine)
+                Utils.initializeLineChart(binding?.lineChart!!, binding?.nestedScroll, requireContext(), timeLine)
                 initRecyclerView(timeLine)
             }
 
@@ -202,7 +203,7 @@ class StatisticFragment : BaseFragment() {
                 overall_container.visibility = View.VISIBLE
 
                 Utils.initializePieChart(
-                    mPieChart!!,
+                    binding?.pieChart!!,
                     statistic.cases!!.toFloat(),
                     statistic.deaths!!.toFloat(),
                     statistic.recovered!!.toFloat(),
@@ -216,7 +217,7 @@ class StatisticFragment : BaseFragment() {
 
 
     private fun initBottomSheet(v: View) {
-        val behavior = BottomSheetBehavior.from(mBehaviorCard!!)
+        val behavior = BottomSheetBehavior.from(binding?.behaviorCard!!)
 
         behavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
             override fun onSlide(bottomSheet: View, slideOffset: Float) {}
@@ -262,39 +263,36 @@ class StatisticFragment : BaseFragment() {
     }
 
     private fun initRecyclerView(it: TimeLine) {
-        mRecyclerView?.layoutManager =
+        binding?.statisticDays?.layoutManager =
             LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
-        mRecyclerView?.adapter = CountriesDaysAdapter(it)
-        mRecyclerView?.adapter!!.notifyDataSetChanged()
+        binding?.statisticDays?.adapter = CountriesDaysAdapter(it)
+        binding?.statisticDays?.adapter!!.notifyDataSetChanged()
     }
 
     @SuppressLint("SetTextI18n", "SimpleDateFormat")
     private fun initStatistic(it: Statistic) {
-        updated.text = it.updated.timestampToDate(requireContext())
+        binding?.updated?.text = it.updated.timestampToDate(requireContext())
 
-        cases.text = it.cases?.decimalFormatter()
-        deaths.text = it.deaths?.decimalFormatter()
-        recovered.text = it.recovered?.decimalFormatter()
+        binding?.cases?.text = it.cases?.decimalFormatter()
+        binding?.deaths?.text = it.deaths?.decimalFormatter()
+        binding?.recovered?.text = it.recovered?.decimalFormatter()
 
-        cases_today.text =
-            "+${it.todayCases?.decimalFormatter()} ${requireContext().getString(R.string.today)}"
-        cases_today.setColorBefore(requireContext().getString(R.string.today))
+        binding?.casesToday?.text = "+${it.todayCases?.decimalFormatter()} ${requireContext().getString(R.string.today)}"
+        binding?.casesToday?.setColorBefore(requireContext().getString(R.string.today))
 
-        deaths_today.text =
-            "+${it.todayDeaths?.decimalFormatter()} ${requireContext().getString(R.string.today)}"
-        deaths_today.setColorBefore(requireContext().getString(R.string.today))
+        binding?.deathsToday?.text = "+${it.todayDeaths?.decimalFormatter()} ${requireContext().getString(R.string.today)}"
+        binding?.deathsToday?.setColorBefore(requireContext().getString(R.string.today))
 
-        recovered_today.text =
-            "+${it.todayRecovered?.decimalFormatter()} ${requireContext().getString(R.string.today)}"
-        recovered_today.setColorBefore(requireContext().getString(R.string.today))
+        binding?.recoveredToday?.text = "+${it.todayRecovered?.decimalFormatter()} ${requireContext().getString(R.string.today)}"
+        binding?.recoveredToday?.setColorBefore(requireContext().getString(R.string.today))
 
-        active.text = it.active?.decimalFormatter()
-        tests.text = it.tests?.decimalFormatter()
-        critical.text = it.critical?.decimalFormatter()
-        cases_per_million.text = it.casesPerOneMillion?.toString()
-        deaths_per_million.text = it.deathsPerOneMillion?.toString()
-        tests_per_million.text = it.testsPerOneMillion?.toString()
-        affected_country.text = it.affectedCountries?.decimalFormatter()
+        binding?.active?.text = it.active?.decimalFormatter()
+        binding?.tests?.text = it.tests?.decimalFormatter()
+        binding?.critical?.text = it.critical?.decimalFormatter()
+        binding?.casesPerMillion?.text = it.casesPerOneMillion?.toString()
+        binding?.deathsPerMillion?.text = it.deathsPerOneMillion?.toString()
+        binding?.testsPerMillion?.text = it.testsPerOneMillion?.toString()
+        binding?.affectedCountry?.text = it.affectedCountries?.decimalFormatter()
     }
 
 }

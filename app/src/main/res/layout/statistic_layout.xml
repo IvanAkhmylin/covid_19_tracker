@@ -1,105 +1,111 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<?xml version="1.0" encoding="utf-8"?>
+
+<FrameLayout xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/background"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:animateLayoutChanges="true"
+    android:background="@color/background"
     android:fillViewport="true"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
     android:orientation="vertical"
     android:overScrollMode="never">
 
     <androidx.core.widget.NestedScrollView
-        android:id="@+id/nested_scroll"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
         android:fillViewport="true"
+        android:id="@+id/nested_scroll"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
         android:overScrollMode="never">
 
         <FrameLayout
-            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_width="match_parent"
             android:orientation="vertical">
 
             <LinearLayout
                 android:id="@+id/overall_container"
-                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_width="match_parent"
                 android:orientation="vertical">
 
                 <com.google.android.material.card.MaterialCardView
-                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="10dp"
-                    android:layout_marginEnd="10dp"
+                    android:layout_width="match_parent"
                     app:cardCornerRadius="@dimen/corner_radius"
                     app:contentPadding="10dp">
 
                     <TextView
-                        android:id="@+id/updated"
                         style="@style/TitleTextStyle"
-                        android:layout_width="match_parent"
+                        android:gravity="center_horizontal"
+                        android:id="@+id/updated"
                         android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:text="@{model.MStatistic.updated.time}"
                         android:textAlignment="center"
                         android:textColor="@color/colorAccent"
                         android:textSize="@dimen/SmallTextSize" />
                 </com.google.android.material.card.MaterialCardView>
 
                 <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/chart_card"
-                    android:layout_width="match_parent"
-                    android:layout_height="400dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginBottom="15dp"
-                    android:layout_weight="1"
                     android:elevation="1dp"
                     android:focusable="false"
+                    android:id="@+id/chart_card"
+                    android:layout_height="400dp"
+                    android:layout_marginBottom="15dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
                     app:cardCornerRadius="@dimen/corner_radius"
                     app:cardUseCompatPadding="false">
 
                     <FrameLayout
-                        android:paddingBottom="60dp"
-                        android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:orientation="vertical">
+                        android:layout_width="match_parent"
+                        android:orientation="vertical"
+                        android:paddingBottom="60dp">
 
                         <com.github.mikephil.charting.charts.LineChart
                             android:id="@+id/line_chart"
-                            android:visibility="invisible"
+                            android:layout_height="match_parent"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"/>
+                            android:visibility="invisible" />
+
                         <com.github.mikephil.charting.charts.PieChart
                             android:alpha="0"
-                            android:translationY="450dp"
                             android:id="@+id/pie_chart"
-                            android:visibility="invisible"
+                            android:layout_height="match_parent"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent" />
+                            android:translationY="450dp"
+                            android:visibility="invisible" />
 
                     </FrameLayout>
+
                     <FrameLayout
                         android:layout_gravity="bottom"
-                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
                         android:orientation="horizontal">
 
                         <com.google.android.material.button.MaterialButton
-                            android:id="@+id/change_chart"
                             style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
-                            android:layout_width="60dp"
-                            android:layout_height="60dp"
-                            android:layout_gravity="end"
                             android:backgroundTint="@color/blue"
                             android:clickable="true"
                             android:focusable="true"
+                            android:id="@+id/change_chart"
                             android:insetBottom="0dp"
+                            android:layout_gravity="end"
+                            android:layout_height="60dp"
+                            android:layout_width="60dp"
                             android:theme="@style/RightRoundedButton"
                             app:icon="@drawable/ic_pie_chart"
-                            app:iconTint="@color/white"
                             app:iconGravity="end"
+                            app:iconTint="@color/white"
                             app:strokeWidth="0dp" />
                     </FrameLayout>
 
@@ -107,47 +113,49 @@
 
 
                 <GridLayout
-                    android:layout_width="match_parent"
+                    android:columnCount="2"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
-                    android:columnCount="2"
+                    android:layout_width="match_parent"
                     android:rowCount="5">
 
                     <com.google.android.material.card.MaterialCardView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
                         android:layout_columnWeight="1"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginEnd="5dp"
+                        android:layout_height="wrap_content"
                         android:layout_marginBottom="5dp"
+                        android:layout_marginEnd="5dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_width="0dp"
                         app:cardCornerRadius="@dimen/corner_radius">
 
                         <LinearLayout
-                            android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            android:layout_width="match_parent"
                             android:orientation="vertical"
                             android:padding="15dp">
 
                             <TextView
                                 style="@style/TitleTextStyle"
-                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:layout_width="match_parent"
                                 android:text="@string/cases" />
 
                             <TextView
-                                android:id="@+id/cases"
                                 style="@style/MediumTextStyle"
-                                android:layout_width="match_parent"
+                                android:id="@+id/cases"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="5dp"
+                                android:layout_width="match_parent"
                                 android:textColor="@color/blue" />
 
                             <TextView
-                                android:id="@+id/cases_today"
                                 style="@style/SmallTextStyle"
-                                android:layout_width="match_parent"
+                                android:id="@+id/cases_today"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="5dp"
+                                android:layout_width="match_parent"
                                 android:textColor="@color/secondary_text" />
 
                         </LinearLayout>
@@ -155,154 +163,162 @@
                     </com.google.android.material.card.MaterialCardView>
 
                     <com.google.android.material.card.MaterialCardView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
                         android:layout_columnWeight="1"
-                        android:layout_marginStart="5dp"
-                        android:layout_marginEnd="10dp"
+                        android:layout_height="wrap_content"
                         android:layout_marginBottom="5dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginStart="5dp"
+                        android:layout_width="0dp"
                         app:cardCornerRadius="@dimen/corner_radius">
 
                         <LinearLayout
-                            android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            android:layout_width="match_parent"
                             android:orientation="vertical"
                             android:padding="15dp">
 
                             <TextView
                                 style="@style/TitleTextStyle"
-                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:layout_width="match_parent"
                                 android:text="@string/deaths" />
 
                             <TextView
-                                android:id="@+id/deaths"
                                 style="@style/MediumTextStyle"
-                                android:layout_width="match_parent"
+                                android:id="@+id/deaths"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="5dp"
+                                android:layout_width="match_parent"
                                 android:textColor="@color/red" />
 
                             <TextView
-                                android:id="@+id/deaths_today"
                                 style="@style/SmallTextStyle"
-                                android:layout_width="match_parent"
+                                android:id="@+id/deaths_today"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="5dp"
+                                android:layout_width="match_parent"
                                 android:textColor="@color/secondary_text" />
 
                         </LinearLayout>
                     </com.google.android.material.card.MaterialCardView>
 
                     <com.google.android.material.card.MaterialCardView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
                         android:layout_columnWeight="1"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginEnd="5dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="5dp"
                         android:layout_marginStart="10dp"
                         android:layout_marginTop="5dp"
-                        android:layout_marginEnd="5dp"
-                        android:layout_marginBottom="5dp"
+                        android:layout_width="0dp"
                         app:cardCornerRadius="@dimen/corner_radius">
 
                         <LinearLayout
-                            android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            android:layout_width="match_parent"
                             android:orientation="vertical"
                             android:padding="15dp">
 
                             <TextView
                                 style="@style/TitleTextStyle"
-                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:layout_width="match_parent"
                                 android:text="@string/recovered" />
 
                             <TextView
-                                android:id="@+id/recovered"
                                 style="@style/MediumTextStyle"
-                                android:layout_width="match_parent"
+                                android:id="@+id/recovered"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="5dp"
+                                android:layout_width="match_parent"
                                 android:textColor="@color/green" />
 
                             <TextView
-                                android:id="@+id/recovered_today"
                                 style="@style/SmallTextStyle"
-                                android:layout_width="match_parent"
+                                android:id="@+id/recovered_today"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="5dp"
+                                android:layout_width="match_parent"
                                 android:textColor="@color/secondary_text" />
 
                         </LinearLayout>
                     </com.google.android.material.card.MaterialCardView>
 
                     <com.google.android.material.card.MaterialCardView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
                         android:layout_columnWeight="1"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="10dp"
                         android:layout_marginStart="5dp"
                         android:layout_marginTop="5dp"
-                        android:layout_marginEnd="10dp"
-                        android:layout_marginBottom="5dp"
+                        android:layout_width="0dp"
                         app:cardCornerRadius="@dimen/corner_radius">
 
                         <LinearLayout
-                            android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            android:layout_width="match_parent"
                             android:orientation="vertical"
                             android:padding="15dp">
 
                             <TextView
                                 style="@style/TitleTextStyle"
-                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:layout_width="match_parent"
                                 android:text="@string/active" />
 
                             <TextView
-                                android:id="@+id/active"
                                 style="@style/MediumTextStyle"
-                                android:layout_width="match_parent"
+                                android:id="@+id/active"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="5dp"
+                                android:layout_width="match_parent"
                                 android:textColor="@color/purple" />
 
                             <TextView
                                 style="@style/SmallTextStyle"
-                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="5dp"
+                                android:layout_width="match_parent"
                                 android:textColor="@color/secondary_text" />
 
                         </LinearLayout>
                     </com.google.android.material.card.MaterialCardView>
 
                     <com.google.android.material.card.MaterialCardView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
                         android:layout_columnWeight="1"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginEnd="5dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="5dp"
                         android:layout_marginStart="10dp"
                         android:layout_marginTop="5dp"
-                        android:layout_marginEnd="5dp"
-                        android:layout_marginBottom="5dp"
+                        android:layout_width="0dp"
                         app:cardCornerRadius="@dimen/corner_radius">
 
                         <LinearLayout
-                            android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            android:layout_width="match_parent"
                             android:orientation="vertical"
                             android:padding="15dp">
 
                             <TextView
                                 style="@style/TitleTextStyle"
-                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:layout_width="match_parent"
                                 android:text="@string/critical" />
 
                             <TextView
-                                android:id="@+id/critical"
                                 style="@style/MediumTextStyle"
-                                android:layout_width="match_parent"
+                                android:id="@+id/critical"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="5dp"
+                                android:layout_width="match_parent"
                                 android:textColor="@color/orange" />
 
 
@@ -310,33 +326,35 @@
                     </com.google.android.material.card.MaterialCardView>
 
                     <com.google.android.material.card.MaterialCardView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
                         android:layout_columnWeight="1"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="10dp"
                         android:layout_marginStart="5dp"
                         android:layout_marginTop="5dp"
-                        android:layout_marginEnd="10dp"
-                        android:layout_marginBottom="5dp"
+                        android:layout_width="0dp"
                         app:cardCornerRadius="@dimen/corner_radius">
 
                         <LinearLayout
-                            android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            android:layout_width="match_parent"
                             android:orientation="vertical"
                             android:padding="15dp">
 
                             <TextView
                                 style="@style/TitleTextStyle"
-                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:layout_width="match_parent"
                                 android:text="@string/tests" />
 
                             <TextView
-                                android:id="@+id/tests"
                                 style="@style/MediumTextStyle"
-                                android:layout_width="match_parent"
+                                android:id="@+id/tests"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="5dp"
+                                android:layout_width="match_parent"
                                 android:textColor="@color/teal" />
 
 
@@ -344,34 +362,36 @@
                     </com.google.android.material.card.MaterialCardView>
 
                     <com.google.android.material.card.MaterialCardView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
                         android:layout_columnWeight="1"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginEnd="5dp"
+                        android:layout_height="wrap_content"
                         android:layout_marginBottom="5dp"
+                        android:layout_marginEnd="5dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_marginStart="10dp"
 
+                        android:layout_marginTop="5dp"
+                        android:layout_width="0dp"
                         app:cardCornerRadius="@dimen/corner_radius">
 
                         <LinearLayout
-                            android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            android:layout_width="match_parent"
                             android:orientation="vertical"
                             android:padding="15dp">
 
                             <TextView
                                 style="@style/TitleTextStyle"
-                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="@string/casesInMillion"/>
+                                android:layout_width="match_parent"
+                                android:text="@string/casesInMillion" />
 
                             <TextView
-                                android:id="@+id/cases_per_million"
                                 style="@style/MediumTextStyle"
-                                android:layout_width="match_parent"
+                                android:id="@+id/cases_per_million"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="5dp"
+                                android:layout_width="match_parent"
                                 android:textColor="@color/blue" />
 
 
@@ -379,33 +399,35 @@
                     </com.google.android.material.card.MaterialCardView>
 
                     <com.google.android.material.card.MaterialCardView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
                         android:layout_columnWeight="1"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="10dp"
                         android:layout_marginStart="5dp"
                         android:layout_marginTop="5dp"
-                        android:layout_marginEnd="10dp"
-                        android:layout_marginBottom="5dp"
+                        android:layout_width="0dp"
                         app:cardCornerRadius="@dimen/corner_radius">
 
                         <LinearLayout
-                            android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            android:layout_width="match_parent"
                             android:orientation="vertical"
                             android:padding="15dp">
 
                             <TextView
                                 style="@style/TitleTextStyle"
-                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:layout_width="match_parent"
                                 android:text="@string/deathsInMillion" />
 
                             <TextView
-                                android:id="@+id/deaths_per_million"
                                 style="@style/MediumTextStyle"
-                                android:layout_width="match_parent"
+                                android:id="@+id/deaths_per_million"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="5dp"
+                                android:layout_width="match_parent"
                                 android:textColor="@color/red" />
 
 
@@ -413,34 +435,36 @@
                     </com.google.android.material.card.MaterialCardView>
 
                     <com.google.android.material.card.MaterialCardView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
                         android:layout_columnWeight="1"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginEnd="5dp"
+                        android:layout_height="wrap_content"
                         android:layout_marginBottom="5dp"
+                        android:layout_marginEnd="5dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_marginStart="10dp"
 
+                        android:layout_marginTop="5dp"
+                        android:layout_width="0dp"
                         app:cardCornerRadius="@dimen/corner_radius">
 
                         <LinearLayout
-                            android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            android:layout_width="match_parent"
                             android:orientation="vertical"
                             android:padding="15dp">
 
                             <TextView
                                 style="@style/TitleTextStyle"
-                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="@string/testsInMillion"/>
+                                android:layout_width="match_parent"
+                                android:text="@string/testsInMillion" />
 
                             <TextView
-                                android:id="@+id/tests_per_million"
                                 style="@style/MediumTextStyle"
-                                android:layout_width="match_parent"
+                                android:id="@+id/tests_per_million"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="5dp"
+                                android:layout_width="match_parent"
                                 android:textColor="@color/teal" />
 
 
@@ -448,33 +472,35 @@
                     </com.google.android.material.card.MaterialCardView>
 
                     <com.google.android.material.card.MaterialCardView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
                         android:layout_columnWeight="1"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="10dp"
                         android:layout_marginStart="5dp"
                         android:layout_marginTop="5dp"
-                        android:layout_marginEnd="10dp"
-                        android:layout_marginBottom="5dp"
+                        android:layout_width="0dp"
                         app:cardCornerRadius="@dimen/corner_radius">
 
                         <LinearLayout
-                            android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            android:layout_width="match_parent"
                             android:orientation="vertical"
                             android:padding="15dp">
 
                             <TextView
                                 style="@style/TitleTextStyle"
-                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:layout_width="match_parent"
                                 android:text="@string/countries" />
 
                             <TextView
-                                android:id="@+id/affected_country"
                                 style="@style/MediumTextStyle"
-                                android:layout_width="match_parent"
+                                android:id="@+id/affected_country"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="5dp"
+                                android:layout_width="match_parent"
                                 android:textColor="@color/lime" />
 
 
@@ -487,34 +513,34 @@
     </androidx.core.widget.NestedScrollView>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_width="match_parent">
 
         <com.google.android.material.card.MaterialCardView
-            android:id="@+id/behavior_card"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:elevation="@dimen/cardview_default_elevation"
+            android:id="@+id/behavior_card"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
             app:behavior_hideable="true"
             app:behavior_peekHeight="0dp"
             app:cardCornerRadius="@dimen/corner_radius"
             app:layout_behavior="@string/bottom_sheet_behavior">
 
             <LinearLayout
-                android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_width="match_parent"
                 android:orientation="vertical">
 
                 <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
                     android:src="@drawable/ic_drag_handle" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/statistic_days"
-                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
                     tools:listitem="@layout/country_detail_bottom_sheet" />
             </LinearLayout>
 
@@ -526,12 +552,12 @@
 
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_show_hide"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="right|bottom"
-        android:layout_margin="20dp"
         android:backgroundTint="@color/blue"
+        android:id="@+id/fab_show_hide"
+        android:layout_gravity="right|bottom"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:layout_width="wrap_content"
         android:src="@drawable/ic_list"
         android:visibility="gone"
         app:tint="@color/white" />

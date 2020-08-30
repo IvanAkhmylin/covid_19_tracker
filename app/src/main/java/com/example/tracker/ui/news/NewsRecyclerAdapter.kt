@@ -53,13 +53,12 @@ class NewsRecyclerAdapter(
         if (news.size == 1) {
             animatedPosition = -1
         }
+        loading = status
 
         data.clear()
-
-        loading = status
         data.addAll(news)
 
-        notifyItemChanged(data.size)
+        notifyItemChanged(data.size-1)
     }
 
     override fun getItemId(position: Int): Long {

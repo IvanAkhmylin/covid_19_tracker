@@ -1,7 +1,9 @@
 package com.example.tracker.data.local.entity
 
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.example.tracker.utils.ExpansionUtils.timestampToDate
 
 @Entity(tableName = "statistic_table")
 data class Statistic(

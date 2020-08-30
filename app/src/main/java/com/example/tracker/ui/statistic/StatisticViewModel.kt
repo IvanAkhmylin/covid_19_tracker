@@ -9,7 +9,6 @@ import com.example.tracker.data.local.entity.TimeLine
 import com.example.tracker.data.repository.StatisticRepository
 import com.example.tracker.utils.Result
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 
@@ -19,7 +18,6 @@ class StatisticViewModel
 ) : ViewModel() {
 
     var mStatus = MutableLiveData<String>()
-
     var mStatistic = MutableLiveData<Statistic>()
     var mHistoric = MutableLiveData<TimeLine>()
 
@@ -32,7 +30,6 @@ class StatisticViewModel
         mStatus.postValue(Status.LOADING)
         viewModelScope.launch {
             val data = model.getOverallStatistic()
-            Timber.d("STATISTIC VIEW MODEL ---> REQUEST STATUS --> ${data.status.name}")
             when (data.status) {
                 Result.Status.SUCCESS -> {
                     mStatus.postValue(Status.SUCCESS)

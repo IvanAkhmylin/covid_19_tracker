@@ -38,7 +38,7 @@
     <string name="countries_search_hint">Country name (EN)</string>
     <string name="change_language">Change language</string>
     <string name="change_theme">Change theme</string>
-    <string name="nothing_found">"nothing found "</string>
+    <string name="nothing_found">"Nothing found "</string>
     <string name="something_wrong">"Something went wrong : ( "</string>
     <string name="check_internet_connection">please check your internet connection and &#8230;</string>
     <string name="try_again">Try again</string>
