@@ -2,6 +2,7 @@
 
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/vanganistan/covid_19_tracker/master/LICENSE)
 
+[Click to Download latest version](https://github.com/vanganistan/covid_19_tracker/releases/download/v1.1/COVID_19_TRACKER.apk)
 
 # Description 
 This project was created in order to conveniently familiarize yourself with the current state of affairs in the world, in connection with the Covid-19 pandemic, as well as to acquire skills in the development of mobile applications.
