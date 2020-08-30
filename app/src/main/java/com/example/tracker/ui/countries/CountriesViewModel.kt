@@ -129,9 +129,11 @@ class CountriesViewModel @Inject constructor(val model: CountriesRepository) : V
     }
 
     fun resetData(){
-        mSearchQuery = ""
-        mFilteredCountries = mCountryImmutable as ArrayList<Country>
-        mCountries.postValue(mCountryImmutable)
+        if (::mCountryImmutable.isInitialized){
+            mSearchQuery = ""
+            mFilteredCountries = mCountryImmutable as ArrayList<Country>
+            mCountries.postValue(mCountryImmutable)
+        }
     }
 
     fun sortBy(type: String) {

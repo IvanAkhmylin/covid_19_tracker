@@ -36,7 +36,7 @@ object SettingUtils {
         (context as AppCompatActivity).finish()
     }
 
-    fun checkAppLang(prefs: SharedPreferences, activity: Context) {
+    private fun checkAppLang(prefs: SharedPreferences, activity: Context) {
         var lang = prefs.getString("change_lang", "")
 
         if (lang?.isEmpty()!!) {

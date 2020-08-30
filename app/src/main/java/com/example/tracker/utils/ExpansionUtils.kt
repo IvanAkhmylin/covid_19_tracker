@@ -29,12 +29,6 @@ object ExpansionUtils {
         return "${context.getString(R.string.updated)}: $date ${context.getString(R.string.at)} $time"
     }
 
-    fun ArrayList<String>.getAreaCount(): ArrayList<String>? {
-        val label: ArrayList<String> = ArrayList()
-        for (i in 0 until this.size) label.add(this.get(i))
-        return label
-    }
-
     fun String.toMillis(): Long {
         val df = SimpleDateFormat("MM/dd/yy", Locale.getDefault())
         return df.parse(this).time

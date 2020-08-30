@@ -3,21 +3,18 @@ package com.example.tracker.utils
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.Canvas
 import android.net.Uri
 import android.view.MotionEvent
 import android.view.View
-import androidx.appcompat.app.AlertDialog
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat
 import androidx.core.widget.NestedScrollView
 import com.example.tracker.Constants.Constants
 import com.example.tracker.R
-import com.example.tracker.utils.ExpansionUtils.fromMillis
-import com.example.tracker.utils.ExpansionUtils.toMillis
 import com.example.tracker.data.local.entity.TimeLine
+import com.example.tracker.utils.ExpansionUtils.fromMillis
 import com.example.tracker.utils.ExpansionUtils.isDarkThemeOn
+import com.example.tracker.utils.ExpansionUtils.toMillis
 import com.example.tracker.view.LineChartMarker
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.charts.PieChart
@@ -25,7 +22,10 @@ import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.*
 import com.github.mikephil.charting.formatter.LargeValueFormatter
 import com.github.mikephil.charting.formatter.ValueFormatter
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.withContext
 import org.jsoup.Jsoup
 import java.io.IOException
 import java.util.*
@@ -56,26 +56,29 @@ object Utils {
 
         val keys = timeline.cases.keys.toTypedArray()
 
+
+        /*
+        Create CASES points for line chart
+        */
         for ((index, key) in keys.withIndex()) {
             val previousKey = keys.getOrNull(index - 1)
 
-
             if (previousKey != null) {
-                val increasedValue = timeline.cases.getOrDefault(key, 0)
-                    .minus(timeline.cases.getOrDefault(previousKey, 0))
+                val increasedValue = timeline.cases.getOrElse(key) { 0 }
+                    .minus(timeline.cases.getOrElse(previousKey) { 0 })
 
-                val data = Triple<Long, Int, String>(
+                val data = Triple(
                     key.toMillis(),
                     increasedValue,
                     Constants.CASES
                 )
 
-                val x_points = key.toMillis().toFloat()
-                val y_points: Float = increasedValue.toFloat()
+                val xPoints = key.toMillis().toFloat()
+                val yPoints: Float = increasedValue.toFloat()
                 cases.add(
                     Entry(
-                        x_points,
-                        y_points,
+                        xPoints,
+                        yPoints,
                         null,
                         data
                     )
@@ -88,26 +91,28 @@ object Utils {
                 )
             }
         }
-
+        /*
+         Create RECOVERED points for line chart
+        */
         for ((index, key) in keys.withIndex()) {
             val previousKey = keys.getOrNull(index - 1)
             if (previousKey != null) {
-                val increasedValue = timeline.recovered.getOrDefault(key, 0)
-                    .minus(timeline.recovered.getOrDefault(previousKey, 0))
+                val increasedValue = timeline.recovered.getOrElse(key) { 0 }
+                    .minus(timeline.recovered.getOrElse(previousKey) { 0 })
 
 
-                val data = Triple<Long, Int, String>(
+                val data = Triple(
                     key.toMillis(),
                     increasedValue,
                     Constants.RECOVERED
                 )
 
-                val x_points = key.toMillis().toFloat()
-                val y_points: Float = increasedValue.toFloat()
+                val xPoints = key.toMillis().toFloat()
+                val yPoints: Float = increasedValue.toFloat()
                 recovered.add(
                     Entry(
-                        x_points,
-                        y_points,
+                        xPoints,
+                        yPoints,
                         null,
                         data
                     )
@@ -120,25 +125,27 @@ object Utils {
                 )
             }
         }
-
+        /*
+        Create DEATHS points for line chart
+        */
         for ((index, key) in keys.withIndex()) {
             val previousKey = keys.getOrNull(index - 1)
             if (previousKey != null) {
-                val increasedValue = timeline.deaths.getOrDefault(key, 0)
-                    .minus(timeline.deaths.getOrDefault(previousKey, 0))
+                val increasedValue = timeline.deaths.getOrElse(key) { 0 }
+                    .minus(timeline.deaths.getOrElse(previousKey) { 0 })
 
-                val data = Triple<Long, Int, String>(
+                val data = Triple(
                     key.toMillis(),
                     increasedValue,
                     Constants.DEATHS
                 )
 
-                val x_points = key.toMillis().toFloat()
-                val y_points: Float = increasedValue.toFloat()
+                val xPoints = key.toMillis().toFloat()
+                val yPoints: Float = increasedValue.toFloat()
                 deaths.add(
                     Entry(
-                        x_points,
-                        y_points,
+                        xPoints,
+                        yPoints,
                         null,
                         data
                     )
@@ -158,7 +165,7 @@ object Utils {
             circleRadius = 1f
             color = ContextCompat.getColor(context, R.color.blue)
             setCircleColor(ContextCompat.getColor(context, R.color.blue))
-            highLightColor = context.getColor(R.color.blue)
+            highLightColor = ContextCompat.getColor(context, R.color.blue)
             highlightLineWidth = 2f
             setDrawValues(false)
         }
@@ -168,7 +175,7 @@ object Utils {
             circleRadius = 1f
             color = ContextCompat.getColor(context, R.color.red)
             setCircleColor(ContextCompat.getColor(context, R.color.red))
-            highLightColor = context.getColor(R.color.red)
+            highLightColor = ContextCompat.getColor(context, R.color.red)
             highlightLineWidth = 2f
             setDrawValues(false)
         }
@@ -178,7 +185,7 @@ object Utils {
             circleRadius = 1f
             color = ContextCompat.getColor(context, R.color.green)
             setCircleColor(ContextCompat.getColor(context, R.color.green))
-            highLightColor = context.getColor(R.color.green)
+            highLightColor = ContextCompat.getColor(context, R.color.green)
             highlightLineWidth = 2f
             setDrawValues(false)
         }
@@ -191,11 +198,11 @@ object Utils {
 
         mLineChart.apply {
             axisLeft.apply {
-                textColor = context.getColor(R.color.primary_text)
+                textColor = ContextCompat.getColor(context, R.color.primary_text)
                 valueFormatter = LargeValueFormatter()
             }
             xAxis.apply {
-                textColor = context.getColor(R.color.primary_text)
+                textColor = ContextCompat.getColor(context, R.color.primary_text)
                 setAvoidFirstLastClipping(true)
                 spaceMax = 0.01f
                 spaceMin = 0.01f
@@ -307,10 +314,12 @@ object Utils {
                 it?.let {
                     if (appLang != "en") {
                         it.forEachIndexed { _, country ->
-                            val inLocale: Locale = Locale.forLanguageTag("en-EN")
-                            val outLocale: Locale = Locale.forLanguageTag(appLang)
+
+                            val inLocale = Locale("en")
+                            val outLocale = Locale(appLang)
+
                             for (l in Locale.getAvailableLocales()) {
-                                if (l.getDisplayCountry(inLocale).equals(country)) {
+                                if (l.getDisplayCountry(inLocale) == country) {
                                     names.add(l.getDisplayCountry(outLocale))
                                     break
                                 }
@@ -325,8 +334,8 @@ object Utils {
                     return@withContext names
                 }
             }
-
         }
+
         translation.await()
         onResult(names)
     }
@@ -345,7 +354,7 @@ object Utils {
         return link
     }
 
-     fun showWebPage(context: Context, link: String) {
+    fun showWebPage(context: Context, link: String) {
         val builder = CustomTabsIntent.Builder()
         if (context.isDarkThemeOn()) {
             builder.setColorScheme(CustomTabsIntent.COLOR_SCHEME_DARK)
